@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
   onOpenModal: () => void;
-  onViewChange: (view: 'home' | 'stories') => void;
-  currentView: 'home' | 'stories';
+  onViewChange: (view: 'home' | 'stories' | 'ai-review') => void;
+  currentView: 'home' | 'stories' | 'ai-review';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView }) => {
@@ -32,7 +32,6 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
     
     if (currentView !== 'home') {
       onViewChange('home');
-      // ページ遷移後に少し遅らせてスクロール
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
@@ -64,8 +63,8 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
 
   const navItems = [
     { label: 'カリキュラム', href: 'work' },
-    { label: 'アドバイザー', href: 'letter' },
-    { label: '成功事例', href: 'stories', isPage: true }
+    { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
+    { label: '成功事例', href: 'stories', isPage: true, view: 'stories' as const }
   ];
 
   return (
@@ -75,11 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
           <div 
             className="group flex items-center gap-4 cursor-pointer relative z-[110]" 
             onClick={() => {
-              if (currentView === 'home') {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-              } else {
-                onViewChange('home');
-              }
+              onViewChange('home');
               setIsMenuOpen(false);
             }}
           >
@@ -105,16 +100,16 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
                 key={item.label}
                 onClick={(e) => {
                   if (item.isPage) {
-                    onViewChange('stories');
+                    onViewChange(item.view);
                     setIsMenuOpen(false);
                   } else {
                     handleNavClick(e, item.href);
                   }
                 }}
-                className={`relative text-[11px] font-bold tracking-[0.2em] transition-colors duration-300 group ${currentView === (item.isPage ? 'stories' : 'home') ? 'text-brand-gold' : 'text-neutral-500 hover:text-brand-black'}`}
+                className={`relative text-[11px] font-bold tracking-[0.2em] transition-colors duration-300 group ${currentView === (item.isPage ? item.view : 'home') ? 'text-brand-gold' : 'text-neutral-500 hover:text-brand-black'}`}
               >
                 {item.label}
-                <span className={`absolute -bottom-1 left-0 h-[1px] bg-brand-gold transition-all duration-300 ${currentView === (item.isPage ? 'stories' : 'home') && item.isPage ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                <span className={`absolute -bottom-1 left-0 h-[1px] bg-brand-gold transition-all duration-300 ${currentView === (item.isPage ? item.view : 'home') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
               </button>
             ))}
             <button 
@@ -147,13 +142,13 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
                 key={item.label}
                 onClick={(e) => {
                   if (item.isPage) {
-                    onViewChange('stories');
+                    onViewChange(item.view);
                     setIsMenuOpen(false);
                   } else {
                     handleNavClick(e, item.href);
                   }
                 }}
-                className={`text-2xl font-display font-bold tracking-widest transition-all duration-500 transform ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} ${currentView === (item.isPage ? 'stories' : 'home') ? 'text-brand-gold' : 'text-brand-black'}`}
+                className={`text-2xl font-display font-bold tracking-widest transition-all duration-500 transform ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} ${currentView === (item.isPage ? item.view : 'home') ? 'text-brand-gold' : 'text-brand-black'}`}
                 style={{ transitionDelay: `${idx * 100}ms` }}
               >
                 {item.label}

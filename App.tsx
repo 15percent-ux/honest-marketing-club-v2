@@ -4,7 +4,6 @@ import Hero from './components/Hero.tsx';
 import Curriculum from './components/Curriculum.tsx';
 import HWD from './components/HWD.tsx';
 import MemberReview from './components/MemberReview.tsx';
-import AIEngine from './components/AIEngine.tsx';
 import Letter from './components/Letter.tsx';
 import TableOfContents from './components/TableOfContents.tsx';
 import Consultation from './components/Consultation.tsx';
@@ -14,14 +13,15 @@ import LineNavigator from './components/LineNavigator.tsx';
 import HmcSplash from './components/HmcSplash.tsx';
 import AuthGate from './components/AuthGate.tsx';
 import SuccessStories from './components/SuccessStories.tsx';
+import AiReviewSession from './components/AiReviewSession.tsx';
 
 const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [view, setView] = useState<'home' | 'stories'>('home');
+  const [view, setView] = useState<'home' | 'stories' | 'ai-review'>('home');
   
-  // スプラッシュ画面の管理: 'hmc' (ブランドロゴ) -> 'auth' (認証) -> 'none' (メインコンテンツ)
+  // スプラッシュ画面の管理
   const [splashStep, setSplashStep] = useState<'hmc' | 'auth' | 'none'>('hmc');
 
   // ページ切り替え時にトップへスクロール
@@ -40,12 +40,12 @@ const App: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleViewChange = (newView: 'home' | 'stories') => {
+  const handleViewChange = (newView: 'home' | 'stories' | 'ai-review') => {
     setView(newView);
   };
 
   const handleBackToTop = () => {
-    if (view === 'stories') {
+    if (view !== 'home') {
       setView('home');
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -73,16 +73,12 @@ const App: React.FC = () => {
                 <Hero />
                 <div className="w-full h-px bg-neutral-100" />
                 <Letter />
-                
-                {/* 社会的証明を早期に提示 */}
                 <MemberReview />
-                
                 <TableOfContents />
 
                 {/* Entry Section */}
                 <section className="py-24 px-6 bg-[#0a0a0a] flex flex-col items-center justify-center overflow-hidden">
                   <div className="max-w-4xl w-full space-y-12 relative text-center">
-                    
                     <div className="space-y-4">
                       <span className="text-[10px] font-mono tracking-[0.8em] text-brand-gold uppercase font-bold block animate-pulse">審査制コミュニティ</span>
                       <h2 className="text-xl md:text-2xl font-sans font-bold text-white tracking-[0.15em] leading-relaxed flex items-center justify-center flex-wrap gap-y-2">
@@ -115,35 +111,20 @@ const App: React.FC = () => {
                             opacity: isHovering ? 0.6 : 0.2
                           }}
                         />
-                        
-                        <div className={`absolute inset-0 z-20 flex items-center justify-center transition-opacity duration-500 pointer-events-none ${isHovering ? 'opacity-100' : 'opacity-0'}`}>
-                           <div className="flex flex-col items-center gap-1">
-                              <div className="w-8 h-8 border border-brand-gold/30 rounded-full flex items-center justify-center animate-ping-slow">
-                                <div className="w-5 h-5 border border-brand-gold rounded-full flex items-center justify-center bg-brand-gold/5">
-                                   <span className="text-brand-gold text-[4px] font-bold">OPEN</span>
-                                </div>
-                              </div>
-                           </div>
-                        </div>
-
                         <div className="relative h-full flex flex-col justify-between z-10 transition-transform duration-700 group-hover:scale-[0.98]">
                           <div className="flex justify-between items-start">
                             <div className="space-y-0.5">
                               <div className="text-[5px] md:text-[7px] font-mono text-brand-gold/60 tracking-widest uppercase leading-none">Honest Marketing Club</div>
                               <div className="text-white/90 font-display text-[10px] md:text-sm tracking-[0.2em] font-bold leading-tight">コミュニティパス</div>
                             </div>
-                            <div className="w-6 h-4 md:w-9 md:h-6 bg-gradient-to-br from-brand-goldLight via-brand-gold to-brand-goldLight rounded shadow-inner opacity-90 relative overflow-hidden">
-                               <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.1)_50%,transparent_75%)] bg-[length:4px_4px] opacity-30" />
-                            </div>
+                            <div className="w-6 h-4 md:w-9 md:h-6 bg-gradient-to-br from-brand-goldLight via-brand-gold to-brand-goldLight rounded shadow-inner opacity-90" />
                           </div>
                           <div className="space-y-1.5">
                             <div className="text-brand-gold font-mono text-[5px] md:text-[7px] tracking-[0.4em] uppercase font-bold flex items-center gap-1.5">
                                <span className="w-1 h-1 rounded-full bg-brand-gold animate-pulse" />
                                OFFICIAL ACCESS
                             </div>
-                            <div className="flex flex-col">
-                              <div className="text-white font-display text-xs md:text-base tracking-[0.3em] font-bold uppercase leading-none">エントリー</div>
-                            </div>
+                            <div className="text-white font-display text-xs md:text-base tracking-[0.3em] font-bold uppercase leading-none">エントリー</div>
                           </div>
                         </div>
                       </div>
@@ -155,11 +136,12 @@ const App: React.FC = () => {
                 <LineNavigator />
                 <Curriculum />
                 <HWD />
-                <AIEngine />
                 <Consultation />
               </>
-            ) : (
+            ) : view === 'stories' ? (
               <SuccessStories onBack={() => setView('home')} />
+            ) : (
+              <AiReviewSession onBack={() => setView('home')} onOpenEntry={handleOpenInvitation} />
             )}
           </main>
 
@@ -200,13 +182,6 @@ const App: React.FC = () => {
       )}
       
       <style>{`
-        @keyframes ping-slow {
-          0% { transform: scale(1); opacity: 0.8; }
-          70%, 100% { transform: scale(1.6); opacity: 0; }
-        }
-        .animate-ping-slow {
-          animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
         @keyframes fade-in {
           from { opacity: 0; }
           to { opacity: 1; }
