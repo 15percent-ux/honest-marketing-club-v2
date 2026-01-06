@@ -39,7 +39,7 @@ const LineNavigator: React.FC = () => {
       messages: [
         { sender: "Admin", text: "今月のSNS運用レポートを共有します。インサイトのこの部分に注目してください。", time: "19:00", side: "left" },
         { sender: "Member B", text: "ありがとうございます！早速自分のアカウントでも試してみます。", time: "19:05", side: "left" },
-        { sender: "自分", text: "この添削、本当に助かります...！", time: "19:10", side: "right" }
+        { sender: "自分", text: "この添削, 本当に助かります...！", time: "19:10", side: "right" }
       ]
     }
   ];
@@ -47,7 +47,7 @@ const LineNavigator: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 8000);
+    }, 3000); // ステップ切り替えを3秒に加速（以前は5秒）
     return () => clearInterval(timer);
   }, []);
 
@@ -83,7 +83,6 @@ const LineNavigator: React.FC = () => {
               >
                 <div className={`text-lg font-display font-bold transition-colors duration-500 ${activeStep === i ? 'text-brand-gold' : 'text-neutral-300'}`}>0{i + 1}</div>
                 <div className="space-y-1">
-                  {/* Fixed: Replaced activeTab with activeStep */}
                   <h4 className={`text-[13px] font-bold uppercase tracking-widest transition-colors ${activeStep === i ? 'text-brand-black' : 'text-neutral-400'}`}>{step.label}</h4>
                   <p className="text-[11px] text-neutral-400 leading-relaxed font-sans">{step.desc}</p>
                 </div>
@@ -92,26 +91,20 @@ const LineNavigator: React.FC = () => {
           </div>
         </div>
 
-        {/* Smartphone Simulation - Reduced by 20% */}
+        {/* Smartphone Simulation */}
         <div className="lg:col-span-7 flex justify-center relative order-1 lg:order-2">
-          {/* Realistic iPhone 16 Pro Frame - Scaled Down (256x554 / 288x622) */}
           <div className="relative w-[256px] h-[554px] md:w-[288px] md:h-[622px] bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] rounded-[3rem] p-[2px] shadow-[0_80px_160px_-40px_rgba(0,0,0,0.5),inset_0_0_2px_rgba(255,255,255,0.2)]">
             
-            {/* Outer Bezel (Titanium Texture) - Scaled */}
             <div className="absolute inset-0 rounded-[3rem] border-[6px] border-[#252525] pointer-events-none z-40" />
             
-            {/* Dynamic Island - Scaled */}
             <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[76px] h-[22px] bg-black rounded-[0.9rem] z-50 flex items-center justify-end px-2">
                <div className="w-1 h-1 bg-[#1a1a1a] rounded-full ring-1 ring-white/5" />
             </div>
 
-            {/* Screen Inner */}
             <div className="relative w-full h-full bg-[#7494c0] rounded-[2.6rem] overflow-hidden flex flex-col shadow-inner select-none">
               
-              {/* Glass Reflection Overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/[0.08] pointer-events-none z-30" />
 
-              {/* iOS Status Bar - Scaled */}
               <div className="h-10 px-8 flex justify-between items-end pb-1.5 text-black font-sans font-bold text-[9px] relative z-20">
                 <span className="tracking-tight">9:41</span>
                 <div className="flex gap-1 items-center">
@@ -123,7 +116,6 @@ const LineNavigator: React.FC = () => {
                 </div>
               </div>
 
-              {/* LINE Real Header - Scaled */}
               <div className="h-12 bg-[#ffffff]/95 backdrop-blur-2xl border-b border-black/5 flex items-center px-4 gap-2.5 z-10">
                 <div className="w-8 h-8 rounded-full bg-brand-black flex items-center justify-center flex-shrink-0 text-brand-gold text-[8px] font-bold shadow-sm ring-1 ring-black/5">HMC</div>
                 <div className="flex-1 min-w-0">
@@ -143,12 +135,11 @@ const LineNavigator: React.FC = () => {
                 </div>
               </div>
 
-              {/* Chat Canvas (Mobile Proportions) */}
               <div className="flex-1 p-3 pb-8 flex flex-col gap-3 overflow-y-auto relative custom-scrollbar" key={activeStep}>
                 {steps[activeStep].messages.map((msg, idx) => {
                   if (msg.type === "date") {
                     return (
-                      <div key={idx} className="flex justify-center my-2 animate-fade-in" style={{ animationDelay: `${idx * 0.2}s` }}>
+                      <div key={idx} className="flex justify-center my-2 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
                         <div className="bg-black/5 text-black/40 text-[8px] px-3 py-0.5 rounded-full font-bold">
                           {msg.text}
                         </div>
@@ -157,7 +148,7 @@ const LineNavigator: React.FC = () => {
                   }
                   if (msg.type === "system") {
                     return (
-                      <div key={idx} className="flex justify-center my-1 animate-spring-up" style={{ animationDelay: `${idx * 0.3}s` }}>
+                      <div key={idx} className="flex justify-center my-1 animate-spring-up" style={{ animationDelay: `${idx * 0.15}s` }}>
                         <div className="bg-black/10 text-white text-[8px] px-4 py-1 rounded-full font-bold shadow-sm backdrop-blur-sm text-center">
                           {msg.text}
                         </div>
@@ -170,7 +161,7 @@ const LineNavigator: React.FC = () => {
                     <div 
                       key={idx} 
                       className={`flex flex-col animate-spring-up ${isRight ? 'items-end' : 'items-start'}`}
-                      style={{ animationDelay: `${idx * 0.4}s` }}
+                      style={{ animationDelay: `${idx * 0.2}s` }}
                     >
                       <div className={`flex items-start gap-2 max-w-[88%] ${isRight ? 'flex-row-reverse' : ''}`}>
                         {!isRight && (
@@ -218,7 +209,6 @@ const LineNavigator: React.FC = () => {
                 })}
               </div>
 
-              {/* LINE Input Bar - Scaled */}
               <div className="h-16 bg-[#f9f9f9]/95 backdrop-blur-xl border-t border-black/5 flex flex-col pt-1.5">
                 <div className="flex items-center px-3 gap-3 flex-1 pb-3">
                   <div className="flex gap-3 opacity-20 scale-90">
@@ -230,7 +220,6 @@ const LineNavigator: React.FC = () => {
                   </div>
                   <div className="w-7 h-7 bg-[#00b900] rounded-full flex items-center justify-center text-white text-[14px] opacity-15">▲</div>
                 </div>
-                {/* Home Indicator */}
                 <div className="h-4 flex justify-center items-center">
                   <div className="w-24 h-1 bg-black/10 rounded-full" />
                 </div>
@@ -239,19 +228,18 @@ const LineNavigator: React.FC = () => {
             </div>
           </div>
 
-          {/* Backglow for Luxury Feel */}
           <div className="absolute -inset-10 bg-brand-gold/15 blur-[120px] rounded-full -z-10 animate-pulse-slow" />
         </div>
       </div>
 
       <style>{`
         @keyframes spring-up {
-          0% { opacity: 0; transform: translateY(40px) scale(0.9); }
-          50% { opacity: 1; transform: translateY(-5px) scale(1.03); }
+          0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+          50% { opacity: 1; transform: translateY(-3px) scale(1.02); }
           100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .animate-spring-up {
-          animation: spring-up 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+          animation: spring-up 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
         @keyframes fade-in {
           from { opacity: 0; }

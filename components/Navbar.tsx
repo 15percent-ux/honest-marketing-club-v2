@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
   onOpenModal: () => void;
-  onViewChange: (view: 'home' | 'stories' | 'ai-review') => void;
-  currentView: 'home' | 'stories' | 'ai-review';
+  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'legal') => void;
+  currentView: 'home' | 'stories' | 'ai-review' | 'legal';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView }) => {
@@ -62,9 +62,10 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
   };
 
   const navItems = [
-    { label: 'カリキュラム', href: 'work' },
+    { label: 'コンテンツ', href: 'provision' },
+    { label: '参加者の声', href: 'stories', isPage: true, view: 'stories' as const },
     { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
-    { label: '成功事例', href: 'stories', isPage: true, view: 'stories' as const }
+    { label: '入会条件', href: 'ideal-members' }
   ];
 
   return (
@@ -94,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
             </div>
           </div>
           
-          <div className="hidden md:flex items-center gap-12">
+          <div className="hidden md:flex items-center gap-10">
             {navItems.map((item) => (
               <button 
                 key={item.label}
@@ -106,7 +107,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
                     handleNavClick(e, item.href);
                   }
                 }}
-                className={`relative text-[11px] font-bold tracking-[0.2em] transition-colors duration-300 group ${currentView === (item.isPage ? item.view : 'home') ? 'text-brand-gold' : 'text-neutral-500 hover:text-brand-black'}`}
+                className={`relative text-[11px] font-bold tracking-[0.2em] transition-colors duration-300 group ${currentView === (item.isPage ? item.view : 'home') && !(!item.isPage && currentView === 'home') ? 'text-brand-gold' : 'text-neutral-500 hover:text-brand-black'}`}
               >
                 {item.label}
                 <span className={`absolute -bottom-1 left-0 h-[1px] bg-brand-gold transition-all duration-300 ${currentView === (item.isPage ? item.view : 'home') ? 'w-full' : 'w-0 group-hover:w-full'}`} />

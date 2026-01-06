@@ -9,7 +9,8 @@ const Letter: React.FC = () => {
     { year: 'Achievement', title: 'クラウドファンディング', detail: '調達額記録', highlight: 'カテゴリー部門歴代2位' },
     { year: 'Award', title: 'ICC food & award', detail: '初出場入賞', highlight: '初出場3部門入賞' },
     { year: 'Media', title: 'Voicyパーソナリティ / SNSフォロワー3万', highlight: '独自のマーケティング論を発信' },
-    { year: '2025', title: 'HORIEXPO 2025 登壇', highlight: '次世代のマーケターとして登壇' }
+    { year: '2025', title: 'HORIEXPO 2025 登壇', highlight: 'アイスクリームに革命をおこした発酵起業家' },
+    { year: 'Innovation', title: '商品開発', highlight: 'アイスクリームに革命を起こした原料を開発' }
   ];
 
   const careerPath = [
@@ -65,7 +66,6 @@ const Letter: React.FC = () => {
             
             <div className="relative bg-white border border-neutral-100 p-8 md:p-12 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)]">
               <div className="space-y-6 text-neutral-600 leading-[1.8] md:leading-[2] font-sans font-light">
-                {/* Unified font size (text-sm md:text-base) for all intro paragraphs */}
                 <p className="text-sm md:text-base text-brand-black font-medium">
                   Honest Marketing Clubの阪田真臣です。
                 </p>
@@ -93,21 +93,6 @@ const Letter: React.FC = () => {
               <span className="w-6 h-px bg-neutral-200" />
               <span className="text-[10px] font-mono text-neutral-400 tracking-widest uppercase">CEO of Honest Marketing Club Stars.</span>
             </div>
-          </div>
-        </div>
-
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-8 bg-neutral-50 border-l-4 border-brand-gold">
-            <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-widest mb-4">Core Philosophy</h4>
-            <p className="text-xs text-neutral-600 leading-relaxed font-sans font-light">
-              私たちの哲学は「単価は高くあるべきだ」という確信です。それは搾取ではなく、提供する価値とあなたの知性に対する正当な対価であるべきだと考えています。
-            </p>
-          </div>
-          <div className="p-8 bg-brand-black text-white">
-            <h4 className="text-[10px] font-bold text-brand-gold uppercase tracking-widest mb-4">Exclusive Access</h4>
-            <p className="text-xs text-neutral-300 leading-relaxed font-sans font-light">
-              このコミュニティは、単なる知識の共有の場ではありません。互いの事業を磨き合い、高め合える20名だけの「戦友」と出会うための特別な環境です。
-            </p>
           </div>
         </div>
       </div>
@@ -181,7 +166,7 @@ const Letter: React.FC = () => {
 
                 <div className="p-8 bg-neutral-900/40 rounded-2xl border border-neutral-800/50">
                   <p className="text-xs text-neutral-400 font-sans leading-relaxed italic text-center lg:text-left">
-                    「創業融資の希望満額獲得が福岡支店では史上初」という異例のキャリアを皮切りに、アパレル、広告代理店、楽天、および起業。現場の熱量とプラットフォームの論理、その両方を知るからこそ辿り着いた独自のブランディング理論を武器に、現在は多くの起業家の価値最大化をプロデュースしている。
+                    「創業融資の希望満額獲得が福岡支店では史上初」という異例のキャリアを皮切りに, アパレル, 広告代理店, 楽天, および起業。現場の熱量とプラットフォームの論理, その両方を知るからこそ辿り着いた独自のブランディング理論を武器に, 現在は多くの起業家の価値最大化をプロデュースしている。
                   </p>
                 </div>
 

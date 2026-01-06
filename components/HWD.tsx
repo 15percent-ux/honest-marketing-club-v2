@@ -1,107 +1,89 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const HWD: React.FC = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const contents = [
+  const steps = [
     {
       id: '01',
-      title: '01. “価値”を言語化し適正価格を作る',
-      desc: '独学で培った実績をもとに、商品が持つ本当の価値を深掘りします。価格の見直し、価値の伝え方を身につけていきます。価値が伝われば、本来の適正価格でサービスを提供することができます。',
-      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1767215160/s-1024x768_v-fs_webp_651f9640-5a39-4d92-8874-9189b8287711_i0f9k4.png'
+      title: '価値の言語化',
+      desc: '商品が持つ「本当の価値」を深掘りし、あなたの知性に相応しい適正価格の方程式を構築します。',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=400'
     },
     {
       id: '02',
-      title: '02. 唯一無二を作る',
-      desc: 'スキルやノウハウを学ぶことは最優先ではありません。“あの人といえばこれ”と呼ばれる必殺技が必要です。自分と相性の良いサービスを見つけます。これがあれば高額セミナーや情報に振り回される事はなくなります。強くブレない代表作を一緒に生み出していきましょう。',
-      image: 'https://images.unsplash.com/photo-1542744173-05336fcc7ad4?auto=format&fit=crop&q=80&w=1200'
+      title: '唯一無二の設計',
+      desc: '“あの人といえばこれ”と呼ばれる必殺技を定義。情報に振り回されない、強くブレない代表作を創ります。',
+      image: 'https://images.unsplash.com/photo-1542744173-05336fcc7ad4?auto=format&fit=crop&q=80&w=400'
     },
     {
       id: '03',
-      title: '03. 小さな実績を継続して生み出す',
-      desc: 'サービスの魅力を最も伝えやすいのは数字です、信憑性を高める為にも必須です。自分の代表作で数字を作り上げて、セールスに使えるような状態にします。コミュニティには評価制度もあります。星1・星3・星5の3段階、6ヶ月間のトレーニング終了時に発表します。',
-      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1767216042/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88_2026-01-01_6.18.44_totxie.png'
+      title: '実績の資産化',
+      desc: '代表作で具体的な数字と信憑性を作り上げ、セールスに直結する社会的証明へと昇華させます。',
+      image: 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&q=80&w=400'
     },
     {
       id: '04',
-      title: '04. オフライン合宿',
-      desc: '月1回のオフラインマーケティング会あり（東京・大阪・福岡のみ） ※企画中。直接顔を合わせることでしか生まれない熱量と、深い対話がビジネスを次のステージへ引き上げます。',
-      image: 'https://images.unsplash.com/photo-1528605248644-14dd04cb11c1?auto=format&fit=crop&q=80&w=1200'
+      title: '熱量の同期',
+      desc: '月1回のオフライン会。直接顔を合わせることでしか生まれない深い対話が、基準値を引き上げます。',
+      image: 'https://images.unsplash.com/photo-1528605248644-14dd04cb11c1?auto=format&fit=crop&q=80&w=400'
     }
   ];
 
   return (
-    <div className="space-y-0">
-      {/* HWD Intro */}
-      <section className="bg-[#ece6e4] py-40 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-20">
-          <div className="w-full md:w-1/2 flex justify-center">
-            <div className="bg-white w-full max-w-sm aspect-square flex items-center justify-center shadow-sm">
-              <span className="text-8xl md:text-9xl font-display font-bold tracking-[0.2em] text-brand-black">HWD</span>
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 space-y-10">
+    <section id="hwd" className="bg-[#ece6e4] py-24 md:py-32 px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          
+          {/* Side Title Area */}
+          <div className="lg:col-span-4 space-y-8 lg:sticky lg:top-32">
             <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-sans font-bold text-brand-black">Honest Weapon Design (HWD) ™</h2>
-              <p className="text-lg text-neutral-600 font-sans tracking-widest">自分だけのブランドづくり</p>
+              <div className="inline-flex items-center gap-3">
+                <span className="w-8 h-px bg-brand-black"></span>
+                <span className="text-[10px] font-mono font-bold tracking-[0.4em] uppercase text-brand-black">Step to Weapon</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-brand-black leading-tight">
+                Honest Weapon <br />Design™
+              </h2>
             </div>
-            <div className="space-y-6">
-              <h3 className="text-2xl font-sans font-bold text-brand-black">まだ自分のブランドがない方へ</h3>
-              <p className="text-neutral-600 leading-relaxed font-sans font-light max-w-lg">
-                まだ自信を持って提供できるサービスがないという方、これからサービスを構築するという方へ。広告に頼らない、売り込まないブランド作りをここで。
-              </p>
+            <p className="text-sm text-neutral-600 leading-relaxed font-sans font-light max-w-sm">
+              まだ自信を持って提供できるサービスがない方へ。広告に頼らず、あなたの知性を「売れる武器」へと変える4つのプロセス。
+            </p>
+            <div className="hidden lg:flex items-center justify-center aspect-square w-32 bg-white/50 backdrop-blur-sm rounded-full border border-white/20">
+               <span className="text-3xl font-display font-bold text-brand-black">HWD</span>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* HWD Contents */}
-      <section className="bg-white py-40 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div className="lg:col-span-4 space-y-12">
-              <div className="space-y-4">
-                <h2 className="text-4xl font-sans font-bold text-brand-black">HWD/contents</h2>
-                <p className="text-neutral-400 font-sans tracking-widest">コンテンツ</p>
-              </div>
-              <div className="flex flex-col border-t border-neutral-100">
-                {contents.map((item, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveTab(i)}
-                    className={`flex items-center justify-between py-8 border-b border-neutral-100 group transition-all ${activeTab === i ? 'text-brand-black' : 'text-neutral-400'}`}
-                  >
-                    <span className="text-sm font-sans font-bold tracking-widest">{item.title.split(' ')[0]} {item.title.split(' ')[1]}</span>
-                    <span className={`text-xl transition-transform duration-300 ${activeTab === i ? 'translate-x-0' : '-translate-x-4'}`}>↓</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="lg:col-span-8">
-              <div className="bg-[#f7f7f7] rounded-[2rem] p-8 md:p-16 space-y-12 min-h-[600px] animate-fade-in" key={activeTab}>
-                <div className="inline-block bg-[#1a1a1a] text-white text-[10px] font-mono font-bold px-4 py-1 rounded-full mb-6">
-                  {contents[activeTab].id}
+          {/* Steps Grid */}
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {steps.map((step, i) => (
+                <div 
+                  key={i} 
+                  className="group bg-white/40 hover:bg-white transition-all duration-700 p-8 md:p-10 rounded-[2rem] border border-white/20 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)]"
+                >
+                  <div className="flex flex-col h-full space-y-8">
+                    <div className="flex justify-between items-start">
+                      <span className="text-xs font-mono font-bold text-brand-gold">{step.id}</span>
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden opacity-40 group-hover:opacity-100 transition-opacity duration-700">
+                        <img src={step.image} alt="" className="w-full h-full object-cover grayscale group-hover:grayscale-0" />
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-sans font-bold text-brand-black">
+                        {step.title}
+                      </h3>
+                      <p className="text-xs md:text-sm text-neutral-500 leading-relaxed font-light">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-sans font-bold text-brand-black">
-                  {contents[activeTab].title}
-                </h3>
-                <div className="aspect-[16/9] rounded-2xl overflow-hidden">
-                  <img 
-                    src={contents[activeTab].image} 
-                    alt={contents[activeTab].title} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <p className="text-neutral-600 text-lg leading-relaxed font-sans font-light">
-                  {contents[activeTab].desc}
-                </p>
-              </div>
+              ))}
             </div>
           </div>
+
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

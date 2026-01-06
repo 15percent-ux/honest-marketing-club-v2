@@ -309,12 +309,13 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
            
            <div className="flex flex-col items-center gap-12 md:gap-16 pt-4 md:pt-8">
              <div className="space-y-8 md:space-y-12 w-full max-w-2xl">
-               <div className="space-y-6 md:space-y-8">
+               <div className="space-y-6 md:space-y-8 flex flex-col items-center">
                   <h3 className="text-2xl md:text-5xl font-sans font-bold text-brand-black tracking-tight">
                     次は、あなたの番です。
                   </h3>
                   
-                  <div className="pt-2 md:pt-4">
+                  <div className="pt-6 md:pt-8 flex flex-col items-center gap-4">
+                    <p className="text-[10px] md:text-[11px] text-brand-gold font-bold tracking-widest uppercase">募集締切：1月20日(月) 23:59まで</p>
                     <button 
                       onClick={onOpenEntry}
                       className="group relative w-full md:w-auto px-10 md:px-16 py-6 md:py-7 bg-brand-black text-white text-[12px] md:text-[13px] font-bold tracking-[0.6em] md:tracking-[0.8em] uppercase overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all hover:shadow-brand-gold/40 hover:-translate-y-1"
