@@ -10,8 +10,8 @@ const HmcSplash: React.FC<HmcSplashProps> = ({ onComplete }) => {
 
   useEffect(() => {
     const showTimer = setTimeout(() => setIsVisible(true), 100);
-    const fadeTimer = setTimeout(() => setIsFadingOut(true), 3000);
-    const completeTimer = setTimeout(() => onComplete(), 4000);
+    const fadeTimer = setTimeout(() => setIsFadingOut(true), 3500);
+    const completeTimer = setTimeout(() => onComplete(), 4500);
 
     return () => {
       clearTimeout(showTimer);
@@ -22,29 +22,24 @@ const HmcSplash: React.FC<HmcSplashProps> = ({ onComplete }) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-[190] flex items-center justify-center overflow-hidden transition-opacity duration-[1000ms] ease-in-out ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}
-      style={{
-        background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-        backgroundSize: '400% 400%',
-        animation: 'gradient-flow 15s ease infinite'
-      }}
+      className={`fixed inset-0 z-[190] flex items-center justify-center overflow-hidden transition-opacity duration-[1200ms] ease-in-out bg-brand-black ${isFadingOut ? 'opacity-0 scale-110' : 'opacity-100'}`}
     >
-      {/* 柔らかなオーバーレイレイヤー */}
-      <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]" />
+      {/* 深みのある背景グラデーション */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,#1a1a1a_0%,#000000_100%)]" />
 
-      {/* パステル・パーティクル */}
+      {/* ゴールドダスト効果（静かに舞う金粉） */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="stars-container">
-          {[...Array(30)].map((_, i) => (
-            <div key={i} className="prism-particle" style={{
+        <div className="dust-container">
+          {[...Array(40)].map((_, i) => (
+            <div key={i} className="gold-particle" style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 4}s`,
-              background: `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`,
-              width: `${Math.random() * 10 + 5}px`,
-              height: `${Math.random() * 10 + 5}px`,
-              filter: 'blur(4px)',
-              transform: `scale(${Math.random()})`
+              animationDelay: `${Math.random() * 5}s`,
+              background: `linear-gradient(135deg, #c5a059, #e2cf9f)`,
+              width: `${Math.random() * 2 + 1}px`,
+              height: `${Math.random() * 2 + 1}px`,
+              opacity: Math.random() * 0.5,
+              filter: 'blur(0.5px)',
             }} />
           ))}
         </div>
@@ -52,73 +47,81 @@ const HmcSplash: React.FC<HmcSplashProps> = ({ onComplete }) => {
 
       <div className="relative text-center flex flex-col items-center w-full px-4 z-10">
         <div className="space-y-4 md:space-y-6 w-full">
-          {/* HONEST */}
+          {/* サブテキスト: Establish 2025 */}
+          <div className="overflow-hidden mb-4">
+            <span className={`block text-brand-gold font-mono text-[9px] md:text-[11px] font-bold tracking-[0.8em] uppercase transition-all duration-[1500ms] delay-300 ${isVisible ? 'opacity-40 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              Established 2025
+            </span>
+          </div>
+
+          {/* HONEST MARKETING */}
           <div className="overflow-hidden">
-            <h2 className={`text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white drop-shadow-lg uppercase whitespace-nowrap transition-all duration-[1000ms] ease-out ${isVisible ? 'opacity-100 tracking-[0.2em] md:tracking-[0.4em] translate-y-0' : 'opacity-0 tracking-[0.1em] translate-y-full'}`}>
-              HONEST
+            <h2 className={`text-2xl md:text-4xl lg:text-5xl font-display font-medium text-white uppercase whitespace-nowrap transition-all duration-[1800ms] ease-out ${isVisible ? 'opacity-100 tracking-[0.6em] md:tracking-[0.8em] translate-y-0' : 'opacity-0 tracking-[0.2em] translate-y-full'}`}>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-brand-goldLight to-white bg-[length:200%_auto] animate-shimmer">
+                HONEST MARKETING
+              </span>
             </h2>
           </div>
           
-          {/* MARKETING */}
-          <div className="overflow-hidden">
-            <h2 className={`text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white drop-shadow-lg uppercase whitespace-nowrap transition-all duration-[1000ms] delay-200 ease-out ${isVisible ? 'opacity-100 tracking-[0.2em] md:tracking-[0.4em] translate-y-0' : 'opacity-0 tracking-[0.1em] translate-y-full'}`}>
-              MARKETING
-            </h2>
-          </div>
-
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center gap-2">
             {/* CLUB */}
             <div className="overflow-hidden">
-              <h2 className={`text-xl md:text-2xl lg:text-3xl font-display font-bold text-white/80 uppercase whitespace-nowrap transition-all duration-[1000ms] delay-400 ease-out ${isVisible ? 'opacity-100 tracking-[0.2em] md:tracking-[0.3em] translate-y-0' : 'opacity-0 tracking-[0.1em] translate-y-full'}`}>
+              <h2 className={`text-lg md:text-xl lg:text-2xl font-display font-light text-brand-goldLight/60 uppercase whitespace-nowrap transition-all duration-[1500ms] delay-500 ease-out ${isVisible ? 'opacity-100 tracking-[1em] translate-y-0' : 'opacity-0 tracking-[0.5em] translate-y-full'}`}>
                 CLUB
               </h2>
             </div>
             
             {/* STARS. */}
-            <div className="overflow-hidden py-4">
-              <h2 className={`text-5xl md:text-8xl lg:text-[10rem] font-display font-bold text-white uppercase whitespace-nowrap transition-all duration-[1500ms] delay-600 ease-out ${isVisible ? 'opacity-100 tracking-[0.1em] md:tracking-[0.2em] scale-100 translate-y-0' : 'opacity-0 tracking-[0.05em] scale-90 translate-y-full'}`}>
+            <div className="overflow-hidden py-4 md:py-8">
+              <h2 className={`text-6xl md:text-8xl lg:text-[11rem] font-display font-bold text-white uppercase whitespace-nowrap transition-all duration-[2200ms] delay-700 ease-out ${isVisible ? 'opacity-100 tracking-[0.15em] md:tracking-[0.25em] scale-100 translate-y-0' : 'opacity-0 tracking-[0.05em] scale-95 translate-y-full'}`}>
                 STARS.
               </h2>
             </div>
           </div>
         </div>
         
-        {/* パステルカラーの★マーク */}
-        <div className="flex gap-6 md:gap-10 mt-6 md:mt-10">
-          {[0, 1, 2].map((i) => (
-            <div 
-              key={i}
-              className={`text-2xl md:text-4xl text-white transition-all duration-700 ease-out transform drop-shadow-md ${isVisible ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-0 translate-y-4'}`}
-              style={{ transitionDelay: `${1200 + (i * 300)}ms` }}
-            >
-              ★
-            </div>
-          ))}
+        {/* 三つ星のエンブレム */}
+        <div className="flex gap-8 md:gap-14 mt-4 md:mt-8 items-center">
+          <div className={`h-[1px] bg-gradient-to-r from-transparent to-brand-gold/40 transition-all duration-[2000ms] delay-[1800ms] ${isVisible ? 'w-24 md:w-48 opacity-100' : 'w-0 opacity-0'}`} />
+          <div className="flex gap-4 md:gap-8">
+            {[0, 1, 2].map((i) => (
+              <div 
+                key={i}
+                className={`text-lg md:text-2xl text-brand-gold transition-all duration-1000 ease-out transform ${isVisible ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-0 rotate-180'}`}
+                style={{ transitionDelay: `${1500 + (i * 250)}ms` }}
+              >
+                ★
+              </div>
+            ))}
+          </div>
+          <div className={`h-[1px] bg-gradient-to-l from-transparent to-brand-gold/40 transition-all duration-[2000ms] delay-[1800ms] ${isVisible ? 'w-24 md:w-48 opacity-100' : 'w-0 opacity-0'}`} />
         </div>
 
-        <div className={`h-px bg-white/40 mt-12 transition-all duration-[2000ms] delay-[2200ms] ${isVisible ? 'w-32 md:w-64 opacity-100' : 'w-0 opacity-0'}`} />
+        {/* 下部のタグライン */}
+        <div className="overflow-hidden mt-12 md:mt-16">
+          <p className={`text-[8px] md:text-[10px] text-white/30 font-sans tracking-[0.5em] uppercase transition-all duration-[2000ms] delay-[2200ms] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}`}>
+            For those who pursue the essence of value
+          </p>
+        </div>
       </div>
 
       <style>{`
-        @keyframes gradient-flow {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .stars-container {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-        .prism-particle {
+        .gold-particle {
           position: absolute;
           border-radius: 50%;
           opacity: 0;
-          animation: float-prism 4s infinite ease-in-out;
+          animation: drift-gold 6s infinite ease-in-out;
         }
-        @keyframes float-prism {
-          0%, 100% { opacity: 0; transform: translateY(0) scale(0.5); }
-          50% { opacity: 0.8; transform: translateY(-30px) scale(1.2); }
+        @keyframes drift-gold {
+          0%, 100% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+          50% { opacity: 0.6; transform: translate(20px, -40px) rotate(180deg); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        .animate-shimmer {
+          animation: shimmer 8s infinite linear;
         }
       `}</style>
     </div>
