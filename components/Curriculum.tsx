@@ -11,21 +11,27 @@ const Curriculum: React.FC = () => {
   const items = [
     {
       id: '01',
+      tag: 'Re-Design',
       title: '既存サービスの価値見直し',
       desc: '既存サービスの価格を見直し値上げをする。価値の言語化をおこない本当の価値を洗い出します。価値と価格のズレが合えば、自信をもって値上げすることができます。',
-      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1766815368/2_eolhcq.png'
+      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1766815368/2_eolhcq.png',
+      accent: '自分の伸び代は、自分では見えない。'
     },
     {
       id: '02',
+      tag: 'Consultation',
       title: 'セカンドオピニオンへの相談',
       desc: '大事を決断するとき、迷っている時、自信がないとき。答え合わせをしたり、常に壁打ちを出来る相手をもつことは最大のリスクヘッジになります。代表の阪田への相談は回数制限なし。メンバー全員があなたの相談役です。',
-      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1767214958/s-1024x768_v-fs_webp_ce41d516-b5f6-4a40-9d8d-5ae7ff48f3cd_pbqni5.png'
+      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1767214958/s-1024x768_v-fs_webp_ce41d516-b5f6-4a40-9d8d-5ae7ff48f3cd_pbqni5.png',
+      accent: '孤独な決断を、卒業する。'
     },
     {
       id: '03',
+      tag: 'Environment',
       title: '同じベクトルの戦友と刺激し合う',
       desc: '近い価値観をもった人と繋がる事ができるのも魅力の一つ。ビジネスを共に始めることもあり、プライベートでも交流が生まれたり、助け合いながら成長していける環境づくりをコンセプトにしています。',
-      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1767214957/s-1024x768_v-fs_webp_f1d44356-7dd9-405f-aa02-0376e9141d1c_hpvmhz.jpg'
+      image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1767214957/s-1024x768_v-fs_webp_f1d44356-7dd9-405f-aa02-0376e9141d1c_hpvmhz.jpg',
+      accent: '基準値が、強制的に引き上がる。'
     }
   ];
 
@@ -112,7 +118,15 @@ const Curriculum: React.FC = () => {
                     alt={item.title} 
                     className={`curr-img-${i} w-full h-full object-cover will-change-transform`}
                   />
+                  {/* Subtle Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-brand-black/20 via-transparent to-transparent opacity-40" />
+                </div>
+                
+                {/* Accent Badge */}
+                <div className={`absolute -bottom-6 ${i % 2 === 1 ? 'md:-left-12' : 'md:-right-12'} bg-brand-black text-white p-6 md:p-10 rounded-3xl shadow-2xl max-w-[280px] hidden md:block animate-pulse-slow`}>
+                  <p className="text-sm md:text-base font-sans font-bold leading-relaxed tracking-tight italic">
+                    "{item.accent}"
+                  </p>
                 </div>
               </div>
               
@@ -120,7 +134,7 @@ const Curriculum: React.FC = () => {
               <div className="w-full lg:w-1/2 space-y-10 relative z-10">
                 <div className="space-y-6">
                   <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-mono font-bold text-brand-gold tracking-[0.4em] uppercase">Value {item.id}</span>
+                    <span className="text-[10px] font-mono font-bold text-brand-gold tracking-[0.4em] uppercase">{item.tag}</span>
                     <div className="flex-1 h-px bg-neutral-100"></div>
                   </div>
                   <h3 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-brand-black tracking-tight leading-[1.2]">
@@ -143,6 +157,16 @@ const Curriculum: React.FC = () => {
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes pulse-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 6s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 };
