@@ -108,8 +108,8 @@ const TableOfContents: React.FC = () => {
 
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-20 md:mb-28 space-y-6">
-          <h2 className="toc-header text-3xl md:text-5xl font-display font-bold text-brand-black tracking-tight uppercase leading-snug">
-            差別化に疲弊しないための戦略/<br className="hidden md:block" />セルフブランディング術
+          <h2 className="toc-header text-4xl md:text-5xl font-display font-bold text-brand-black tracking-tight uppercase">
+            価値の作り方
           </h2>
           <p className="toc-header text-xs text-neutral-400 font-sans tracking-[0.4em] font-bold uppercase">Thinking Index</p>
           <div className="toc-header w-12 h-px bg-brand-gold mx-auto mt-8" />
