@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar.tsx';
 import Hero from './components/Hero.tsx';
@@ -14,6 +15,7 @@ import HmcSplash from './components/HmcSplash.tsx';
 import AuthGate from './components/AuthGate.tsx';
 import SuccessStories from './components/SuccessStories.tsx';
 import AiReviewSession from './components/AiReviewSession.tsx';
+import Journal from './components/Journal.tsx';
 import Provision from './components/Provision.tsx';
 import IdealMembers from './components/IdealMembers.tsx';
 import Footer from './components/Footer.tsx';
@@ -23,12 +25,10 @@ const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [view, setView] = useState<'home' | 'stories' | 'ai-review' | 'legal'>('home');
+  const [view, setView] = useState<'home' | 'stories' | 'ai-review' | 'journal' | 'legal'>('home');
   
-  // スプラッシュ画面の管理
   const [splashStep, setSplashStep] = useState<'hmc' | 'auth' | 'none'>('hmc');
 
-  // ページ切り替え時にトップへスクロール
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [view]);
@@ -44,13 +44,12 @@ const App: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleViewChange = (newView: 'home' | 'stories' | 'ai-review' | 'legal') => {
+  const handleViewChange = (newView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal') => {
     setView(newView);
   };
 
   return (
     <div className="relative min-h-screen selection:bg-brand-gold selection:text-white bg-white text-brand-black">
-      {/* Splash Sequence */}
       {splashStep === 'hmc' && (
         <HmcSplash onComplete={() => setSplashStep('auth')} />
       )}
@@ -59,7 +58,6 @@ const App: React.FC = () => {
         <AuthGate onSuccess={() => setSplashStep('none')} />
       )}
 
-      {/* Main Content */}
       {splashStep === 'none' && (
         <>
           <Navbar onOpenModal={handleOpenInvitation} onViewChange={handleViewChange} currentView={view} />
@@ -73,7 +71,6 @@ const App: React.FC = () => {
                 <MemberReview />
                 <TableOfContents />
 
-                {/* Entry Section */}
                 <section className="py-24 px-6 bg-[#0a0a0a] flex flex-col items-center justify-center overflow-hidden">
                   <div className="max-w-4xl w-full space-y-12 relative text-center">
                     <div className="space-y-4">
@@ -116,7 +113,7 @@ const App: React.FC = () => {
                             <div className="flex justify-between items-start">
                               <div className="space-y-0.5">
                                 <div className="text-[5px] md:text-[7px] font-mono text-brand-gold/60 tracking-widest uppercase leading-none">Honest Marketing Club</div>
-                                <div className="text-white/90 font-display text-[10px] md:text-sm tracking-[0.2em] font-bold leading-tight">コミュニティパス</div>
+                                <div className="text-white/90 font-display text-[10px] md:sm tracking-[0.2em] font-bold leading-tight">コミュニティパス</div>
                               </div>
                               <div className="w-6 h-4 md:w-9 md:h-6 bg-gradient-to-br from-brand-goldLight via-brand-gold to-brand-goldLight rounded shadow-inner opacity-90" />
                             </div>
@@ -145,6 +142,8 @@ const App: React.FC = () => {
               <SuccessStories onBack={() => setView('home')} />
             ) : view === 'ai-review' ? (
               <AiReviewSession onBack={() => setView('home')} onOpenEntry={handleOpenInvitation} />
+            ) : view === 'journal' ? (
+              <Journal onBack={() => setView('home')} />
             ) : (
               <LegalDisclosure onBack={() => setView('home')} />
             )}
@@ -159,16 +158,6 @@ const App: React.FC = () => {
           <EligibilityModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </>
       )}
-      
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-fade-in {
-          animation: fade-in 1.5s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 interface AuthGateProps {
@@ -5,8 +6,8 @@ interface AuthGateProps {
 }
 
 const AuthGate: React.FC<AuthGateProps> = ({ onSuccess }) => {
-  const [password, setPassword] = useState('');
-  const [status, setStatus] = useState<'idle' | 'typing' | 'checking' | 'success' | 'error'>('idle');
+  const [password, setPassword] = useState('*****');
+  const [status, setStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [isVisible, setIsVisible] = useState(false);
 
   const TARGET_PASSWORD = 'STARS';
@@ -14,44 +15,25 @@ const AuthGate: React.FC<AuthGateProps> = ({ onSuccess }) => {
   useEffect(() => {
     setIsVisible(true);
     
-    // 1. 開始前の溜め (800ms -> 400ms)
+    // 1. スキャン開始までの溜め (非常に短く)
     const startTimer = setTimeout(() => {
-      setStatus('typing');
+      handleAutoSubmit();
     }, 400);
 
     return () => clearTimeout(startTimer);
   }, []);
 
-  // オートタイピング演出
-  useEffect(() => {
-    if (status === 'typing') {
-      let currentIndex = 0;
-      const typingInterval = setInterval(() => {
-        if (currentIndex < TARGET_PASSWORD.length) {
-          setPassword(TARGET_PASSWORD.substring(0, currentIndex + 1));
-          currentIndex++;
-        } else {
-          clearInterval(typingInterval);
-          // 2. タイピング完了後、認証開始 (600ms -> 300ms)
-          setTimeout(() => {
-            handleAutoSubmit();
-          }, 300);
-        }
-      }, 100); // 1文字200ms -> 100ms
-
-      return () => clearInterval(typingInterval);
-    }
-  }, [status]);
-
   const handleAutoSubmit = async () => {
     setStatus('checking');
     
-    // 3. 認証中のスキャン演出シミュレーション (1200ms -> 600ms)
-    await new Promise(resolve => setTimeout(resolve, 600));
+    // 2. 認証スキャン演出 (スリットアニメーションのような時間を想定)
+    await new Promise(resolve => setTimeout(resolve, 800));
 
+    // 認証完了時に本来のパスワードをパッと表示
+    setPassword(TARGET_PASSWORD);
     setStatus('success');
     
-    // 4. 成功サインを表示してからメインページへ (1800ms -> 800ms)
+    // 3. 成功サインを表示してからメインページへ
     setTimeout(() => {
       onSuccess();
     }, 800);
@@ -69,10 +51,9 @@ const AuthGate: React.FC<AuthGateProps> = ({ onSuccess }) => {
         {/* Status Indicator */}
         <div className="mb-12 text-center">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className={`w-2 h-2 rounded-full ${status === 'checking' || status === 'typing' ? 'bg-brand-gold animate-ping' : status === 'success' ? 'bg-green-500' : 'bg-brand-gold'}`} />
+            <div className={`w-2 h-2 rounded-full ${status === 'checking' ? 'bg-brand-gold animate-ping' : status === 'success' ? 'bg-green-500' : 'bg-brand-gold'}`} />
             <span className="text-[10px] font-mono tracking-[0.5em] text-brand-gold uppercase font-bold">
-              {status === 'typing' ? 'Establishing Connection...' : 
-               status === 'checking' ? 'Bypassing Security...' : 
+              {status === 'checking' ? 'Bypassing Security...' : 
                status === 'success' ? 'Access Granted' : 'Encrypted Gate'}
             </span>
           </div>
@@ -84,26 +65,29 @@ const AuthGate: React.FC<AuthGateProps> = ({ onSuccess }) => {
         {status !== 'success' ? (
           <div className="space-y-8">
             <div className="relative group">
-              <div className={`w-full bg-transparent border-b-2 py-4 px-2 text-center font-mono tracking-[0.5em] transition-all duration-500 min-h-[60px] flex items-center justify-center ${status === 'typing' || status === 'checking' ? 'text-brand-goldLight border-brand-gold' : 'text-white border-neutral-800'}`}>
+              <div className={`w-full bg-transparent border-b-2 py-4 px-2 text-center font-mono tracking-[0.5em] transition-all duration-500 min-h-[60px] flex items-center justify-center ${status === 'checking' ? 'text-brand-goldLight border-brand-gold' : 'text-white border-neutral-800'}`}>
                 {password}
-                {status === 'typing' && <span className="w-0.5 h-6 bg-brand-gold ml-2 animate-pulse" />}
+                {status === 'checking' && (
+                  <div className="absolute inset-0 bg-brand-gold/5 animate-pulse overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold/40 animate-scan-line" />
+                  </div>
+                )}
               </div>
               <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-brand-gold transition-all duration-500 ${status === 'checking' ? 'w-full opacity-100' : 'w-0 opacity-0'}`} />
             </div>
 
             <div
-              className={`w-full py-5 text-[10px] font-mono font-bold tracking-[0.6em] uppercase transition-all duration-500 relative overflow-hidden text-center
-                ${password.length === TARGET_PASSWORD.length ? 'text-white' : 'text-neutral-700'}`}
+              className={`w-full py-5 text-[10px] font-mono font-bold tracking-[0.6em] uppercase transition-all duration-500 relative overflow-hidden text-center text-white`}
             >
               <span className="relative z-10">
-                {status === 'checking' ? 'Verifying Data...' : status === 'typing' ? 'Injecting Key...' : 'Waiting for Input'}
+                {status === 'checking' ? 'Verifying Credentials...' : 'Establishing Secure Link'}
               </span>
-              <div className={`absolute inset-0 bg-brand-gold/20 transition-transform duration-500 translate-y-full ${password.length === TARGET_PASSWORD.length ? 'translate-y-0' : ''}`} />
+              <div className={`absolute inset-0 bg-brand-gold/20 transition-transform duration-500 translate-y-full ${status === 'checking' ? 'translate-y-0' : ''}`} />
             </div>
             
             <p className="text-[9px] text-center text-neutral-600 font-mono tracking-widest leading-loose uppercase">
-              Encrypted Session ID: <span className="text-neutral-500">{Math.random().toString(16).substring(2, 10).toUpperCase()}</span><br />
-              Authorized Protocol Active
+              Secure Session Active<br />
+              Authorized Protocol: STARS_V2
             </p>
           </div>
         ) : (
@@ -127,6 +111,13 @@ const AuthGate: React.FC<AuthGateProps> = ({ onSuccess }) => {
       )}
 
       <style>{`
+        @keyframes scan-line {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(60px); }
+        }
+        .animate-scan-line {
+          animation: scan-line 1s linear infinite;
+        }
         @keyframes spring-up {
           0% { opacity: 0; transform: translateY(20px) scale(0.9); }
           100% { opacity: 1; transform: translateY(0) scale(1); }

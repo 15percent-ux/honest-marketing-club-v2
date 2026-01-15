@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 const Letter: React.FC = () => {
@@ -154,7 +155,7 @@ const Letter: React.FC = () => {
                         <div className="h-px w-4 bg-brand-gold/20" />
                         <span className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest leading-none">{ach.title}</span>
                       </div>
-                      <p className="text-lg md:text-xl font-display font-bold text-white tracking-tight leading-tight group-hover:text-brand-goldLight transition-colors">
+                      <p className="text-xl md:text-2xl font-balanced font-bold text-white tracking-tight leading-tight group-hover:text-brand-goldLight transition-colors lining-nums">
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-goldLight via-brand-gold to-white bg-[length:200%_auto] animate-shimmer">
                           {ach.highlight}
                         </span>

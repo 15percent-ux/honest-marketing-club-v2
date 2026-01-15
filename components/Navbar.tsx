@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
   onOpenModal: () => void;
-  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'legal') => void;
-  currentView: 'home' | 'stories' | 'ai-review' | 'legal';
+  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal') => void;
+  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView }) => {
@@ -65,6 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
     { label: 'コンテンツ', href: 'provision' },
     { label: '参加者の声', href: 'stories', isPage: true, view: 'stories' as const },
     { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
+    { label: 'ジャーナル', href: 'journal', isPage: true, view: 'journal' as const },
     { label: '入会条件', href: 'ideal-members' }
   ];
 

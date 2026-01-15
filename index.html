@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -7,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Cormorant+Garamond:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Cormorant+Garamond:wght@400;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <script>
       window.process = { env: { API_KEY: "" } };
 
@@ -17,7 +18,8 @@
             fontFamily: {
               sans: ["Zen Old Mincho", "serif"],
               display: ["Cormorant Garamond", "Zen Old Mincho", "serif"],
-              mono: ["Space Mono", "monospace"]
+              mono: ["Space Mono", "monospace"],
+              balanced: ["Noto Sans JP", "sans-serif"]
             },
             colors: {
               brand: {
@@ -55,6 +57,13 @@
       }
       .custom-scrollbar::-webkit-scrollbar-thumb {
         background: #c5a059;
+      }
+      /* 数字の高さを揃え、視覚的なバランスを調整するクラス */
+      .lining-nums {
+        font-variant-numeric: lining-nums;
+        -moz-font-feature-settings: "lnum";
+        -webkit-font-feature-settings: "lnum";
+        font-feature-settings: "lnum";
       }
     </style>
     <script type="importmap">
