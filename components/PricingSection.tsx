@@ -1,6 +1,49 @@
 
 import React, { useState, useEffect } from 'react';
 
+interface PricingPlan {
+  id: string;
+  name: string;
+  price: string;
+  unit?: string;
+  desc: string;
+  link: string;
+  isRecommended?: boolean;
+}
+
+const PRICING_PLANS: PricingPlan[] = [
+  {
+    id: 'web',
+    name: 'Branding Web site',
+    price: '¥300,000',
+    desc: 'ブランドの本質を視覚化するWebサイト制作。個人の知性を武器に変える、最初の強力な接点を構築します。',
+    link: 'https://buy.stripe.com/dRm4gtdSKdSU9vGelE8og09'
+  },
+  {
+    id: 'club',
+    name: 'Honest Marketing Club (一括)',
+    price: '¥480,000',
+    desc: '6ヶ月間の徹底的なトレーニングとコミュニティ。価値の言語化から実績の見える化まで、全てのプロセスを網羅。',
+    link: 'https://buy.stripe.com/00wdR37um7uw7ny91k8og08'
+  },
+  {
+    id: 'full',
+    name: 'Full Branding',
+    price: '¥500,000',
+    desc: 'プロフィール設計、商品設計、コピーライティング。あなたのアイデンティティを市場価値へ100%変換します。',
+    link: 'https://buy.stripe.com/dRm00d3e6eWY23e4L48og07'
+  },
+  {
+    id: 'advisor',
+    name: '月額アドバイザー',
+    price: '¥80,000',
+    unit: '/ 月(税込)',
+    desc: '継続的な事業成長を伴走サポート。定期的な壁打ちと、実行フェーズでの具体的な戦略アドバイスを提供します。',
+    link: 'https://buy.stripe.com/6oUdR32a20248rC1yS8og06',
+    isRecommended: true
+  }
+];
+
 const PricingSection: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -91,114 +134,106 @@ const PricingSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Optimized Two-Section Modal Popup */}
+      {/* Custom Redesigned Pricing Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-2 md:p-6">
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-2 md:p-4 overflow-hidden">
           <div 
             className="absolute inset-0 bg-brand-black/98 backdrop-blur-2xl animate-fade-in"
             onClick={() => setIsModalOpen(false)}
           />
           
-          <div className="relative w-full max-w-[1100px] max-h-[85vh] bg-white rounded-2xl md:rounded-[2rem] shadow-[0_0_120px_rgba(0,0,0,0.5)] overflow-hidden animate-spring-up flex flex-col">
+          <div className="relative w-full max-w-[1280px] max-h-[92vh] bg-white rounded-xl shadow-[0_0_120px_rgba(0,0,0,0.5)] overflow-hidden animate-spring-up flex flex-col">
             
-            {/* STICKY HEADER: Always visible on top */}
-            <div className="sticky top-0 z-[1010] bg-white border-b border-neutral-100 px-6 py-4 md:px-10 md:py-6 flex justify-between items-center shrink-0">
+            {/* STICKY HEADER: Fixed on top */}
+            <div className="sticky top-0 z-[1020] bg-white border-b border-neutral-100 px-6 py-4 md:px-10 md:py-6 flex justify-between items-center shrink-0">
               <div className="flex flex-col">
                 <span className="text-[9px] font-mono text-brand-gold font-bold tracking-[0.2em] uppercase">Investment Plans</span>
                 <h3 className="text-sm md:text-lg font-sans font-bold text-brand-black">HMC Stars. 参加プラン一覧</h3>
               </div>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="w-10 h-10 md:w-11 md:h-11 bg-neutral-900 text-white rounded-full flex items-center justify-center hover:bg-brand-gold transition-all shadow-xl active:scale-90"
-                aria-label="Close"
+                className="w-10 h-10 bg-brand-black text-white rounded-full flex items-center justify-center hover:bg-brand-gold transition-all shadow-xl active:scale-90"
               >
                 <span className="text-2xl font-light">✕</span>
               </button>
             </div>
 
-            {/* SCROLLABLE AREA */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-10 custom-scrollbar bg-[#fcfcfc] space-y-12">
-              
-              {/* SECTION 01: Stripe Pricing Table */}
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 px-2">
-                  <span className="text-[10px] font-mono text-neutral-300 font-bold tracking-[0.3em] uppercase">Section 01 / 一括プラン</span>
-                  <div className="flex-1 h-px bg-neutral-100" />
-                </div>
-                <div className="stripe-container overflow-hidden rounded-xl border border-neutral-100 bg-white shadow-sm">
-                  {React.createElement('stripe-pricing-table', {
-                    'pricing-table-id': "prctbl_1Sqoum7lPpjyEl3MaDkitNcp",
-                    'publishable-key': "pk_live_51Sm7Co7lPpjyEl3MT37uknGfgtzgBtSHyBEe2lyEUDXV7TjQBWSSPdZp2E4R7CO4odiF8qzhQy5xwd3cVR3suqXg00HLOsbm7Y"
-                  } as any)}
-                </div>
-              </div>
+            {/* SCROLLABLE GRID: 4 Columns Desktop, 1 Column Mobile */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar bg-[#f8f8f8]">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-full mx-auto">
+                {PRICING_PLANS.map((plan) => (
+                  <div 
+                    key={plan.id}
+                    className={`relative bg-white border rounded-lg p-5 md:p-6 flex flex-col h-full transition-all duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] group/card
+                      ${plan.isRecommended ? 'border-brand-gold shadow-[0_4px_12px_rgba(197,160,89,0.1)]' : 'border-neutral-200'}`}
+                  >
+                    {/* RECOMMENDED TOP LINE */}
+                    {plan.isRecommended && (
+                      <div className="absolute top-0 left-0 w-full h-1 bg-brand-gold rounded-t-lg" />
+                    )}
 
-              {/* SECTION 02: Custom Card (Monthly) */}
-              <div className="space-y-6 pb-6">
-                <div className="flex items-center gap-4 px-2">
-                  <span className="text-[10px] font-mono text-neutral-300 font-bold tracking-[0.3em] uppercase">Section 02 / 月額プラン</span>
-                  <div className="flex-1 h-px bg-neutral-100" />
-                </div>
-                
-                <div className="flex justify-center">
-                  {/* Custom card matching Stripe UI: Border-radius 8px, white bg, thin border */}
-                  <div className="w-full max-w-[420px] bg-white border border-neutral-200 rounded-[8px] p-6 md:p-8 shadow-[0_2px_4px_rgba(0,0,0,0.05)] hover:shadow-lg transition-all duration-500 group/card">
-                    <div className="flex flex-col h-full">
-                      <div className="w-full aspect-[16/10] bg-neutral-50 rounded-md overflow-hidden mb-6 border border-neutral-100">
-                        <img 
-                          src="https://res.cloudinary.com/dxr2aeoze/image/upload/v1767214957/s-1024x768_v-fs_webp_f1d44356-7dd9-405f-aa02-0376e9141d1c_hpvmhz.jpg" 
-                          alt="Honest Marketing Club（月額）"
-                          className="w-full h-full object-cover grayscale opacity-70 group-hover/card:grayscale-0 group-hover/card:opacity-100 transition-all duration-700"
-                        />
+                    <div className="mb-6">
+                      <div className="flex justify-between items-start mb-2">
+                        <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded
+                          ${plan.isRecommended ? 'bg-brand-gold/10 text-brand-gold' : 'bg-neutral-100 text-neutral-400'}`}>
+                          {plan.id}
+                        </span>
+                        {plan.isRecommended && (
+                          <span className="text-[9px] font-sans font-bold text-brand-gold tracking-widest uppercase">Recommended</span>
+                        )}
                       </div>
-                      
-                      <div className="space-y-4 mb-8">
-                        <span className="inline-block px-2 py-0.5 bg-neutral-100 text-[9px] font-bold text-neutral-500 rounded uppercase tracking-wider">Recurring</span>
-                        <h4 className="text-xl font-sans font-bold text-brand-black leading-tight tracking-tight">Honest Marketing Club（月額）</h4>
-                        <p className="text-[12px] text-neutral-400 font-sans leading-relaxed">
-                          継続的な事業成長を伴走サポート。定期的な壁打ちと、実行フェーズでの具体的な戦略アドバイスを提供します。
-                        </p>
-                      </div>
+                      <h4 className="text-[15px] md:text-[16px] font-sans font-bold text-brand-black leading-tight min-h-[44px]">
+                        {plan.name}
+                      </h4>
+                    </div>
 
-                      <div className="mt-auto pt-6 border-t border-neutral-50">
-                        <div className="flex items-baseline gap-1 mb-6">
-                          <span className="text-3xl font-sans font-bold text-brand-black">¥80,000</span>
-                          <span className="text-[11px] text-neutral-400 font-sans">/ 月(税込)</span>
-                        </div>
-                        
-                        <a 
-                          href="https://buy.stripe.com/6oUdR32a20248rC1yS8og06"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block w-full py-4 bg-[#000000] text-white text-[13px] font-bold tracking-[0.2em] rounded-[4px] transition-all hover:bg-neutral-800 active:scale-[0.98] shadow-md text-center"
-                        >
-                          支払う
-                        </a>
+                    <div className="mb-6">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl md:text-3xl font-sans font-bold text-brand-black tracking-tighter">
+                          {plan.price}
+                        </span>
+                        {plan.unit && <span className="text-[11px] text-neutral-400 font-sans">{plan.unit}</span>}
                       </div>
                     </div>
+
+                    <div className="flex-1 mb-8">
+                      <p className="text-[12px] md:text-[13px] text-neutral-500 font-sans leading-relaxed text-justify">
+                        {plan.desc}
+                      </p>
+                    </div>
+
+                    <div className="mt-auto">
+                      <a 
+                        href={plan.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full py-3.5 bg-brand-black text-white text-[12px] font-bold tracking-[0.2em] rounded-[4px] transition-all hover:bg-neutral-800 active:scale-[0.98] shadow-md text-center uppercase"
+                      >
+                        支払う
+                      </a>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
 
+              {/* FOOTER NOTE */}
+              <div className="mt-12 text-center pb-4">
+                <p className="text-[10px] text-neutral-400 font-sans tracking-[0.2em] uppercase">
+                  All transactions are secure and encrypted via Stripe.
+                </p>
+              </div>
             </div>
 
-            {/* Bottom Safe Area */}
-            <div className="h-6 bg-white shrink-0" />
           </div>
         </div>
       )}
 
       <style>{`
-        /* PC版の80%縮小感を出すための微調整 */
-        @media (min-width: 768px) {
-          .stripe-container {
-            transform-origin: top center;
+        /* Desktop zoom/compact adjustment */
+        @media (min-width: 1024px) {
+          .lg\\:grid-cols-4 {
+            grid-template-columns: repeat(4, 1fr);
           }
-        }
-
-        .stripe-container {
-          min-height: 480px;
-          width: 100%;
         }
 
         @keyframes shake {
@@ -239,9 +274,9 @@ const PricingSection: React.FC = () => {
           background: #c5a059;
           border-radius: 10px;
         }
-        
-        stripe-pricing-table {
-          --stripe-pricing-table-max-width: 100%;
+        .text-justify {
+          text-align: justify;
+          text-justify: inter-character;
         }
       `}</style>
     </section>

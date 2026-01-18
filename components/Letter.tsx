@@ -1,24 +1,46 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Letter: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  // Background Scroll Lock & Keyboard shortcut
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsProfileOpen(false);
+    };
+
+    if (isProfileOpen) {
+      // Lock background scroll
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      // Restore background scroll
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isProfileOpen]);
+
   const achievements = [
-    { year: '2020-2025', title: 'マーケティングサロン開設', detail: 'Honest Marketing', highlight: 'メンバー成長率2,000％を達成' },
-    { year: 'Founder', title: '植物乳酸菌生あまざけ開発者', detail: 'AMAZAKECAMP', highlight: '発売開始30分で200万円を完売' },
-    { year: 'Achievement', title: 'クラウドファンディング', detail: '調達額記録', highlight: 'カテゴリー部門歴代2位' },
-    { year: 'Award', title: 'ICC food & award', detail: '初出場入賞', highlight: '初出場3部門入賞' },
-    { year: 'Media', title: 'Voicyパーソナリティ / SNSフォロワー3万', highlight: '独自のマーケティング論を発信' },
-    { year: '2025', title: 'HORIEXPO 2025 登壇', highlight: 'アイスクリームに革命をおこした発酵起業家' },
-    { year: 'Innovation', title: '商品開発', highlight: 'アイスクリームに革命を起こした原料を開発' }
+    { year: '2020-2025', title: 'Marketing Salon', highlight: 'メンバー成長率2,000％' },
+    { year: 'Founder', title: 'AMAZAKE', highlight: '開始30分で200万円完売' },
+    { year: 'Achievement', title: 'Cloud Funding', highlight: 'カテゴリー歴代2位' },
+    { year: 'Award', title: 'ICC Food Award', highlight: '初出場で3部門入賞' },
+    { year: 'Media', title: 'SNS', highlight: 'フォロワー3万人' },
+    { year: '2025', title: 'HORIEXPO 登壇', highlight: '発酵起業家として選出' },
+    { year: 'Innovation', title: 'Ice Cream', highlight: '原料開発による革命' },
+    { year: 'Strategy', title: 'Production', highlight: '起業家の価値最大化' }
   ];
 
   const careerPath = [
-    'アパレル業界',
-    '広告代理店',
-    '楽天株式会社',
-    '起業（創業融資の希望満額獲得：福岡支店史上初）'
+    'Apparel Industry',
+    'Ad Agency',
+    'Rakuten Group',
+    'Founder & CEO'
   ];
 
   return (
@@ -30,34 +52,21 @@ const Letter: React.FC = () => {
           <div className="flex-shrink-0 flex flex-col items-center md:items-start space-y-4 w-full md:w-auto relative group">
             <button 
               onClick={() => setIsProfileOpen(true)}
-              className="relative p-1 rounded-full outline-none focus:ring-2 focus:ring-brand-gold transition-all"
+              className="relative p-1 rounded-full outline-none transition-all"
             >
-              <div className="absolute inset-0 animate-spin-slow opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <svg className="w-full h-full" viewBox="0 0 100 100">
-                  <path id="circlePath" d="M 50, 50 m -45, 0 a 45,45 0 1,1 90,0 a 45,45 0 1,1 -90,0" fill="transparent" />
-                  <text className="text-[7px] font-mono fill-brand-gold font-bold tracking-[0.2em] uppercase">
-                    <textPath xlinkHref="#circlePath">CLICK TO VIEW PROFILE • CLICK TO VIEW PROFILE • </textPath>
-                  </text>
-                </svg>
-              </div>
-
-              <div className="absolute -inset-3 bg-brand-gold/10 rounded-full animate-ping opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative w-28 h-28 md:w-36 md:h-36 bg-neutral-100 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden grayscale border-4 border-white shadow-2xl transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110 group-hover:border-brand-gold/40">
+              <div className="relative w-28 h-28 md:w-36 md:h-36 bg-neutral-100 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden grayscale border-4 border-white shadow-2xl transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105 group-hover:border-brand-gold/20">
                  <img 
                    src="https://res.cloudinary.com/dxr2aeoze/image/upload/v1766815412/profile_hjsv2t.jpg" 
                    alt="代表 阪田真臣" 
                    className="w-full h-full object-cover"
                  />
               </div>
-              <div className="absolute bottom-2 right-2 w-10 h-10 bg-brand-gold rounded-full flex items-center justify-center text-white shadow-lg transform scale-0 group-hover:scale-100 transition-transform duration-500">
-                <span className="text-[10px] font-bold">INFO</span>
-              </div>
             </button>
             
             <div className="text-center md:text-left cursor-pointer group" onClick={() => setIsProfileOpen(true)}>
               <h3 className="text-lg font-sans font-bold text-brand-black uppercase tracking-widest group-hover:text-brand-gold transition-colors">阪田真臣</h3>
               <p className="text-[10px] text-brand-gold font-mono tracking-widest uppercase mt-1 font-bold">Masaomi Sakata</p>
-              <div className="h-px w-8 bg-brand-gold/30 mt-3 mx-auto md:mx-0 transition-all group-hover:w-16 group-hover:bg-brand-gold" />
+              <div className="h-px w-6 bg-brand-gold/30 mt-3 mx-auto md:mx-0 transition-all group-hover:w-10 group-hover:bg-brand-gold" />
             </div>
           </div>
 
@@ -65,7 +74,7 @@ const Letter: React.FC = () => {
           <div className="relative flex-1">
             <div className="hidden md:block absolute -left-3 top-10 w-6 h-6 bg-white border-l border-t border-neutral-100 rotate-[-45deg] z-10" />
             
-            <div className="relative bg-white border border-neutral-100 p-8 md:p-12 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)]">
+            <div className="relative bg-white border border-neutral-100 p-8 md:p-12 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)]">
               <div className="space-y-6 text-neutral-600 leading-[1.8] md:leading-[2] font-sans font-light">
                 <p className="text-sm md:text-base text-brand-black font-medium">
                   Honest Marketing Clubの阪田真臣です。
@@ -79,14 +88,10 @@ const Letter: React.FC = () => {
                     <span className="relative z-10 text-brand-black font-bold px-1">
                       セルフブランディングプロデュース/マーケティングコミュニティ
                     </span>
-                    <span className="absolute bottom-0.5 left-0 w-full h-1.5 bg-brand-gold/20 -rotate-1 z-0 group-hover:h-full transition-all duration-500" />
+                    <span className="absolute bottom-0.5 left-0 w-full h-1 bg-brand-gold/20 -rotate-1 z-0 group-hover:h-full transition-all duration-500" />
                   </span>
                   についてご案内させていただければと思います。
                 </p>
-              </div>
-
-              <div className="absolute bottom-8 right-12 opacity-5 pointer-events-none">
-                <span className="text-8xl font-display font-bold text-brand-gold">”</span>
               </div>
             </div>
 
@@ -98,85 +103,92 @@ const Letter: React.FC = () => {
         </div>
       </div>
 
-      {/* Profile Modal Overlay */}
+      {/* Profile Modal Overlay - Optimized Size & Content Density */}
       {isProfileOpen && (
-        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-8">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10 overflow-hidden">
+          {/* Enhanced Backdrop */}
           <div 
-            className="absolute inset-0 bg-brand-black/98 backdrop-blur-2xl transition-opacity animate-fade-in"
+            className="absolute inset-0 bg-brand-black/98 backdrop-blur-xl animate-fade-in"
             onClick={() => setIsProfileOpen(false)}
           />
           
-          <div className="relative w-full max-w-4xl max-h-[92vh] bg-brand-black border border-neutral-800 shadow-[0_0_100px_rgba(197,160,89,0.3)] overflow-hidden rounded-3xl animate-spring-up">
+          {/* Main Modal: Reduced max-width to 3xl for 70-80% screen occupancy */}
+          <div className="relative w-full max-w-3xl max-h-[85vh] bg-brand-black border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.6)] overflow-hidden rounded-2xl animate-spring-up flex flex-col">
             
-            {/* Unified & Clear Close Button */}
-            <div className="absolute top-6 right-6 z-[160] flex flex-col items-center gap-1">
-              <button 
-                onClick={() => setIsProfileOpen(false)}
-                className="w-12 h-12 bg-white text-brand-black rounded-full flex items-center justify-center hover:bg-brand-gold hover:text-white transition-all shadow-xl group"
-              >
-                <span className="text-xl font-bold transition-transform group-hover:rotate-90">✕</span>
-              </button>
-              <span className="text-[9px] font-mono text-white/50 font-bold tracking-[0.2em] uppercase">Close</span>
-            </div>
+            {/* STABLE CLOSE BUTTON */}
+            <button 
+              onClick={() => setIsProfileOpen(false)}
+              className="absolute top-4 right-4 md:top-6 md:right-6 z-[250] group flex items-center gap-3 py-2.5 px-4 rounded-full bg-black/80 backdrop-blur-md border border-white/20 hover:border-brand-gold hover:shadow-[0_0_20px_rgba(197,160,89,0.2)] transition-all active:scale-90"
+              aria-label="Close profile"
+            >
+              <span className="text-[9px] font-mono font-bold tracking-[0.3em] text-white group-hover:text-brand-gold transition-colors uppercase">Exit</span>
+              <span className="w-px h-3 bg-white/20 group-hover:bg-brand-gold transition-colors" />
+              <span className="text-lg font-light text-white group-hover:text-brand-gold transition-colors leading-none">✕</span>
+            </button>
 
-            <div className="flex flex-col lg:flex-row h-full overflow-y-auto custom-scrollbar">
-              <div className="lg:w-1/3 bg-neutral-900/50 p-10 border-r border-neutral-800">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-brand-gold mb-8 mx-auto shadow-2xl">
+            {/* Scrollable Container */}
+            <div className="flex-1 flex flex-col md:flex-row overflow-y-auto custom-scrollbar">
+              
+              {/* Left Sidebar: Career (Compact) */}
+              <div className="md:w-[35%] bg-white/[0.02] px-6 pb-10 pt-20 md:pt-24 md:px-8 border-b md:border-b-0 md:border-r border-white/5 flex flex-col items-center md:items-stretch shrink-0">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-brand-gold/40 mb-6 mx-auto grayscale shadow-xl">
                   <img src="https://res.cloudinary.com/dxr2aeoze/image/upload/v1766815412/profile_hjsv2t.jpg" className="w-full h-full object-cover" alt="Sakata" />
                 </div>
-                <div className="text-center space-y-2 mb-10">
-                  <h3 className="text-2xl font-sans font-bold text-white tracking-widest">阪田 真臣</h3>
-                  <p className="text-[10px] text-brand-gold font-mono tracking-[0.4em] uppercase font-bold">Masaomi Sakata</p>
+                
+                <div className="text-center space-y-1 mb-10">
+                  <h3 className="text-xl font-sans font-bold text-white tracking-widest">阪田 真臣</h3>
+                  <p className="text-[8px] text-brand-gold font-mono tracking-[0.3em] uppercase font-bold">Masaomi Sakata</p>
+                  <div className="h-px w-6 bg-brand-gold/30 mx-auto mt-3" />
                 </div>
-                <div className="space-y-6">
-                  <h4 className="text-[8px] text-neutral-500 font-mono tracking-[0.4em] uppercase font-bold border-b border-neutral-800 pb-2">Career Path</h4>
-                  <div className="space-y-4">
+                
+                <div className="space-y-6 w-full">
+                  <h4 className="text-[8px] text-white/30 font-mono tracking-[0.3em] uppercase font-bold border-b border-white/5 pb-2">Experience</h4>
+                  <div className="space-y-3">
                     {careerPath.map((path, i) => (
-                      <div key={i} className="flex gap-3 items-start group">
-                        <span className="text-brand-gold font-mono text-[9px] mt-1 opacity-50">0{i+1}</span>
-                        <p className="text-[11px] text-neutral-400 font-sans leading-relaxed group-hover:text-white transition-colors">{path}</p>
+                      <div key={i} className="flex gap-3 items-center group/item">
+                        <span className="text-[8px] font-mono text-brand-gold/40">0{i+1}</span>
+                        <p className="text-[10px] text-white/60 font-sans tracking-wide">{path}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              <div className="lg:w-2/3 p-8 md:p-14 space-y-12">
-                <div className="space-y-2 text-center lg:text-left">
-                  <h2 className="text-3xl md:text-4xl font-sans font-bold text-white tracking-tighter">実績</h2>
-                  <div className="h-px w-8 bg-brand-gold/50 mx-auto lg:mx-0" />
+              {/* Right Content: Achievements (2 Columns on Mobile) */}
+              <div className="md:w-[65%] p-6 pt-10 md:p-10 md:pt-20 space-y-8">
+                <div className="space-y-2">
+                  <h2 className="text-xl md:text-2xl font-sans font-bold text-white tracking-tight">Achievements</h2>
+                  <div className="h-px w-8 bg-brand-gold/40" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                {/* Achievements Grid: Forced 2 Columns for all screens to reduce scroll */}
+                <div className="grid grid-cols-2 gap-2 md:gap-4">
                   {achievements.map((ach, i) => (
-                    <div key={i} className="space-y-1 group relative p-5 bg-white/[0.03] border border-white/5 rounded-xl hover:border-brand-gold/30 transition-all">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[7px] font-mono text-neutral-500 uppercase tracking-widest">{ach.year}</span>
-                        <div className="h-px w-4 bg-brand-gold/20" />
-                        <span className="text-[8px] font-bold text-neutral-400 uppercase tracking-widest leading-none">{ach.title}</span>
+                    <div key={i} className="p-3 bg-white/[0.04] border border-white/5 rounded-xl flex flex-col justify-center space-y-1 transition-all duration-300 hover:bg-white/[0.07]">
+                      <div className="flex flex-col gap-0.5 mb-1">
+                        <span className="text-[7px] font-mono text-white/20 uppercase tracking-tighter">{ach.year}</span>
+                        <span className="text-[7px] font-bold text-brand-gold/60 uppercase tracking-widest leading-none truncate">{ach.title}</span>
                       </div>
-                      <p className="text-xl md:text-2xl font-balanced font-bold text-white tracking-tight leading-tight group-hover:text-brand-goldLight transition-colors lining-nums">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-brand-goldLight via-brand-gold to-white bg-[length:200%_auto] animate-shimmer">
-                          {ach.highlight}
-                        </span>
+                      <p className="text-[10px] md:text-[12px] font-sans font-medium text-white/90 tracking-tight leading-snug min-h-[2.4em] flex items-center">
+                        {ach.highlight}
                       </p>
-                      {ach.detail && <p className="text-[8px] text-neutral-600 font-sans tracking-widest uppercase mt-1">{ach.detail}</p>}
                     </div>
                   ))}
                 </div>
 
-                <div className="p-8 bg-neutral-900/40 rounded-2xl border border-neutral-800/50">
-                  <p className="text-xs text-neutral-400 font-sans leading-relaxed italic text-center lg:text-left">
-                    「創業融資の希望満額獲得が福岡支店では史上初」という異例のキャリアを皮切りに, アパレル, 広告代理店, 楽天, および起業。現場の熱量とプラットフォームの論理, その両方を知るからこそ辿り着いた独自のブランディング理論を武器に, 現在は多くの起業家の価値最大化をプロデュースしている。
+                <div className="p-5 bg-white/[0.01] rounded-2xl border border-white/5">
+                  <p className="text-[10px] md:text-[12px] text-white/40 font-sans leading-relaxed text-justify hyphens-auto font-light">
+                    アパレル、広告、IT大手での経験を経て独立。創業融資の希望満額獲得を皮切りに、現場の熱量とプラットフォームの論理を融合させた独自のブランディング理論を提唱。
                   </p>
                 </div>
 
-                <div className="pt-4 flex justify-center lg:hidden">
+                {/* Mobile Bottom Close */}
+                <div className="pt-2 md:hidden">
                    <button 
                     onClick={() => setIsProfileOpen(false)}
-                    className="w-full py-5 bg-white text-brand-black text-[10px] font-bold tracking-[0.4em] uppercase rounded-xl transition-all shadow-xl active:scale-95"
+                    className="w-full py-4 bg-white/[0.05] border border-white/10 text-white/40 text-[9px] font-bold tracking-[0.4em] uppercase rounded-xl transition-all"
                    >
-                     実績画面を閉じる
+                     Close
                    </button>
                 </div>
               </div>
@@ -186,40 +198,29 @@ const Letter: React.FC = () => {
       )}
 
       <style>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 12s linear infinite;
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
-        }
-        .animate-shimmer {
-          animation: shimmer 5s infinite linear;
-        }
         @keyframes fade-in {
           from { opacity: 0; }
           to { opacity: 1; }
         }
         @keyframes spring-up {
-          0% { opacity: 0; transform: translateY(60px) scale(0.9); }
+          0% { opacity: 0; transform: translateY(20px) scale(0.98); }
           100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .animate-fade-in {
           animation: fade-in 0.5s ease-out both;
         }
         .animate-spring-up {
-          animation: spring-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation: spring-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
+          width: 3px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #c5a059;
+          background: rgba(197, 160, 89, 0.2);
           border-radius: 10px;
+        }
+        .text-justify {
+          text-align: justify;
         }
       `}</style>
     </section>

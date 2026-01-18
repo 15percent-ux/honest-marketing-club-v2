@@ -175,18 +175,18 @@ const TableOfContents: React.FC = () => {
         <div className="mt-24 text-center space-y-10">
           <div className="space-y-2">
             <p className="text-sm text-neutral-400 font-sans font-light tracking-[0.2em]">
-              本編はnoteにて全文公開しております。
+              詳しくはこちら
             </p>
             <div className="w-8 h-px bg-neutral-200 mx-auto" />
           </div>
           
           <a 
-            href="https://note.com/" 
+            href="https://history-masaomi-sakata.vercel.app/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-8 px-16 py-7 bg-brand-black text-white text-[11px] font-bold tracking-[0.6em] uppercase overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)] hover:shadow-brand-gold/30 transition-all duration-500 hover:-translate-y-1"
           >
-            <span className="relative z-10">Read the Full Story on note</span>
+            <span className="relative z-10">MORE</span>
             <div className="absolute inset-0 bg-brand-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-1000 ease-in-out" />
             <span className="relative z-10 transition-transform duration-500 group-hover:translate-x-2 text-sm">→</span>
           </a>
