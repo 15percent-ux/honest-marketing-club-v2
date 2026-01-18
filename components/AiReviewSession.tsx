@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 
 interface AiReviewSessionProps {
@@ -86,7 +87,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
               <h2 className="text-xl md:text-4xl lg:text-5xl font-sans font-bold text-brand-black tracking-[0.1em] md:tracking-[0.15em] leading-[1.3] md:leading-[1.2]">
                 改善改善改善、<br className="md:hidden" />価値を磨き上げる。
               </h2>
-              <p className="text-base md:text-2xl text-neutral-400 font-sans tracking-[0.05em] md:tracking-[0.1em] leading-[1.6] font-light italic">
+              <p className="text-base md:text-2xl text-neutral-400 font-sans tracking-[0.05em] md:tracking-[0.1em] leading-[1.6] md:leading-[1.2] font-light italic">
                 唯一無二になるために、<br className="md:hidden" />圧倒的な試行錯誤と答え合わせを。
               </p>
             </div>
@@ -315,7 +316,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
                   </h3>
                   
                   <div className="pt-6 md:pt-8 flex flex-col items-center gap-4">
-                    <p className="text-[10px] md:text-[11px] text-brand-gold font-bold tracking-widest uppercase">募集締切：1月20日(月) 23:59まで</p>
+                    <p className="text-[10px] md:text-[11px] text-brand-gold font-bold tracking-widest uppercase">募集締切：1月25日(土) 23:59まで</p>
                     <button 
                       onClick={onOpenEntry}
                       className="group relative w-full md:w-auto px-10 md:px-16 py-6 md:py-7 bg-brand-black text-white text-[12px] md:text-[13px] font-bold tracking-[0.6em] md:tracking-[0.8em] uppercase overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all hover:shadow-brand-gold/40 hover:-translate-y-1"

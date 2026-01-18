@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -91,8 +92,9 @@ const Curriculum: React.FC = () => {
             <span className="text-brand-gold font-mono text-[11px] font-bold tracking-[0.5em] uppercase">The Value of Us</span>
             <span className="w-12 h-px bg-brand-gold"></span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-brand-black tracking-tight">
-            コミュニティの<span className="text-brand-gold">いいところ</span>
+          <h2 className="text-4xl md:text-6xl font-display font-bold text-brand-black tracking-tight [word-break:keep-all] [overflow-wrap:anywhere]">
+            <span className="inline-block">コミュニティの</span>
+            <span className="inline-block">いいところ</span>
           </h2>
           <p className="text-neutral-400 font-sans text-xs md:text-sm tracking-[0.2em] font-medium">
             一人では辿り着けない場所に、最高の環境で。

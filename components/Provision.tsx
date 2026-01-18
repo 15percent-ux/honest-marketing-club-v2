@@ -50,31 +50,27 @@ const Provision: React.FC = () => {
           <div className="w-16 h-px bg-brand-gold mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-200 border border-neutral-200 shadow-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {provisions.map((item, i) => (
             <div 
               key={i} 
-              className={`group relative p-10 md:p-12 space-y-6 transition-all duration-700 overflow-hidden
-                ${item.featured ? 'bg-white ring-2 ring-brand-gold ring-inset z-10' : 'bg-white hover:bg-neutral-50'}`}
+              className={`group relative p-10 md:p-12 space-y-6 transition-all duration-500 overflow-hidden bg-white border
+                ${item.featured 
+                  ? 'border-brand-gold shadow-[0_30px_60px_-15px_rgba(197,160,89,0.15)] z-10 hover:-translate-y-2' 
+                  : 'border-neutral-200 hover:border-brand-gold/30 hover:shadow-xl hover:-translate-y-1'
+                }`}
             >
+              {/* Featured Top Line Accent */}
               {item.featured && (
-                <>
-                  <div className="absolute top-0 right-0">
-                    <div className="bg-brand-gold text-white text-[8px] font-bold tracking-[0.2em] uppercase py-1.5 px-6 rotate-45 translate-x-4 -translate-y-1 shadow-sm">
-                      Best Value
-                    </div>
-                  </div>
-                  <div className="absolute inset-0 bg-brand-gold/[0.02] animate-pulse pointer-events-none" />
-                </>
+                <div className="absolute top-0 left-0 w-full h-[4px] bg-[#cfb376] group-hover:h-[6px] transition-all duration-500" />
               )}
 
               <div className="space-y-4 relative z-10">
                 <span className={`text-[9px] font-mono tracking-[0.3em] uppercase font-bold px-3 py-1 border rounded-full inline-block transition-colors
-                  ${item.featured ? 'text-brand-gold border-brand-gold' : 'text-brand-gold border-brand-gold/20'}`}>
+                  ${item.featured ? 'text-brand-gold border-brand-gold' : 'text-neutral-400 border-neutral-200'}`}>
                   {item.category}
                 </span>
-                <h3 className={`text-lg md:text-xl font-sans font-bold leading-tight transition-colors
-                  ${item.featured ? 'text-brand-black group-hover:text-brand-gold' : 'text-brand-black group-hover:text-brand-gold'}`}>
+                <h3 className="text-lg md:text-xl font-sans font-bold leading-tight text-brand-black">
                   {item.title}
                 </h3>
               </div>
@@ -83,11 +79,10 @@ const Provision: React.FC = () => {
                 {item.desc}
               </p>
 
+              {/* Bottom Decorative Element for featured */}
               {item.featured && (
                 <div className="pt-4">
-                  <div className="h-0.5 w-full bg-brand-gold/20 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 h-full w-full bg-brand-gold animate-shimmer-featured" />
-                  </div>
+                  <div className="h-[1px] w-12 bg-brand-gold/40 group-hover:w-full transition-all duration-700" />
                 </div>
               )}
             </div>
@@ -100,16 +95,6 @@ const Provision: React.FC = () => {
           </p>
         </div>
       </div>
-
-      <style>{`
-        @keyframes shimmer-featured {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        .animate-shimmer-featured {
-          animation: shimmer-featured 3s infinite ease-in-out;
-        }
-      `}</style>
     </section>
   );
 };

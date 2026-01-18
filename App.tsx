@@ -10,7 +10,6 @@ import Letter from './components/Letter';
 import Vision from './components/Vision';
 import TableOfContents from './components/TableOfContents';
 import EligibilityModal from './components/EligibilityModal';
-import InteractiveIntro from './components/InteractiveIntro';
 import LineNavigator from './components/LineNavigator';
 import HmcSplash from './components/HmcSplash';
 import AuthGate from './components/AuthGate';
@@ -89,7 +88,7 @@ const App: React.FC = () => {
 
                     <div className="flex flex-col items-center gap-4">
                       <p className="text-brand-gold font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold">
-                        募集締切：2025年1月20日(月) 23:59まで
+                        募集締切：2025年1月25日(土) 23:59まで
                       </p>
                       <div 
                         className="relative inline-block group perspective-1000 cursor-pointer"
@@ -133,7 +132,6 @@ const App: React.FC = () => {
                   </div>
                 </section>
 
-                <InteractiveIntro />
                 <LineNavigator />
                 <Curriculum />
                 <HWD />

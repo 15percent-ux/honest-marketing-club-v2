@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { gsap } from 'gsap';
 
@@ -125,7 +126,7 @@ const Hero: React.FC = () => {
               <p className="text-white text-sm md:text-base font-sans font-bold tracking-tight">
                 第0期メンバー募集開始
               </p>
-              <p className="text-brand-gold font-sans text-[8px] tracking-[0.3em] font-bold mt-0.5">※1月20日締切※</p>
+              <p className="text-brand-gold font-sans text-[8px] tracking-[0.3em] font-bold mt-0.5">※1月25日締切※</p>
             </div>
           </div>
         </div>

@@ -99,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView 
                 あなたの「本当の価値」を、ここから始めませんか。現在、第0期メンバーを募集中です。
               </p>
               <div className="flex flex-col items-start gap-4">
-                <p className="text-[10px] text-brand-gold font-bold tracking-widest">募集締切：1月20日(月) 23:59まで</p>
+                <p className="text-[10px] text-brand-gold font-bold tracking-widest">募集締切：1月25日(土) 23:59まで</p>
                 <button
                   onClick={onOpenModal}
                   className="group relative inline-flex items-center gap-6 px-10 py-4 bg-brand-black text-white text-[10px] font-bold tracking-[0.4em] uppercase overflow-hidden shadow-xl transition-all"

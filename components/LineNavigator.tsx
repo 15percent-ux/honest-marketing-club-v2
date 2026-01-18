@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 const LineNavigator: React.FC = () => {
@@ -5,18 +6,10 @@ const LineNavigator: React.FC = () => {
 
   const steps = [
     {
-      label: "審査結果の通知",
-      desc: "5営業日以内にメールにて招待状をお送りします。",
-      messages: [
-        { type: "date", text: "2025年1月20日(月)" },
-        { type: "system", text: "Honest Marketing Clubへ招待されました" },
-        { sender: "事務局", text: "ご入会おめでとうございます！まずはこのリンクから秘密のオープンチャットへ参加してください。", time: "10:25", side: "left" }
-      ]
-    },
-    {
       label: "コミュニティ参加",
       desc: "LINEオープンチャットの秘密のグループへ。匿名での参加も可能です。",
       messages: [
+        { type: "date", text: "2025年1月26日(日)" },
         { type: "system", text: "新しいメンバーが参加しました" },
         { sender: "Member A", text: "よろしくお願いします！ずっと気になっていたので嬉しいです。", time: "11:02", side: "left" },
         { sender: "Strategist Omi", text: "歓迎します。ここでは『答え合わせ』を習慣にしていきましょう！", time: "11:05", side: "left" },
@@ -27,7 +20,7 @@ const LineNavigator: React.FC = () => {
       label: "事業の壁打ち",
       desc: "戦略エンジンの活用、メンバー間での仮説共有が始まります。",
       messages: [
-        { type: "date", text: "2025年1月26日(日)" },
+        { type: "date", text: "2025年1月27日(月)" },
         { sender: "Member D", text: "新規サービスの価格を3倍に再設計してみました。このロジックでいこうと思います。", time: "14:15", side: "left" },
         { sender: "Strategist Omi", text: "その『価値の言語化』、非常に鋭いですね。顧客視点でも納得感があります。Goです！", time: "14:20", side: "left" },
         { sender: "Member A", text: "Dさんの仮説、めちゃくちゃ勉強になります...！", time: "14:22", side: "left" }
@@ -47,9 +40,9 @@ const LineNavigator: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 3000); // ステップ切り替えを3秒に加速（以前は5秒）
+    }, 3000);
     return () => clearInterval(timer);
-  }, []);
+  }, [steps.length]);
 
   return (
     <section className="py-32 md:py-48 bg-[#fbfbfb] px-6 overflow-hidden relative">
@@ -136,7 +129,7 @@ const LineNavigator: React.FC = () => {
               </div>
 
               <div className="flex-1 p-3 pb-8 flex flex-col gap-3 overflow-y-auto relative custom-scrollbar" key={activeStep}>
-                {steps[activeStep].messages.map((msg, idx) => {
+                {steps[activeStep].messages.map((msg: any, idx: number) => {
                   if (msg.type === "date") {
                     return (
                       <div key={idx} className="flex justify-center my-2 animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
