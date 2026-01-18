@@ -44,6 +44,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView 
     { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
     { label: 'ジャーナル', href: 'journal', isPage: true, view: 'journal' as const },
     { label: '入会条件', href: 'ideal-members' },
+    { label: '価格案内', href: 'pricing' },
     { label: '特定商取引法に基づく表記', href: 'legal', isPage: true, view: 'legal' as const }
   ];
 

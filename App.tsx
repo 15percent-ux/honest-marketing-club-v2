@@ -1,25 +1,27 @@
 
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar.tsx';
-import Hero from './components/Hero.tsx';
-import Curriculum from './components/Curriculum.tsx';
-import HWD from './components/HWD.tsx';
-import MemberReview from './components/MemberReview.tsx';
-import Letter from './components/Letter.tsx';
-import Vision from './components/Vision.tsx';
-import TableOfContents from './components/TableOfContents.tsx';
-import EligibilityModal from './components/EligibilityModal.tsx';
-import InteractiveIntro from './components/InteractiveIntro.tsx';
-import LineNavigator from './components/LineNavigator.tsx';
-import HmcSplash from './components/HmcSplash.tsx';
-import AuthGate from './components/AuthGate.tsx';
-import SuccessStories from './components/SuccessStories.tsx';
-import AiReviewSession from './components/AiReviewSession.tsx';
-import Journal from './components/Journal.tsx';
-import Provision from './components/Provision.tsx';
-import IdealMembers from './components/IdealMembers.tsx';
-import Footer from './components/Footer.tsx';
-import LegalDisclosure from './components/LegalDisclosure.tsx';
+// Removed .tsx extensions from imports to fix module resolution and systemic JSX intrinsic element errors
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Curriculum from './components/Curriculum';
+import HWD from './components/HWD';
+import MemberReview from './components/MemberReview';
+import Letter from './components/Letter';
+import Vision from './components/Vision';
+import TableOfContents from './components/TableOfContents';
+import EligibilityModal from './components/EligibilityModal';
+import InteractiveIntro from './components/InteractiveIntro';
+import LineNavigator from './components/LineNavigator';
+import HmcSplash from './components/HmcSplash';
+import AuthGate from './components/AuthGate';
+import SuccessStories from './components/SuccessStories';
+import AiReviewSession from './components/AiReviewSession';
+import Journal from './components/Journal';
+import Provision from './components/Provision';
+import IdealMembers from './components/IdealMembers';
+import Footer from './components/Footer';
+import LegalDisclosure from './components/LegalDisclosure';
+import PricingSection from './components/PricingSection';
 
 const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -137,6 +139,7 @@ const App: React.FC = () => {
                 <HWD />
                 <Provision />
                 <IdealMembers />
+                <PricingSection />
               </>
             ) : view === 'stories' ? (
               <SuccessStories onBack={() => setView('home')} />

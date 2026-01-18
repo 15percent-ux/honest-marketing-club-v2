@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { getGeminiInspiration } from '../services/gemini.ts';
-import { Message, AIStatus } from '../types.ts';
+// Fixed imports by removing .ts extensions to follow standard TypeScript module resolution
+import { getGeminiInspiration } from '../services/gemini';
+import { Message, AIStatus } from '../types';
 
 const AIEngine: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);

@@ -5,6 +5,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Defined Phrase as React.FC to explicitly handle children and resolve "Property 'children' is missing" errors
+const Phrase: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="inline-block">{children}</span>
+);
+
 const Vision: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -51,11 +56,6 @@ const Vision: React.FC = () => {
 
     return () => ctx.revert();
   }, []);
-
-  // フレーズを保持するためのヘルパーコンポーネント
-  const Phrase = ({ children }: { children: React.ReactNode }) => (
-    <span className="inline-block">{children}</span>
-  );
 
   return (
     <section ref={sectionRef} className="py-20 md:py-40 bg-brand-black text-white px-6 overflow-hidden relative">
@@ -104,9 +104,10 @@ const Vision: React.FC = () => {
                   <Phrase>自分軸で判断できる</Phrase><Phrase>考え方が欲しい、</Phrase><Phrase>見極められる</Phrase><Phrase>視野の広さが欲しい。</Phrase>
                 </p>
                 <p>
-                  <Phrase>自分自身、セミナーや</Phrase><Phrase>情報にコストを</Phrase><Phrase>かけた時もあった、</Phrase><Phrase>試したこともある、</Phrase><Phrase>後悔している人も</Phrase><Phrase>沢山見てきた、</Phrase>
+                  <Phrase>自分自身, セミナーや</Phrase><Phrase>情報にコストを</Phrase><Phrase>かけた時もあった、</Phrase><Phrase>試したこともある、</Phrase><Phrase>後悔している人も</Phrase><Phrase>沢山見てきた、</Phrase>
                   <Phrase>搾取する人も</Phrase><Phrase>搾取される人達も</Phrase><Phrase>両側の人間を見てきた、</Phrase>
-                  <Phrase>一方で同じ手法を</Phrase><Phrase>教わったのに</Phrase><Phrase>成功している人もいる、</Phrase><Phrase>その差はこれだった。</Phrase>
+                  <Phrase>一方で同じ手法を</Phrase><Phrase>教わったのに</Phrase><Phrase>成功している人もいる、</Phrase>
+                  <Phrase>その差はこれだった。</Phrase>
                 </p>
               </div>
 

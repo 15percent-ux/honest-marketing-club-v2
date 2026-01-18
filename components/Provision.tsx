@@ -1,36 +1,38 @@
+
 import React from 'react';
 
 const Provision: React.FC = () => {
   const provisions = [
     {
       category: "Environment",
-      title: "24/7 プライベートチャット",
-      desc: "代表・阪田および精鋭メンバーとの24時間壁打ち環境。迷いをその場で解消し、実行速度を最大化させます。"
+      title: "チャットで壁打ち",
+      desc: "いつでも壁打ち可能、プライベートな相談から事業計画やセールスライティングの添削など、不安を取り除いて進んでいきましょう。"
     },
     {
-      category: "Training",
-      title: "6ヶ月集中カリキュラム",
-      desc: "価値の再設計から言語化、デリバリーまで。一生モノのマーケティングスキルを実践を通して習得します。"
+      category: "Core Training",
+      title: "6ヶ月継続トレーニング",
+      desc: "マーケティング脳とセルフブランディング脳に変換していく6ヶ月です、ブレない自分軸を作り上げていく期間をメンバーと共に過ごしていきましょう。",
+      featured: true
     },
     {
-      category: "Technology",
-      title: "AI戦略エンジン利用権",
-      desc: "HMC独自のロジックを学習させたAIによる、市場分析とコピーライティングのサポート。"
+      category: "Identity",
+      title: "自分ストーリーの設計",
+      desc: "自分の強みと得意分野を見つけてプロフィールを設計、セルフブランディングに使えるストーリーを設計していきます。"
     },
     {
-      category: "Community",
-      title: "審査制メンバーシップ",
-      desc: "近い価値観と高い志を持つ20名限定の社交場。孤独な経営から卒業し、高め合える戦友を得られます。"
+      category: "Sales Skill",
+      title: "顧客接客術",
+      desc: "説得力を生み出すセールストークの作り方、コミュニケーションの添削をおこない売る力を上げていきましょう。"
     },
     {
-      category: "Event",
-      title: "月例グループコンサルティング",
-      desc: "月1回、オンライン/オフラインでの公開添削会. 他者の課題を自分事として捉え、視座を引き上げます。"
+      category: "Review",
+      title: "グループミーティング",
+      desc: "月2回、オンランでメンバー合同公開添削会をおこないます、主にはウェブサイトや営業資料の添削、SNS、ライティングの添削です。"
     },
     {
-      category: "Asset",
-      title: "HWD ブランド設計図",
-      desc: "自分だけの「必殺技」を定義した独自のブランド設計図。これがあれば、もう競合との比較に怯えることはありません。"
+      category: "Off-site",
+      title: "１泊2日の強化合宿",
+      desc: "3ヶ月に一度、メンバー合宿をおこないます、ゲストをお招きし視座を高める強化合宿です。※開催地はメンバー数により検討"
     }
   ];
 
@@ -43,7 +45,7 @@ const Provision: React.FC = () => {
         <div className="text-center mb-24 space-y-6">
           <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">What is provided</span>
           <h2 className="text-3xl md:text-5xl font-sans font-bold text-brand-black tracking-tight leading-tight">
-            提供するすべてが、<br className="md:hidden" />あなたの武器になる。
+            ６つの成長コンテンツ
           </h2>
           <div className="w-16 h-px bg-brand-gold mx-auto" />
         </div>
@@ -52,29 +54,62 @@ const Provision: React.FC = () => {
           {provisions.map((item, i) => (
             <div 
               key={i} 
-              className="group bg-white p-10 md:p-12 space-y-6 transition-all duration-700 hover:bg-neutral-50"
+              className={`group relative p-10 md:p-12 space-y-6 transition-all duration-700 overflow-hidden
+                ${item.featured ? 'bg-white ring-2 ring-brand-gold ring-inset z-10' : 'bg-white hover:bg-neutral-50'}`}
             >
-              <div className="space-y-4">
-                <span className="text-[9px] font-mono text-brand-gold tracking-[0.3em] uppercase font-bold px-3 py-1 border border-brand-gold/20 rounded-full inline-block">
+              {item.featured && (
+                <>
+                  <div className="absolute top-0 right-0">
+                    <div className="bg-brand-gold text-white text-[8px] font-bold tracking-[0.2em] uppercase py-1.5 px-6 rotate-45 translate-x-4 -translate-y-1 shadow-sm">
+                      Best Value
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-brand-gold/[0.02] animate-pulse pointer-events-none" />
+                </>
+              )}
+
+              <div className="space-y-4 relative z-10">
+                <span className={`text-[9px] font-mono tracking-[0.3em] uppercase font-bold px-3 py-1 border rounded-full inline-block transition-colors
+                  ${item.featured ? 'text-brand-gold border-brand-gold' : 'text-brand-gold border-brand-gold/20'}`}>
                   {item.category}
                 </span>
-                <h3 className="text-lg md:text-xl font-sans font-bold text-brand-black leading-tight group-hover:text-brand-gold transition-colors">
+                <h3 className={`text-lg md:text-xl font-sans font-bold leading-tight transition-colors
+                  ${item.featured ? 'text-brand-black group-hover:text-brand-gold' : 'text-brand-black group-hover:text-brand-gold'}`}>
                   {item.title}
                 </h3>
               </div>
-              <p className="text-sm text-neutral-500 leading-[1.8] font-light font-sans text-justify">
+              <p className={`text-sm leading-[1.8] font-light font-sans text-justify relative z-10
+                ${item.featured ? 'text-neutral-700 font-medium' : 'text-neutral-500'}`}>
                 {item.desc}
               </p>
+
+              {item.featured && (
+                <div className="pt-4">
+                  <div className="h-0.5 w-full bg-brand-gold/20 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 h-full w-full bg-brand-gold animate-shimmer-featured" />
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
         <div className="mt-20 text-center">
           <p className="text-[11px] text-neutral-400 font-sans tracking-[0.2em] uppercase font-bold">
-            All elements are designed to maximize your ROI.
+            All elements are designed to transform your intelligence into weapons.
           </p>
         </div>
       </div>
+
+      <style>{`
+        @keyframes shimmer-featured {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .animate-shimmer-featured {
+          animation: shimmer-featured 3s infinite ease-in-out;
+        }
+      `}</style>
     </section>
   );
 };
