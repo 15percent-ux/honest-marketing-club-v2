@@ -122,7 +122,7 @@ const Hero: React.FC = () => {
             />
             <span className="text-[7px] font-sans text-neutral-500 uppercase tracking-[0.4em] block mb-3 font-bold relative z-10">募集要項</span>
             <div className="space-y-1 relative z-10">
-              <p className="text-brand-goldLight text-[6px] font-sans font-bold tracking-widest opacity-60 uppercase mb-0.5">20名限定のマーケティングトレーニング</p>
+              <p className="text-brand-goldLight text-[6px] font-sans font-bold tracking-widest opacity-60 uppercase mb-0.5">5名限定のマーケティングトレーニング</p>
               <p className="text-white text-sm md:text-base font-sans font-bold tracking-tight">
                 第0期メンバー募集開始
               </p>

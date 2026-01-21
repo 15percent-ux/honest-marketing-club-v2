@@ -115,7 +115,7 @@ const LineNavigator: React.FC = () => {
                   <h5 className="text-[11px] font-bold text-black truncate leading-tight tracking-tight">HMC | 本質マーケティング</h5>
                   <div className="flex items-center gap-1 mt-0.5">
                     <div className="w-1 h-1 bg-[#00b900] rounded-full" />
-                    <span className="text-[8px] text-neutral-400 font-bold tracking-tight">20 Online</span>
+                    <span className="text-[8px] text-neutral-400 font-bold tracking-tight">5 Online</span>
                   </div>
                 </div>
                 <div className="flex gap-3 opacity-30 scale-90">
@@ -237,6 +237,9 @@ const LineNavigator: React.FC = () => {
         @keyframes fade-in {
           from { opacity: 0; }
           to { opacity: 1; }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out both;
         }
         .animate-pulse-slow {
           animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;

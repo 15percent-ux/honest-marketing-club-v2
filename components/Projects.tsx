@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Project } from '../types';
 
@@ -28,7 +29,7 @@ const CURRICULUM: Project[] = [
     title: 'エグゼクティブ・コミュニティ',
     category: 'ネットワーク',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200',
-    description: '20名の仲間と6ヶ月間。孤独な挑戦を卒業し、互いの知性を研磨し合う特別な社交場。'
+    description: '5名の仲間と6ヶ月間。孤独な挑戦を卒業し、互いの知性を研磨し合う特別な社交場。'
   }
 ];
 
@@ -43,7 +44,7 @@ const Projects: React.FC = () => {
           <p className="text-neutral-400 mt-4 font-mono text-[10px] tracking-[0.25em] uppercase font-bold">サロン・カリキュラム 2025</p>
         </div>
         <div className="text-neutral-400 font-sans text-[11px] font-bold uppercase tracking-[0.2em] border-l border-neutral-200 pl-8 h-12 flex items-center">
-          20名限定
+          5名限定
         </div>
       </div>
 

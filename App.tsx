@@ -79,7 +79,7 @@ const App: React.FC = () => {
                       <h2 className="text-xl md:text-2xl font-sans font-bold text-white tracking-[0.15em] leading-relaxed flex items-center justify-center flex-wrap gap-y-2">
                         成長しあえる
                         <span className="inline-flex items-baseline mx-4">
-                          <span className="text-brand-gold font-display text-5xl md:text-6xl font-semibold leading-none drop-shadow-[0_0_15px_rgba(197,160,89,0.3)]">20</span>
+                          <span className="text-brand-gold font-display text-5xl md:text-6xl font-semibold leading-none drop-shadow-[0_0_15px_rgba(197,160,89,0.3)]">5</span>
                           <span className="text-brand-gold text-sm ml-2 font-sans transform -translate-y-0.5">名</span>
                         </span>
                         と出会える場所へ

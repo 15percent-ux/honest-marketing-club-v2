@@ -34,8 +34,8 @@ const PRICING_PLANS: PricingPlan[] = [
     link: 'https://buy.stripe.com/dRm00d3e6eWY23e4L48og07'
   },
   {
-    id: 'advisor',
-    name: '月額アドバイザー',
+    id: 'CLUB',
+    name: 'Honest Marketing Club（月額）',
     price: '¥80,000',
     unit: '/ 月(税込)',
     desc: '継続的な事業成長を伴走サポート。定期的な壁打ちと、実行フェーズでの具体的な戦略アドバイスを提供します。',
@@ -179,7 +179,7 @@ const PricingSection: React.FC = () => {
                           {plan.id}
                         </span>
                         {plan.isRecommended && (
-                          <span className="text-[9px] font-sans font-bold text-brand-gold tracking-widest uppercase">Recommended</span>
+                          <span className="text-[9px] font-sans font-bold text-brand-gold tracking-widest uppercase">人気</span>
                         )}
                       </div>
                       <h4 className="text-[15px] md:text-[16px] font-sans font-bold text-brand-black leading-tight min-h-[44px]">

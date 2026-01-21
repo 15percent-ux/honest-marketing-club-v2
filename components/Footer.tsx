@@ -66,7 +66,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView 
               </div>
             </div>
             <p className="text-xs text-neutral-400 font-sans leading-[2] max-w-sm">
-              煽らない。安売りしない。自らの知性を「売れる武器」へと変え、誠実に、かつ大胆に市場を動かす。20名限定の特別な場所。
+              煽らない。安売りしない。自らの知性を「売れる武器」へと変え、誠実に、かつ大胆に市場を動かす。5名限定の特別な場所。
             </p>
           </div>
 

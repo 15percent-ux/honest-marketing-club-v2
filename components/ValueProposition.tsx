@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const ValueProposition: React.FC = () => {
@@ -18,7 +19,7 @@ const ValueProposition: React.FC = () => {
       number: "03",
       title: "基準値の劇的な同期",
       subtitle: "Standard Synchronization",
-      desc: "一人で戦っていると、いつの間にか下がってしまう「当たり前」の基準。選ばれた20名の熱量に触れ続けることで、あなたの日常の質、思考の深さ、行動スピードが強制的に引き上げられます。"
+      desc: "一人で戦っていると、いつの間にか下がってしまう「当たり前」の基準。選ばれた5名の熱量に触れ続けることで、あなたの日常の質、思考の深さ、行動スピードが強制的に引き上げられます。"
     }
   ];
 
