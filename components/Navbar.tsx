@@ -120,7 +120,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
               onClick={onOpenModal}
               className="relative px-8 py-3 bg-brand-black text-brand-white text-[10px] tracking-[0.2em] font-bold overflow-hidden group"
             >
-              <span className="relative z-10">エントリー</span>
+              <span className="relative z-10">参加する</span>
               <div className="absolute inset-0 bg-brand-gold translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             </button>
           </div>
@@ -169,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
             }}
             className="px-12 py-4 bg-brand-black text-white text-xs font-bold tracking-[0.4em] uppercase"
           >
-            エントリー
+            参加する
           </button>
         </div>
       </div>

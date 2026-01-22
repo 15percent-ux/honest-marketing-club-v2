@@ -93,7 +93,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView 
           </div>
 
           <div className="md:col-span-4 space-y-8">
-            <h4 className="text-[10px] font-mono font-bold text-brand-black tracking-[0.4em] uppercase border-b border-neutral-100 pb-4">Entry</h4>
+            <h4 className="text-[10px] font-mono font-bold text-brand-black tracking-[0.4em] uppercase border-b border-neutral-100 pb-4">Join Us</h4>
             <div className="space-y-6">
               <p className="text-[11px] text-neutral-500 font-sans leading-relaxed">
                 あなたの「本当の価値」を、ここから始めませんか。現在、第0期メンバーを募集中です。
@@ -104,7 +104,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView 
                   onClick={onOpenModal}
                   className="group relative inline-flex items-center gap-6 px-10 py-4 bg-brand-black text-white text-[10px] font-bold tracking-[0.4em] uppercase overflow-hidden shadow-xl transition-all"
                 >
-                  <span className="relative z-10">エントリーはこちら</span>
+                  <span className="relative z-10">参加する</span>
                   <div className="absolute inset-0 bg-brand-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-700 ease-in-out" />
                 </button>
               </div>

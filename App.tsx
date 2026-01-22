@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-// Removed .tsx extensions from imports to fix module resolution and systemic JSX intrinsic element errors
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Curriculum from './components/Curriculum';
@@ -21,6 +20,7 @@ import IdealMembers from './components/IdealMembers';
 import Footer from './components/Footer';
 import LegalDisclosure from './components/LegalDisclosure';
 import PricingSection from './components/PricingSection';
+import Consultation from './components/Consultation';
 
 const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -123,7 +123,7 @@ const App: React.FC = () => {
                                 <span className="w-1 h-1 rounded-full bg-brand-gold animate-pulse" />
                                 OFFICIAL ACCESS
                               </div>
-                              <div className="text-white font-display text-xs md:text-base tracking-[0.3em] font-bold uppercase leading-none">エントリー</div>
+                              <div className="text-white font-display text-xs md:text-base tracking-[0.3em] font-bold uppercase leading-none">参加する</div>
                             </div>
                           </div>
                         </div>
@@ -138,6 +138,7 @@ const App: React.FC = () => {
                 <Provision />
                 <IdealMembers />
                 <PricingSection />
+                <Consultation />
               </>
             ) : view === 'stories' ? (
               <SuccessStories onBack={() => setView('home')} />
