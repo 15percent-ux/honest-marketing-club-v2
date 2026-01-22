@@ -68,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
     { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
     { label: 'ジャーナル', href: 'journal', isPage: true, view: 'journal' as const },
     { label: '入会条件', href: 'ideal-members' },
-    { label: '価格案内', href: 'pricing' }
+    { label: '料金', href: 'pricing' }
   ];
 
   return (

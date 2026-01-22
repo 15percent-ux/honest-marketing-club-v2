@@ -45,7 +45,10 @@ const Provision: React.FC = () => {
         <div className="text-center mb-24 space-y-6">
           <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">What is provided</span>
           <h2 className="text-3xl md:text-5xl font-sans font-bold text-brand-black tracking-tight leading-tight">
-            ６つの成長コンテンツ
+            <span className="relative inline-block">
+              <span className="relative z-10">６つの成長コンテンツ</span>
+              <span className="absolute bottom-1 left-0 w-full h-4 bg-yellow-200/60 -z-0" />
+            </span>
           </h2>
           <div className="w-16 h-px bg-brand-gold mx-auto" />
         </div>
@@ -71,7 +74,10 @@ const Provision: React.FC = () => {
                   {item.category}
                 </span>
                 <h3 className="text-lg md:text-xl font-sans font-bold leading-tight text-brand-black">
-                  {item.title}
+                  <span className="relative inline-block">
+                    <span className="relative z-10">{item.title}</span>
+                    <span className="absolute bottom-0 left-0 w-full h-2 bg-yellow-200/40 -z-0 transition-all duration-500 group-hover:h-3" />
+                  </span>
                 </h3>
               </div>
               <p className={`text-sm leading-[1.8] font-light font-sans text-justify relative z-10

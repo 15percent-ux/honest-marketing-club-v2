@@ -45,22 +45,7 @@ const PRICING_PLANS: PricingPlan[] = [
 ];
 
 const PricingSection: React.FC = () => {
-  const [password, setPassword] = useState('');
-  const [isUnlocked, setIsUnlocked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password.toLowerCase() === 'honest') {
-      setIsUnlocked(true);
-      setIsModalOpen(true);
-      setError(false);
-    } else {
-      setError(true);
-      setTimeout(() => setError(false), 2000);
-    }
-  };
 
   useEffect(() => {
     if (isModalOpen) {
@@ -84,53 +69,22 @@ const PricingSection: React.FC = () => {
             <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">Investment</span>
             <span className="w-8 h-px bg-brand-gold"></span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-sans font-bold text-white tracking-tight">参加費用のご案内</h2>
+          <h2 className="text-3xl md:text-5xl font-sans font-bold text-white tracking-tight">料金のご案内</h2>
           <p className="text-neutral-500 font-sans text-xs md:text-sm tracking-[0.2em] font-medium max-w-lg mx-auto">
-            価格情報の閲覧には専用のパスワードが必要です。
+            ご希望のプランを選択してください。
           </p>
         </div>
 
         <div className="max-w-md mx-auto">
-          {!isUnlocked ? (
-            <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-10 rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] transition-all duration-700 animate-reveal-up">
-              <div className="text-center mb-8 space-y-4">
-                <div className="w-14 h-14 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-brand-gold/20">
-                   <span className="text-brand-gold text-xl">🔒</span>
-                </div>
-                <h3 className="text-sm font-sans font-bold text-white tracking-widest uppercase">Authentication</h3>
-                <p className="text-[10px] text-neutral-400 font-sans tracking-[0.2em]">
-                  パスワードを入力してください
-                </p>
-              </div>
-              
-              <form onSubmit={handleUnlock} className="space-y-8">
-                <input
-                  type="text"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter Password"
-                  className={`w-full bg-transparent border-b-2 py-4 px-4 text-center font-mono tracking-[0.4em] outline-none transition-all duration-500 text-lg ${error ? 'border-red-500 text-red-400 animate-shake' : 'border-neutral-800 text-white focus:border-brand-gold'}`}
-                  autoComplete="off"
-                />
-                <button 
-                  type="submit"
-                  className="w-full py-5 bg-brand-gold text-white text-[10px] font-bold tracking-[0.5em] uppercase hover:bg-brand-goldLight transition-all active:scale-95"
-                >
-                  認証して表示
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="text-center animate-reveal-up">
-              <button 
-                onClick={() => setIsModalOpen(true)}
-                className="group relative inline-flex items-center gap-6 px-12 py-5 bg-white text-brand-black text-[11px] font-bold tracking-[0.5em] uppercase overflow-hidden shadow-2xl transition-all hover:-translate-y-1"
-              >
-                <span className="relative z-10">価格表を表示</span>
-                <div className="absolute inset-0 bg-brand-gold translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-              </button>
-            </div>
-          )}
+          <div className="text-center animate-reveal-up">
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="group relative inline-flex items-center gap-6 px-12 py-5 bg-white text-brand-black text-[11px] font-bold tracking-[0.5em] uppercase overflow-hidden shadow-2xl transition-all hover:-translate-y-1"
+            >
+              <span className="relative z-10">価格表を表示</span>
+              <div className="absolute inset-0 bg-brand-gold translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+            </button>
+          </div>
         </div>
       </div>
 
