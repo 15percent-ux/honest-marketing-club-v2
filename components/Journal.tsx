@@ -26,7 +26,7 @@ const ARTICLES: Article[] = [
     content: (
       <div className="space-y-12 py-10 text-brand-black">
         <div className="space-y-4">
-          <p className="text-xl md:text-2xl font-bold leading-relaxed">
+          <p className="text-xl md:text-2xl font-bold leading-relaxed [word-break:keep-all]">
             適正価格で売れる力の真実
           </p>
           <p className="text-lg md:text-xl font-bold opacity-80">
@@ -189,24 +189,6 @@ const ARTICLES: Article[] = [
         </section>
       </div>
     )
-  },
-  {
-    id: 'honesty-strategy',
-    date: '2025.01.07',
-    category: 'Philosophy',
-    title: '「誠実さ」という名の最大の戦略。',
-    excerpt: '多くのマーケティングが射幸心を煽る中で、なぜ今「正直であること」が最大の競合優位性になるのか。',
-    image: 'https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=800',
-    content: <p className="text-neutral-600">記事の詳細はnoteにて順次公開されます。</p>
-  },
-  {
-    id: 'hwd-method',
-    date: '2024.12.15',
-    category: 'Methodology',
-    title: 'HWD: 武器としてのブランド設計。',
-    excerpt: '個人の知性をいかにして「売れる武器」へと昇華させるか。4つのステップによる体系的なアプローチ。',
-    image: 'https://images.unsplash.com/photo-1455849318743-b2233052fcff?auto=format&fit=crop&q=80&w=800',
-    content: <p className="text-neutral-600">記事の詳細はnoteにて順次公開されます。</p>
   }
 ];
 
@@ -221,7 +203,7 @@ const Journal: React.FC<JournalProps> = ({ onBack }) => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".journal-header", {
-        y: 50,
+        y: 30,
         opacity: 0,
         duration: 1.5,
         ease: "power4.out"
@@ -232,10 +214,10 @@ const Journal: React.FC<JournalProps> = ({ onBack }) => {
           trigger: ".article-grid",
           start: "top 85%",
         },
-        y: 100,
+        y: 50,
         opacity: 0,
         duration: 1.2,
-        stagger: 0.2,
+        stagger: 0.15,
         ease: "power3.out"
       });
     }, containerRef);
@@ -257,7 +239,7 @@ const Journal: React.FC<JournalProps> = ({ onBack }) => {
           <div className="space-y-12">
             <div className="space-y-4">
               <span className="text-brand-gold font-mono text-[11px] font-bold tracking-[0.5em] uppercase">{selectedArticle.category} — {selectedArticle.date}</span>
-              <h1 className="text-4xl md:text-6xl font-display font-bold text-brand-black leading-tight">
+              <h1 className="text-3xl md:text-5xl font-display font-bold text-brand-black leading-tight [word-break:keep-all]">
                 {selectedArticle.title}
               </h1>
             </div>
@@ -301,7 +283,7 @@ const Journal: React.FC<JournalProps> = ({ onBack }) => {
           </button>
           
           <span className="text-brand-gold font-mono text-[11px] font-bold tracking-[0.5em] uppercase block">Thinking Archive</span>
-          <h1 className="text-5xl md:text-8xl font-display font-bold text-brand-black tracking-tight leading-none uppercase">
+          <h1 className="text-4xl md:text-[clamp(2.5rem,5vw,5rem)] font-display font-bold text-brand-black tracking-tight leading-none uppercase">
             The Journal<span className="text-brand-gold">.</span>
           </h1>
           <p className="text-sm text-neutral-400 font-sans tracking-[0.2em] font-medium max-w-lg mx-auto leading-relaxed">
@@ -316,7 +298,7 @@ const Journal: React.FC<JournalProps> = ({ onBack }) => {
               className="article-card group cursor-pointer"
               onClick={() => setSelectedArticle(article)}
             >
-              <div className="relative aspect-[4/5] overflow-hidden mb-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-700 group-hover:shadow-2xl rounded-[2rem]">
+              <div className="relative aspect-[4/5] overflow-hidden mb-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] transition-all duration-700 group-hover:shadow-xl rounded-[2rem]">
                 <img 
                   src={article.image} 
                   alt={article.title} 
@@ -334,7 +316,7 @@ const Journal: React.FC<JournalProps> = ({ onBack }) => {
                   <span className="text-[10px] font-mono text-brand-gold font-bold">{article.date}</span>
                   <div className="flex-1 h-px bg-neutral-100" />
                 </div>
-                <h3 className="text-2xl font-sans font-bold text-brand-black leading-tight group-hover:text-brand-gold transition-colors duration-500">
+                <h3 className="text-xl font-sans font-bold text-brand-black leading-tight group-hover:text-brand-gold transition-colors duration-500 [word-break:keep-all]">
                   {article.title}
                 </h3>
                 <p className="text-sm text-neutral-500 leading-relaxed font-sans font-light line-clamp-3">

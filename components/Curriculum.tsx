@@ -44,7 +44,7 @@ const Curriculum: React.FC = () => {
           trigger: ".curr-header",
           start: "top 90%",
         },
-        y: 40,
+        y: 30,
         opacity: 0,
         duration: 1.2,
         ease: "power3.out"
@@ -60,7 +60,7 @@ const Curriculum: React.FC = () => {
             trigger: itemClass,
             start: "top 85%",
           },
-          y: 60,
+          y: 40,
           opacity: 0,
           duration: 1.5,
           ease: "expo.out"
@@ -72,7 +72,7 @@ const Curriculum: React.FC = () => {
             start: "top 90%",
             scrub: 1.5
           },
-          scale: 1.1,
+          scale: 1.05,
           duration: 2
         });
       });
@@ -82,76 +82,74 @@ const Curriculum: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="work" className="py-32 md:py-56 bg-white px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section ref={sectionRef} id="work" className="py-16 md:py-24 bg-white px-6 overflow-hidden">
+      <div className="max-w-6xl mx-auto">
         
         {/* Section Header */}
-        <div className="curr-header text-center mb-32 md:mb-48 space-y-6">
+        <div className="curr-header text-center mb-20 md:mb-28 space-y-4">
           <div className="inline-flex items-center gap-4">
-            <span className="w-12 h-px bg-brand-gold"></span>
-            <span className="text-brand-gold font-mono text-[11px] font-bold tracking-[0.5em] uppercase">The Value of Us</span>
-            <span className="w-12 h-px bg-brand-gold"></span>
+            <span className="w-10 h-px bg-brand-gold"></span>
+            <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">The Value of Us</span>
+            <span className="w-10 h-px bg-brand-gold"></span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-brand-black tracking-tight [word-break:keep-all] [overflow-wrap:anywhere]">
-            <span className="inline-block">コミュニティの</span>
-            <span className="inline-block">いいところ</span>
+          <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-display font-bold text-brand-black tracking-tight leading-tight [word-break:keep-all]">
+            コミュニティのいいところ
           </h2>
-          <p className="text-neutral-400 font-sans text-xs md:text-sm tracking-[0.2em] font-medium">
+          <p className="text-neutral-400 font-sans text-[10px] md:text-xs tracking-[0.2em] font-medium">
             一人では辿り着けない場所に、最高の環境で。
           </p>
         </div>
 
-        <div ref={containerRef} className="space-y-40 md:space-y-64">
+        <div ref={containerRef} className="space-y-24 md:space-y-32">
           {items.map((item, i) => (
             <div 
               key={item.id} 
-              className={`curr-item-${i} flex flex-col ${i % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-16 lg:gap-32 relative`}
+              className={`curr-item-${i} flex flex-col ${i % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-10 lg:gap-20 relative`}
             >
-              {/* Massive Background ID */}
-              <div className={`absolute -top-20 ${i % 2 === 1 ? '-left-10' : '-right-10'} text-[25vw] font-display font-bold text-neutral-50 pointer-events-none select-none z-0 opacity-40`}>
+              {/* Massive Background ID - Shrunk for compactness */}
+              <div className={`absolute -top-12 ${i % 2 === 1 ? '-left-6' : '-right-6'} text-[18vw] font-display font-bold text-neutral-50 pointer-events-none select-none z-0 opacity-40`}>
                 {item.id}
               </div>
 
-              {/* Image Container */}
-              <div className="w-full lg:w-1/2 relative z-10">
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.12)] border border-neutral-100 bg-neutral-50">
+              {/* Image Container - Reduced Width */}
+              <div className="w-full lg:w-[38%] relative z-10">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-neutral-100 bg-neutral-50">
                   <img 
                     src={item.image} 
                     alt={item.title} 
                     className={`curr-img-${i} w-full h-full object-cover will-change-transform`}
                   />
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-brand-black/20 via-transparent to-transparent opacity-40" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-brand-black/20 via-transparent to-transparent opacity-30" />
                 </div>
                 
-                {/* Accent Badge */}
-                <div className={`absolute -bottom-6 ${i % 2 === 1 ? 'md:-left-12' : 'md:-right-12'} bg-brand-black text-white p-6 md:p-10 rounded-3xl shadow-2xl max-w-[280px] hidden md:block animate-pulse-slow`}>
-                  <p className="text-sm md:text-base font-sans font-bold leading-relaxed tracking-tight italic">
+                {/* Accent Badge - Smaller padding and text */}
+                <div className={`absolute -bottom-4 ${i % 2 === 1 ? 'md:-left-10' : 'md:-right-10'} bg-brand-black text-white p-4 md:p-6 rounded-2xl shadow-xl max-w-[220px] hidden md:block animate-pulse-slow`}>
+                  <p className="text-xs md:text-sm font-sans font-bold leading-relaxed tracking-tight italic">
                     "{item.accent}"
                   </p>
                 </div>
               </div>
               
-              {/* Content Container */}
-              <div className="w-full lg:w-1/2 space-y-10 relative z-10">
-                <div className="space-y-6">
+              {/* Content Container - Better balance */}
+              <div className="w-full lg:w-[50%] space-y-6 relative z-10">
+                <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-mono font-bold text-brand-gold tracking-[0.4em] uppercase">{item.tag}</span>
+                    <span className="text-[9px] font-mono font-bold text-brand-gold tracking-[0.4em] uppercase">{item.tag}</span>
                     <div className="flex-1 h-px bg-neutral-100"></div>
                   </div>
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-brand-black tracking-tight leading-[1.2]">
+                  <h3 className="text-[clamp(1.5rem,3.5vw,2.5rem)] font-sans font-bold text-brand-black tracking-tight leading-[1.2] [word-break:keep-all]">
                     {item.title}
                   </h3>
                 </div>
 
-                <div className="space-y-8">
-                  <p className="text-neutral-500 text-lg md:text-xl leading-[1.8] font-sans font-light text-justify">
+                <div className="space-y-6">
+                  <p className="text-neutral-500 text-base md:text-lg leading-[1.7] font-sans font-light text-justify">
                     {item.desc}
                   </p>
                   
-                  <div className="pt-4 flex items-center gap-8">
-                    <div className="h-px w-16 bg-brand-gold/30"></div>
-                    <span className="text-[11px] font-mono text-neutral-300 font-bold tracking-[0.5em] uppercase">Honest Strategy</span>
+                  <div className="pt-2 flex items-center gap-6">
+                    <div className="h-px w-12 bg-brand-gold/30"></div>
+                    <span className="text-[9px] font-mono text-neutral-300 font-bold tracking-[0.4em] uppercase">Honest Strategy</span>
                   </div>
                 </div>
               </div>
@@ -163,7 +161,7 @@ const Curriculum: React.FC = () => {
       <style>{`
         @keyframes pulse-slow {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+          50% { transform: translateY(-6px); }
         }
         .animate-pulse-slow {
           animation: pulse-slow 6s ease-in-out infinite;

@@ -75,7 +75,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
               AI × 事業改善 × 言語化ブランディング
             </span>
             <div className="overflow-hidden">
-              <h1 className="text-4xl md:text-7xl lg:text-[7.5rem] font-display font-bold text-brand-black tracking-tighter leading-[1.1] md:leading-[0.9] uppercase animate-reveal-up">
+              <h1 className="text-[clamp(2rem,6vw,5rem)] font-display font-bold text-brand-black tracking-tighter leading-[1.1] md:leading-[0.9] uppercase animate-reveal-up [word-break:keep-all]">
                 公開<span className="text-brand-gold relative inline-block">添削会<span className="absolute bottom-2 md:bottom-3 left-0 w-full h-2 md:h-3 bg-brand-gold/10 -z-10 animate-grow-x"></span></span>.
               </h1>
             </div>
@@ -84,7 +84,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
           <div className="flex flex-col items-center gap-8 md:gap-12">
             <div className="h-16 md:h-24 w-px bg-gradient-to-b from-brand-gold to-transparent" />
             <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
-              <h2 className="text-xl md:text-4xl lg:text-5xl font-sans font-bold text-brand-black tracking-[0.1em] md:tracking-[0.15em] leading-[1.3] md:leading-[1.2]">
+              <h2 className="text-xl md:text-4xl lg:text-5xl font-sans font-bold text-brand-black tracking-[0.1em] md:tracking-[0.15em] leading-[1.3] md:leading-[1.2] [word-break:keep-all]">
                 改善改善改善、<br className="md:hidden" />価値を磨き上げる。
               </h2>
               <p className="text-base md:text-2xl text-neutral-400 font-sans tracking-[0.05em] md:tracking-[0.1em] leading-[1.6] md:leading-[1.2] font-light italic">
@@ -105,7 +105,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
                   <span className="w-8 md:w-12 h-[2px] bg-brand-gold" />
                   <span className="text-brand-gold font-mono text-[10px] md:text-xs font-bold tracking-[0.5em] uppercase">The Reason</span>
                 </div>
-                <h2 className="text-xl md:text-4xl font-sans font-bold text-brand-black tracking-tight leading-[1.3] md:leading-[1.2]">
+                <h2 className="text-xl md:text-4xl font-sans font-bold text-brand-black tracking-tight leading-[1.3] md:leading-[1.2] [word-break:keep-all]">
                   売れるクリエイティブを、<br />
                   <span className="text-brand-gold">無駄にしないために。</span>
                 </h2>
@@ -166,7 +166,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
         {/* Section 3: What is Public Review? */}
         <section className="mb-60 md:mb-80 relative">
           <div className="text-center space-y-6 md:space-y-8 mb-16 md:mb-24">
-            <h2 className="text-3xl md:text-6xl font-display font-bold text-brand-black tracking-tight uppercase">What is Public Review?</h2>
+            <h2 className="text-3xl md:text-[clamp(1.5rem,5vw,5rem)] font-display font-bold text-brand-black tracking-tight uppercase">What is Public Review?</h2>
             <div className="w-16 md:w-20 h-px bg-brand-gold mx-auto" />
           </div>
           
@@ -231,7 +231,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
                     <span className="w-10 md:w-16 h-[2px] bg-brand-gold" />
                     <span className="text-brand-gold font-mono text-[10px] md:text-xs font-bold tracking-[0.4em] md:tracking-[0.5em] uppercase">Shortest Path to Mastery</span>
                   </div>
-                  <h2 className="text-2xl md:text-5xl font-sans font-bold tracking-tight leading-[1.2] md:leading-[1.1]">
+                  <h2 className="text-2xl md:text-5xl font-sans font-bold tracking-tight leading-[1.2] md:leading-[1.1] [word-break:keep-all]">
                     セミナー依存は、<br /><span className="text-brand-gold">もう終わりにしましょう。</span>
                   </h2>
                   <p className="text-base md:text-2xl text-neutral-300 font-light leading-relaxed max-w-4xl">
@@ -288,7 +288,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
         {/* Final CTA */}
         <div className="mt-40 md:mt-80 text-center space-y-16 md:space-y-24">
            <div className="space-y-6 md:space-y-8">
-             <h2 className="text-4xl md:text-7xl font-display font-bold text-brand-black tracking-tighter leading-none">Ready to Refine?</h2>
+             <h2 className="text-4xl md:text-[clamp(2rem,5vw,5rem)] font-display font-bold text-brand-black tracking-tighter leading-none uppercase">Ready to Refine?</h2>
              <p className="text-[10px] md:text-xs text-neutral-400 font-sans tracking-[0.4em] md:tracking-[0.6em] uppercase font-bold">
                Refine your intelligence. Refine your value.
              </p>
@@ -297,7 +297,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
            <div className="flex flex-col items-center gap-12 md:gap-16 pt-4 md:pt-8">
              <div className="space-y-8 md:space-y-12 w-full max-w-2xl">
                <div className="space-y-6 md:space-y-8 flex flex-col items-center">
-                  <h3 className="text-2xl md:text-5xl font-sans font-bold text-brand-black tracking-tight">
+                  <h3 className="text-2xl md:text-4xl font-sans font-bold text-brand-black tracking-tight [word-break:keep-all]">
                     次は、あなたの番です。
                   </h3>
                   

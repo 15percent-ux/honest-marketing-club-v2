@@ -6,12 +6,12 @@ const Provision: React.FC = () => {
     {
       category: "Environment",
       title: "チャットで壁打ち",
-      desc: "いつでも壁打ち可能、プライベートな相談から事業計画やセールスライティングの添削など、推進力を強くします。"
+      desc: "いつでも壁打ち可能、プライベートな相談から事業計画やセールスライティングの添削など、不安を取り除いて進んでいきましょう。"
     },
     {
       category: "Core Training",
       title: "6ヶ月継続トレーニング",
-      desc: "マーケティング脳とセルフブランディング脳に変換していく6ヶ月です、ブレない自分軸を作り上げていく期間をメンバーと共に過ごしていきます。",
+      desc: "マーケティング脳とセルフブランディング脳に変換していく6ヶ月です、ブレない自分軸を作り上げていく期間をメンバーと共に過ごしていきましょう。",
       featured: true
     },
     {
@@ -37,66 +37,59 @@ const Provision: React.FC = () => {
   ];
 
   return (
-    <section id="provision" className="py-32 bg-[#fafafa] px-6 border-y border-neutral-100 relative overflow-hidden">
+    <section id="provision" className="py-16 md:py-24 bg-[#fafafa] px-6 border-y border-neutral-100 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_10%_20%,rgba(197,160,89,0.03),transparent_50%)]" />
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_10%_20%,rgba(197,160,89,0.02),transparent_50%)]" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-24 space-y-6">
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 space-y-4">
           <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">What is provided</span>
-          <h2 className="text-3xl md:text-5xl font-sans font-bold text-brand-black tracking-tight leading-tight">
+          <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-sans font-bold text-brand-black tracking-tight leading-tight [word-break:keep-all]">
             <span className="relative inline-block">
               <span className="relative z-10">６つの成長コンテンツ</span>
-              <span className="absolute bottom-1 left-0 w-full h-4 bg-yellow-200/60 -z-0" />
+              <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-200/40 -z-0" />
             </span>
           </h2>
-          <div className="w-16 h-px bg-brand-gold mx-auto" />
+          <div className="w-12 h-px bg-brand-gold mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {provisions.map((item, i) => (
             <div 
               key={i} 
-              className={`group relative p-10 md:p-12 space-y-6 transition-all duration-500 overflow-hidden bg-white border
+              className={`group relative p-8 md:p-10 space-y-4 transition-all duration-500 overflow-hidden bg-white border
                 ${item.featured 
-                  ? 'border-brand-gold shadow-[0_30px_60px_-15px_rgba(197,160,89,0.15)] z-10 hover:-translate-y-2' 
-                  : 'border-neutral-200 hover:border-brand-gold/30 hover:shadow-xl hover:-translate-y-1'
+                  ? 'border-brand-gold shadow-[0_20px_40px_-10px_rgba(197,160,89,0.1)] z-10 hover:-translate-y-1' 
+                  : 'border-neutral-200 hover:border-brand-gold/30 hover:shadow-lg hover:-translate-y-0.5'
                 }`}
             >
               {/* Featured Top Line Accent */}
               {item.featured && (
-                <div className="absolute top-0 left-0 w-full h-[4px] bg-[#cfb376] group-hover:h-[6px] transition-all duration-500" />
+                <div className="absolute top-0 left-0 w-full h-[3px] bg-[#cfb376] group-hover:h-[4px] transition-all duration-500" />
               )}
 
-              <div className="space-y-4 relative z-10">
-                <span className={`text-[9px] font-mono tracking-[0.3em] uppercase font-bold px-3 py-1 border rounded-full inline-block transition-colors
+              <div className="space-y-3 relative z-10">
+                <span className={`text-[8px] font-mono tracking-[0.3em] uppercase font-bold px-2 py-0.5 border rounded-full inline-block transition-colors
                   ${item.featured ? 'text-brand-gold border-brand-gold' : 'text-neutral-400 border-neutral-200'}`}>
                   {item.category}
                 </span>
-                <h3 className="text-lg md:text-xl font-sans font-bold leading-tight text-brand-black">
+                <h3 className="text-lg md:text-xl font-sans font-bold leading-tight text-brand-black [word-break:keep-all]">
                   <span className="relative inline-block">
                     <span className="relative z-10">{item.title}</span>
-                    <span className="absolute bottom-0 left-0 w-full h-2 bg-yellow-200/40 -z-0 transition-all duration-500 group-hover:h-3" />
+                    <span className="absolute bottom-0 left-0 w-full h-1.5 bg-yellow-200/30 -z-0 transition-all duration-500 group-hover:h-2" />
                   </span>
                 </h3>
               </div>
-              <p className={`text-sm leading-[1.8] font-light font-sans text-justify relative z-10
+              <p className={`text-sm leading-[1.6] font-light font-sans text-justify relative z-10
                 ${item.featured ? 'text-neutral-700 font-medium' : 'text-neutral-500'}`}>
                 {item.desc}
               </p>
-
-              {/* Bottom Decorative Element for featured */}
-              {item.featured && (
-                <div className="pt-4">
-                  <div className="h-[1px] w-12 bg-brand-gold/40 group-hover:w-full transition-all duration-700" />
-                </div>
-              )}
             </div>
           ))}
         </div>
 
-        <div className="mt-20 text-center">
-          <p className="text-[11px] text-neutral-400 font-sans tracking-[0.2em] uppercase font-bold">
+        <div className="mt-16 text-center">
+          <p className="text-[9px] text-neutral-400 font-sans tracking-[0.2em] uppercase font-bold">
             All elements are designed to transform your intelligence into weapons.
           </p>
         </div>

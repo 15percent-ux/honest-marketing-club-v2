@@ -35,39 +35,39 @@ const CURRICULUM: Project[] = [
 
 const Projects: React.FC = () => {
   return (
-    <section id="work" className="py-32 px-6 max-w-7xl mx-auto bg-brand-white">
-      <div className="flex flex-col md:flex-row items-baseline justify-between mb-24 gap-6">
+    <section id="work" className="py-16 md:py-24 px-6 max-w-7xl mx-auto bg-brand-white">
+      <div className="flex flex-col md:flex-row items-baseline justify-between mb-16 gap-4">
         <div>
-          <h2 className="text-3xl md:text-4xl font-sans font-bold leading-none tracking-tighter text-brand-black">
-            トレーニング・<span className="text-brand-gold">カリキュラム</span>
+          <h2 className="text-[clamp(1.5rem,4vw,2.5rem)] font-sans font-bold leading-tight tracking-tighter text-brand-black [word-break:keep-all]">
+            トレーニング・カリキュラム
           </h2>
-          <p className="text-neutral-400 mt-4 font-mono text-[10px] tracking-[0.25em] uppercase font-bold">サロン・カリキュラム 2025</p>
+          <p className="text-neutral-400 mt-2 font-mono text-[9px] tracking-[0.25em] uppercase font-bold">サロン・カリキュラム 2025</p>
         </div>
-        <div className="text-neutral-400 font-sans text-[11px] font-bold uppercase tracking-[0.2em] border-l border-neutral-200 pl-8 h-12 flex items-center">
+        <div className="text-neutral-400 font-sans text-[10px] font-bold uppercase tracking-[0.2em] border-l border-neutral-200 pl-6 h-10 flex items-center">
           5名限定
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
         {CURRICULUM.map((item) => (
           <div key={item.id} className="group cursor-default">
-            <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
+            <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100 rounded-lg">
               <img 
                 src={item.image} 
                 alt={item.title}
                 className="w-full h-full object-cover grayscale opacity-40 transition-all duration-1000 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-[1.03]"
               />
-              <div className="absolute top-6 right-6">
-                <div className="w-12 h-12 bg-white/90 backdrop-blur-sm flex items-center justify-center border border-neutral-200">
-                   <span className="text-brand-black text-[10px] font-mono font-bold">{item.id.padStart(2, '0')}</span>
+              <div className="absolute top-4 right-4">
+                <div className="w-10 h-10 bg-white/90 backdrop-blur-sm flex items-center justify-center border border-neutral-100">
+                   <span className="text-brand-black text-[9px] font-mono font-bold">{item.id.padStart(2, '0')}</span>
                 </div>
               </div>
             </div>
-            <div className="mt-10 border-t border-neutral-100 pt-10 flex justify-between items-start">
+            <div className="mt-8 border-t border-neutral-100 pt-8 flex justify-between items-start">
               <div className="max-w-md">
-                <span className="text-[10px] font-sans font-bold tracking-[0.2em] text-brand-gold uppercase">{item.category}</span>
-                <h3 className="text-3xl font-sans font-bold mt-3 text-brand-black tracking-tight">{item.title}</h3>
-                <p className="text-neutral-500 mt-5 text-sm font-sans font-light leading-relaxed">{item.description}</p>
+                <span className="text-[9px] font-sans font-bold tracking-[0.2em] text-brand-gold uppercase">{item.category}</span>
+                <h3 className="text-2xl font-sans font-bold mt-2 text-brand-black tracking-tight [word-break:keep-all]">{item.title}</h3>
+                <p className="text-neutral-500 mt-4 text-sm font-sans font-light leading-relaxed">{item.description}</p>
               </div>
             </div>
           </div>

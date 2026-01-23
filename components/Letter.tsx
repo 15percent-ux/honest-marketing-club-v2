@@ -1,8 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Letter: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isHoveringIcon, setIsHoveringIcon] = useState(false);
+  const iconRef = useRef<HTMLButtonElement>(null);
 
   // Background Scroll Lock & Keyboard shortcut
   useEffect(() => {
@@ -11,11 +14,9 @@ const Letter: React.FC = () => {
     };
 
     if (isProfileOpen) {
-      // Lock background scroll
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
     } else {
-      // Restore background scroll
       document.body.style.overflow = 'unset';
     }
 
@@ -24,6 +25,21 @@ const Letter: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isProfileOpen]);
+
+  // Cursor tracking for "VIEW" indicator
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isHoveringIcon) {
+        setCursorPos({ x: e.clientX, y: e.clientY });
+      }
+    };
+
+    if (isHoveringIcon) {
+      window.addEventListener('mousemove', handleMouseMove);
+    }
+
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [isHoveringIcon]);
 
   const achievements = [
     { year: '2020-2025', title: 'Marketing Salon', highlight: 'メンバー成長率2,000％' },
@@ -45,14 +61,32 @@ const Letter: React.FC = () => {
 
   return (
     <section id="letter" className="pt-24 pb-32 px-6 bg-white overflow-hidden">
+      {/* Custom Floating Cursor (Desktop Only) */}
+      <div 
+        className={`fixed top-0 left-0 z-[300] pointer-events-none transition-all duration-300 ease-out flex items-center justify-center rounded-full bg-brand-gold shadow-lg
+          ${isHoveringIcon ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
+        style={{ 
+          width: '70px', 
+          height: '70px',
+          transform: `translate(${cursorPos.x - 35}px, ${cursorPos.y - 35}px)`,
+          display: 'none' // Hidden by default, shown by media query
+        }}
+        id="custom-view-cursor"
+      >
+        <span className="text-[10px] font-mono font-bold text-white tracking-[0.2em] uppercase">View</span>
+      </div>
+
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-start">
           
           {/* Representative Profile Column */}
           <div className="flex-shrink-0 flex flex-col items-center md:items-start space-y-4 w-full md:w-auto relative group">
             <button 
+              ref={iconRef}
               onClick={() => setIsProfileOpen(true)}
-              className="relative p-1 rounded-full outline-none transition-all"
+              onMouseEnter={() => setIsHoveringIcon(true)}
+              onMouseLeave={() => setIsHoveringIcon(false)}
+              className="relative p-1 rounded-full outline-none transition-all cursor-none"
             >
               <div className="relative w-28 h-28 md:w-36 md:h-36 bg-neutral-100 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden grayscale border-4 border-white shadow-2xl transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105 group-hover:border-brand-gold/20">
                  <img 
@@ -103,19 +137,16 @@ const Letter: React.FC = () => {
         </div>
       </div>
 
-      {/* Profile Modal Overlay - Optimized Size & Content Density */}
+      {/* Profile Modal Overlay */}
       {isProfileOpen && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10 overflow-hidden">
-          {/* Enhanced Backdrop */}
           <div 
             className="absolute inset-0 bg-brand-black/98 backdrop-blur-xl animate-fade-in"
             onClick={() => setIsProfileOpen(false)}
           />
           
-          {/* Main Modal: Reduced max-width to 3xl for 70-80% screen occupancy */}
           <div className="relative w-full max-w-3xl max-h-[85vh] bg-brand-black border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.6)] overflow-hidden rounded-2xl animate-spring-up flex flex-col">
             
-            {/* STABLE CLOSE BUTTON */}
             <button 
               onClick={() => setIsProfileOpen(false)}
               className="absolute top-4 right-4 md:top-6 md:right-6 z-[250] group flex items-center gap-3 py-2.5 px-4 rounded-full bg-black/80 backdrop-blur-md border border-white/20 hover:border-brand-gold hover:shadow-[0_0_20px_rgba(197,160,89,0.2)] transition-all active:scale-90"
@@ -126,10 +157,8 @@ const Letter: React.FC = () => {
               <span className="text-lg font-light text-white group-hover:text-brand-gold transition-colors leading-none">✕</span>
             </button>
 
-            {/* Scrollable Container */}
             <div className="flex-1 flex flex-col md:flex-row overflow-y-auto custom-scrollbar">
               
-              {/* Left Sidebar: Career (Compact) */}
               <div className="md:w-[35%] bg-white/[0.02] px-6 pb-10 pt-20 md:pt-24 md:px-8 border-b md:border-b-0 md:border-r border-white/5 flex flex-col items-center md:items-stretch shrink-0">
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-brand-gold/40 mb-6 mx-auto grayscale shadow-xl">
                   <img src="https://res.cloudinary.com/dxr2aeoze/image/upload/v1766815412/profile_hjsv2t.jpg" className="w-full h-full object-cover" alt="Sakata" />
@@ -154,17 +183,15 @@ const Letter: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Content: Achievements (2 Columns on Mobile) */}
               <div className="md:w-[65%] p-6 pt-10 md:p-10 md:pt-20 space-y-8">
                 <div className="space-y-2">
                   <h2 className="text-xl md:text-2xl font-sans font-bold text-white tracking-tight">Achievements</h2>
                   <div className="h-px w-8 bg-brand-gold/40" />
                 </div>
 
-                {/* Achievements Grid: Forced 2 Columns for all screens to reduce scroll */}
                 <div className="grid grid-cols-2 gap-2 md:gap-4">
                   {achievements.map((ach, i) => (
-                    <div key={i} className="p-3 bg-white/[0.04] border border-white/5 rounded-xl flex flex-col justify-center space-y-1 transition-all duration-300 hover:bg-white/[0.07]">
+                    <div key={i} className="p-3 bg-white/[0.04] border border-white/5 rounded-xl flex flex-col justify-center space-y-1 transition-all duration-700 hover:bg-white/[0.07]">
                       <div className="flex flex-col gap-0.5 mb-1">
                         <span className="text-[7px] font-mono text-white/20 uppercase tracking-tighter">{ach.year}</span>
                         <span className="text-[7px] font-bold text-brand-gold/60 uppercase tracking-widest leading-none truncate">{ach.title}</span>
@@ -182,7 +209,6 @@ const Letter: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Mobile Bottom Close */}
                 <div className="pt-2 md:hidden">
                    <button 
                     onClick={() => setIsProfileOpen(false)}
@@ -221,6 +247,13 @@ const Letter: React.FC = () => {
         }
         .text-justify {
           text-align: justify;
+        }
+
+        /* Custom View Cursor Desktop Only */
+        @media (hover: hover) {
+          #custom-view-cursor {
+            display: flex !important;
+          }
         }
       `}</style>
     </section>

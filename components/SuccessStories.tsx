@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface SuccessStoriesProps {
@@ -79,7 +80,7 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
           
           <div className="h-12 w-px bg-brand-gold/30 mt-8" />
           
-          <h1 className="text-4xl md:text-6xl font-display font-bold text-brand-black tracking-tight uppercase">
+          <h1 className="text-4xl md:text-[clamp(2rem,5vw,5rem)] font-display font-bold text-brand-black tracking-tight uppercase [word-break:keep-all]">
             Success <span className="text-brand-gold">Stories.</span>
           </h1>
           <p className="text-sm text-neutral-500 font-sans tracking-[0.2em] font-medium max-w-lg mx-auto leading-relaxed">
@@ -91,7 +92,7 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-24">
           {stories.map((story, i) => (
             <div key={i} className="group flex flex-col h-full">
-              <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100 rounded-[2.5rem] mb-10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-700 group-hover:shadow-brand-gold/10">
+              <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100 rounded-[2.5rem] mb-10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] transition-all duration-700 group-hover:shadow-brand-gold/10">
                 <img 
                   src={story.image} 
                   alt={story.name} 
@@ -113,7 +114,7 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
                   ))}
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-sans font-bold text-brand-black tracking-tight leading-snug">{story.title}</h3>
+                  <h3 className="text-2xl font-sans font-bold text-brand-black tracking-tight leading-snug [word-break:keep-all]">{story.title}</h3>
                   <div className="flex items-center gap-3">
                     <span className="h-px w-4 bg-brand-gold" />
                     <p className="text-brand-gold font-display text-sm italic font-bold tracking-widest">{story.name}</p>
