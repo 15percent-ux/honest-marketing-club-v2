@@ -79,7 +79,7 @@ const EligibilityModal: React.FC<EligibilityModalProps> = ({ isOpen, onClose }) 
                     ${isEligible ? 'bg-white text-brand-black hover:bg-brand-gold' : 'bg-neutral-800 text-neutral-600 cursor-not-allowed opacity-50'}`}
                   onClick={(e) => !isEligible && e.preventDefault()}
                 >
-                  <span className="relative z-10">Clubへ参加する</span>
+                  <span className="relative z-10">参加する</span>
                   {isEligible && <div className="absolute inset-0 bg-brand-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500" />}
                 </a>
                 

@@ -191,23 +191,9 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
               
               <div className="relative bg-white border-4 md:border-[6px] border-brand-black p-8 md:p-14 shadow-[12px_12px_0px_rgba(197,160,89,0.2)]">
                 <div className="space-y-6 md:space-y-8">
-                  <p className="text-lg md:text-2xl font-bold text-brand-black leading-snug font-sans tracking-tight border-l-4 md:border-l-6 border-brand-gold pl-4 md:pl-6">
-                    「人の経験値とAIを組み合わせた添削の精度が、非常に高いというのが分かりました。」
+                  <p className="text-lg md:text-2xl font-bold text-brand-black leading-snug font-sans tracking-tight border-l-4 md:border-l-6 border-brand-gold pl-4 md:pl-6 text-justify">
+                    ここ1年でAIを毎日触ってきましたが、使い方でパフォーマンスが劇的に変わるというのが面白いところです。それと実際の経験値をもとにAIに課題を与えるとリアルな改善策が出たりする有益さには驚きます。添削会では質問の投げ方を身につけていただけると思います。
                   </p>
-                  
-                  <div className="space-y-4 md:space-y-6">
-                    <p className="text-[15px] md:text-xl text-neutral-600 leading-[1.6] md:leading-[1.7] font-light text-justify">
-                      AIだけだと、ありきたりで心に響かない表現になるのが欠点なので、そこは人が補填する。<br />
-                      ただAIがあると、試行錯誤の回数が圧倒的に増やせます。これが最大の利点だと思います。<br /><br />
-                      <span className="text-brand-black font-bold italic text-lg md:text-xl underline decoration-brand-gold/60 decoration-2 md:decoration-4 underline-offset-[-2px]">メンバーと合同添削会を体験してほしいですね。</span>
-                    </p>
-                  </div>
-                  
-                  <div className="pt-6 md:pt-8 border-t border-neutral-100">
-                    <p className="text-[12px] md:text-[16px] text-neutral-400 leading-relaxed font-light italic">
-                      複数のAIによる多角的な分析と、代表オミの論理的な判断、そこで交わされるメンバーの客観的な視点。これらが交差したとき、あなたのクリエイティブは、顧客を動かす「武器」へと昇華されます。
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -321,7 +307,7 @@ const AiReviewSession: React.FC<AiReviewSessionProps> = ({ onBack, onOpenEntry }
                       onClick={onOpenEntry}
                       className="group relative w-full md:w-auto px-10 md:px-16 py-6 md:py-7 bg-brand-black text-white text-[12px] md:text-[13px] font-bold tracking-[0.6em] md:tracking-[0.8em] uppercase overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] transition-all hover:shadow-brand-gold/40 hover:-translate-y-1"
                     >
-                      <span className="relative z-10">公式エントリーを始める</span>
+                      <span className="relative z-10">参加する</span>
                       <div className="absolute inset-0 bg-brand-gold -translate-x-full group-hover:translate-x-0 transition-transform duration-1000 ease-in-out" />
                     </button>
                   </div>
