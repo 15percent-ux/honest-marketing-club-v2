@@ -24,7 +24,7 @@ const Consultation: React.FC = () => {
           </h2>
           <p className="text-[11px] md:text-xs text-neutral-400 font-sans tracking-[0.2em] max-w-lg mx-auto leading-relaxed">
             現在、第0期メンバーを募集中です。<br />
-            参加条件をご確認の上、<br/>オープンチャットへご参加ください。
+            参加条件をご確認の上、オープンチャットへご参加ください。
           </p>
         </div>
 
@@ -46,7 +46,7 @@ const Consultation: React.FC = () => {
               </div>
               <div className="flex-1">
                 <p className="text-base md:text-lg font-bold text-white tracking-wide group-hover:text-[#D4AF37] transition-colors">
-                  参加条件：<br/>年商1,000万円以下である
+                  参加条件：年商1,000万円以下である
                 </p>
                 <p className="text-xs text-neutral-500 mt-2 font-sans leading-relaxed">
                   ※起業予定・準備中・会社員の方も含みます。本条件に該当することを確認し、チェックを入れてください。

@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
   onOpenModal: () => void;
-  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal') => void;
-  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal';
+  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce') => void;
+  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView }) => {
@@ -63,11 +63,10 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
   };
 
   const navItems = [
+    { label: 'セルフプロデュース', href: 'self-produce', isPage: true, view: 'self-produce' as const },
     { label: 'コンテンツ', href: 'provision' },
     { label: '参加者の声', href: 'stories', isPage: true, view: 'stories' as const },
     { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
-    { label: 'ジャーナル', href: 'journal', isPage: true, view: 'journal' as const },
-    { label: '入会条件', href: 'ideal-members' },
     { label: '料金', href: 'pricing' }
   ];
 
@@ -84,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
           >
             <div className="relative w-10 h-10 bg-brand-black flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-110">
               <span className="text-brand-white font-bold text-[10px] font-mono relative z-10">HMC</span>
-              <div className="absolute inset-0 bg-brand-gold translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-[#AF9662] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
             </div>
             <div className="flex flex-col items-start">
               <span className="font-display font-bold tracking-[0.1em] text-[13px] text-brand-black uppercase leading-none">
@@ -110,10 +109,10 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
                     handleNavClick(e, item.href);
                   }
                 }}
-                className={`relative text-[11px] font-bold tracking-[0.2em] transition-colors duration-300 group ${currentView === (item.isPage ? item.view : 'home') && !(!item.isPage && currentView === 'home') ? 'text-brand-gold' : 'text-neutral-500 hover:text-brand-black'}`}
+                className={`relative text-[11px] font-bold tracking-[0.2em] transition-colors duration-300 group ${currentView === (item.isPage ? item.view : 'home') && !(!item.isPage && currentView === 'home') ? 'text-[#AF9662]' : 'text-neutral-500 hover:text-brand-black'}`}
               >
                 {item.label}
-                <span className={`absolute -bottom-1 left-0 h-[1px] bg-brand-gold transition-all duration-300 ${currentView === (item.isPage ? item.view : 'home') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                <span className={`absolute -bottom-1 left-0 h-[1px] bg-[#AF9662] transition-all duration-300 ${currentView === (item.isPage ? item.view : 'home') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
               </button>
             ))}
             <button 
@@ -121,7 +120,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
               className="relative px-8 py-3 bg-brand-black text-brand-white text-[10px] tracking-[0.2em] font-bold overflow-hidden group"
             >
               <span className="relative z-10">参加する</span>
-              <div className="absolute inset-0 bg-brand-gold translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              <div className="absolute inset-0 bg-[#AF9662] translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
             </button>
           </div>
           
@@ -152,7 +151,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
                     handleNavClick(e, item.href);
                   }
                 }}
-                className={`text-2xl font-display font-bold tracking-widest transition-all duration-500 transform ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} ${currentView === (item.isPage ? item.view : 'home') ? 'text-brand-gold' : 'text-brand-black'}`}
+                className={`text-2xl font-display font-bold tracking-widest transition-all duration-500 transform ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} ${currentView === (item.isPage ? item.view : 'home') ? 'text-[#AF9662]' : 'text-brand-black'}`}
                 style={{ transitionDelay: `${idx * 100}ms` }}
               >
                 {item.label}
@@ -160,7 +159,7 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
             ))}
           </div>
           
-          <div className="w-12 h-px bg-brand-gold" />
+          <div className="w-12 h-px bg-[#AF9662]" />
           
           <button
             onClick={() => {

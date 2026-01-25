@@ -1,5 +1,6 @@
 
 import React from 'react';
+import PortfolioGallery from './PortfolioGallery';
 
 const Provision: React.FC = () => {
   const provisions = [
@@ -37,11 +38,9 @@ const Provision: React.FC = () => {
   ];
 
   return (
-    <section id="provision" className="py-16 md:py-24 bg-[#fafafa] px-6 border-y border-neutral-100 relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_10%_20%,rgba(197,160,89,0.02),transparent_50%)]" />
-      
-      <div className="max-w-6xl mx-auto relative z-10">
+    <section id="provision" className="bg-[#fafafa] border-y border-neutral-100 relative overflow-hidden">
+      {/* Content Section */}
+      <div className="py-16 md:py-24 px-6 max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 space-y-4">
           <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">What is provided</span>
           <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-sans font-bold text-brand-black tracking-tight leading-tight [word-break:keep-all]">
@@ -53,7 +52,7 @@ const Provision: React.FC = () => {
           <div className="w-12 h-px bg-brand-gold mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-24">
           {provisions.map((item, i) => (
             <div 
               key={i} 
@@ -63,7 +62,6 @@ const Provision: React.FC = () => {
                   : 'border-neutral-200 hover:border-brand-gold/30 hover:shadow-lg hover:-translate-y-0.5'
                 }`}
             >
-              {/* Featured Top Line Accent */}
               {item.featured && (
                 <div className="absolute top-0 left-0 w-full h-[3px] bg-[#cfb376] group-hover:h-[4px] transition-all duration-500" />
               )}
@@ -87,13 +85,18 @@ const Provision: React.FC = () => {
             </div>
           ))}
         </div>
-
-        <div className="mt-16 text-center">
-          <p className="text-[9px] text-neutral-400 font-sans tracking-[0.2em] uppercase font-bold">
-            All elements are designed to transform your intelligence into weapons.
-          </p>
-        </div>
       </div>
+
+      {/* Portfolio Gallery Integration (Static but visual trigger) */}
+      <div className="bg-white border-t border-neutral-100">
+        <PortfolioGallery />
+      </div>
+
+      <style>{`
+        .font-feature-palt {
+          font-feature-settings: "palt";
+        }
+      `}</style>
     </section>
   );
 };
