@@ -15,6 +15,7 @@ import AiReviewSession from './components/AiReviewSession';
 import Journal from './components/Journal';
 import Provision from './components/Provision';
 import IdealMembers from './components/IdealMembers';
+import RichProfile from './components/RichProfile';
 import Footer from './components/Footer';
 import LegalDisclosure from './components/LegalDisclosure';
 import PricingSection from './components/PricingSection';
@@ -123,6 +124,7 @@ const App: React.FC = () => {
             <Curriculum />
             <HWD />
             <Provision />
+            <RichProfile />
             <IdealMembers />
             <PricingSection />
             <Consultation />
