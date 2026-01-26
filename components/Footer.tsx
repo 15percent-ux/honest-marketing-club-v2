@@ -1,11 +1,11 @@
 
 import React from 'react';
 
-// Added 'self-produce' to the view type union to align with App.tsx's view state and resolve the type mismatch error.
+// Added 'self-produce' and 'story' to the view type union to align with App.tsx's view state and resolve the type mismatch error.
 interface FooterProps {
   onOpenModal: () => void;
-  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce') => void;
-  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce';
+  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story') => void;
+  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story';
 }
 
 const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView }) => {

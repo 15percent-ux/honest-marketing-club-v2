@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 
 interface NavbarProps {
   onOpenModal: () => void;
-  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce') => void;
-  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce';
+  onViewChange: (view: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story') => void;
+  currentView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView }) => {
@@ -67,7 +67,8 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenModal, onViewChange, currentView 
     { label: 'コンテンツ', href: 'provision' },
     { label: '参加者の声', href: 'stories', isPage: true, view: 'stories' as const },
     { label: '公開添削会', href: 'ai-review', isPage: true, view: 'ai-review' as const },
-    { label: '料金', href: 'pricing' }
+    { label: '料金', href: 'pricing' },
+    { label: 'STORY', href: 'story', isPage: true, view: 'story' as const }
   ];
 
   return (

@@ -21,12 +21,13 @@ import LegalDisclosure from './components/LegalDisclosure';
 import PricingSection from './components/PricingSection';
 import Consultation from './components/Consultation';
 import SelfProduce from './components/SelfProduce';
+import Story from './components/Story';
 
 const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const [view, setView] = useState<'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce'>('home');
+  const [view, setView] = useState<'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story'>('home');
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -43,7 +44,7 @@ const App: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleViewChange = (newView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce') => {
+  const handleViewChange = (newView: 'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story') => {
     setView(newView);
   };
 
@@ -138,8 +139,10 @@ const App: React.FC = () => {
           <Journal onBack={() => setView('home')} />
         ) : view === 'legal' ? (
           <LegalDisclosure onBack={() => setView('home')} />
-        ) : (
+        ) : view === 'self-produce' ? (
           <SelfProduce onBack={() => setView('home')} onOpenModal={handleOpenInvitation} />
+        ) : (
+          <Story onBack={() => setView('home')} />
         )}
       </main>
 
