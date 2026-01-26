@@ -315,9 +315,9 @@ const Story: React.FC<StoryProps> = ({ onBack }) => {
             word-break: normal;
           }
         }
-        /* 強調テキスト（キラーフレーズ）のレスポンシブ化 - 20%縮小 */
+        /* 強調テキスト（キラーフレーズ）のレスポンシブ化 - 指定フレーズのみさらに20%縮小 */
         .killer-phrase {
-          font-size: clamp(1.44rem, 6.4vw, 2.8rem) !important;
+          font-size: clamp(1.15rem, 5vw, 2.2rem) !important; /* 1.44rem * 0.8 = 約1.15rem */
           font-weight: bold;
           color: #c5a059;
           display: inline-block;
@@ -330,6 +330,7 @@ const Story: React.FC<StoryProps> = ({ onBack }) => {
           white-space: normal !important;
           word-break: normal !important;
           max-width: 100% !important;
+          font-feature-settings: "palt" 1;
         }
         /* 1,000万円 などの数字が途切れないように保護しつつ、親要素で折り返しを許可 */
         .inline-block {

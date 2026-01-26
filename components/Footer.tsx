@@ -97,7 +97,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenModal, onViewChange, currentView 
             <h4 className="text-[10px] font-mono font-bold text-brand-black tracking-[0.4em] uppercase border-b border-neutral-100 pb-4">Join Us</h4>
             <div className="space-y-6">
               <p className="text-[11px] text-neutral-500 font-sans leading-relaxed">
-                あなたの「本当の価値」を、ここから始めませんか。現在、第0期メンバーを募集中です。
+                現在、第0期メンバーを募集中です。
               </p>
               <div className="flex flex-col items-start gap-4">
                 <p className="text-[10px] text-brand-gold font-bold tracking-widest">募集締切：1月25日(土) 23:59まで</p>

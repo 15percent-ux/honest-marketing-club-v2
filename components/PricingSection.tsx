@@ -66,7 +66,7 @@ const PricingSection: React.FC = () => {
         <div className="text-center mb-16 space-y-4">
           <div className="flex items-center justify-center gap-4">
             <span className="w-8 h-px bg-brand-gold"></span>
-            <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">Investment</span>
+            <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.2em] md:tracking-[0.4em] uppercase font-feature-palt">リッチプロフィール制作費</span>
             <span className="w-8 h-px bg-brand-gold"></span>
           </div>
           <h2 className="text-3xl md:text-5xl font-sans font-bold text-white tracking-tight">料金のご案内</h2>
@@ -101,7 +101,7 @@ const PricingSection: React.FC = () => {
             {/* STICKY HEADER: Fixed on top */}
             <div className="sticky top-0 z-[1020] bg-white border-b border-neutral-100 px-6 py-4 md:px-10 md:py-6 flex justify-between items-center shrink-0">
               <div className="flex flex-col">
-                <span className="text-[9px] font-mono text-brand-gold font-bold tracking-[0.2em] uppercase">Investment Plans</span>
+                <span className="text-[9px] font-mono text-brand-gold font-bold tracking-[0.2em] uppercase font-feature-palt">リッチプロフィール制作費</span>
                 <h3 className="text-sm md:text-lg font-sans font-bold text-brand-black">HMC Stars. 参加プラン一覧</h3>
               </div>
               <button 
@@ -183,6 +183,7 @@ const PricingSection: React.FC = () => {
       )}
 
       <style>{`
+        .font-feature-palt { font-feature-settings: "palt"; }
         /* Desktop zoom/compact adjustment */
         @media (min-width: 1024px) {
           .lg\\:grid-cols-4 {
