@@ -87,7 +87,7 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
                 <div className="pt-4">
                   <button 
                     onClick={() => toggleStory(story.id)}
-                    className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-6 py-3 border border-neutral-200 text-brand-black text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-brand-black hover:text-white hover:border-brand-black rounded-sm bg-transparent"
+                    className={`w-full md:w-auto inline-flex items-center justify-center gap-3 px-6 py-3 border border-neutral-200 text-brand-black text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-brand-black hover:text-white hover:border-brand-black rounded-sm bg-transparent hover:animate-none ${expandedId === story.id ? '' : 'animate-blink-action'}`}
                   >
                     <span>{expandedId === story.id ? 'Close Story' : 'Read Full Story'}</span>
                     <span className={`transition-transform duration-500 ${expandedId === story.id ? 'rotate-180' : ''}`}>↓</span>
@@ -110,6 +110,13 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
         }
         .animate-fade-in-content {
           animation: fade-in-content 0.5s ease-out forwards;
+        }
+        @keyframes blink-action {
+          0%, 100% { opacity: 1; border-color: #e5e5e5; color: #111111; }
+          50% { opacity: 0.6; border-color: #c5a059; color: #c5a059; }
+        }
+        .animate-blink-action {
+          animation: blink-action 2s infinite ease-in-out;
         }
       `}</style>
     </div>
