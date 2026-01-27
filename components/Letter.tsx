@@ -149,7 +149,7 @@ const Letter: React.FC = () => {
             
             <button 
               onClick={() => setIsProfileOpen(false)}
-              className="absolute top-4 right-4 md:top-6 md:right-6 z-[250] group flex items-center gap-3 py-2.5 px-4 rounded-full bg-black/80 backdrop-blur-md border border-white/20 hover:border-brand-gold hover:shadow-[0_0_20px_rgba(197,160,89,0.2)] transition-all active:scale-90"
+              className="absolute top-4 right-4 md:top-6 md:right-auto md:left-1/2 md:-translate-x-1/2 z-[9999] cursor-pointer group flex items-center gap-3 py-2.5 px-4 rounded-full bg-black/80 backdrop-blur-md border border-white/20 hover:border-brand-gold hover:shadow-[0_0_20px_rgba(197,160,89,0.2)] transition-all active:scale-90"
               aria-label="Close profile"
             >
               <span className="text-[9px] font-mono font-bold tracking-[0.3em] text-white group-hover:text-brand-gold transition-colors uppercase">Exit</span>

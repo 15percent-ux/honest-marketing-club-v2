@@ -60,6 +60,7 @@ const PricingSection: React.FC = () => {
 
   return (
     <section id="price" className="py-24 md:py-32 bg-brand-black text-white px-6 relative overflow-hidden">
+      {/* 背景エフェクト */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(197,160,89,0.05),transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -98,15 +99,15 @@ const PricingSection: React.FC = () => {
           
           <div className="relative w-full max-w-[1280px] max-h-[92vh] bg-white rounded-xl shadow-[0_0_120px_rgba(0,0,0,0.5)] overflow-hidden animate-spring-up flex flex-col">
             
-            {/* STICKY HEADER: Fixed on top */}
-            <div className="sticky top-0 z-[1020] bg-white border-b border-neutral-100 px-6 py-4 md:px-10 md:py-6 flex justify-between items-center shrink-0">
+            {/* STICKY HEADER: Fixed on top, relative for absolute button positioning */}
+            <div className="sticky top-0 z-[1020] bg-white border-b border-neutral-100 px-6 py-4 md:px-10 md:py-6 flex justify-between items-center shrink-0 relative">
               <div className="flex flex-col">
                 <span className="text-[9px] font-mono text-brand-gold font-bold tracking-[0.2em] uppercase font-feature-palt">リッチプロフィール制作費</span>
                 <h3 className="text-sm md:text-lg font-sans font-bold text-brand-black">HMC Stars. 参加プラン一覧</h3>
               </div>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="w-10 h-10 bg-brand-black text-white rounded-full flex items-center justify-center hover:bg-brand-gold transition-all shadow-xl active:scale-90"
+                className="relative z-[9999] cursor-pointer w-10 h-10 bg-brand-black text-white rounded-full flex items-center justify-center hover:bg-brand-gold transition-all shadow-xl active:scale-90 md:absolute md:left-1/2 md:-translate-x-1/2 md:right-auto md:top-1/2 md:-translate-y-1/2"
               >
                 <span className="text-2xl font-light">✕</span>
               </button>

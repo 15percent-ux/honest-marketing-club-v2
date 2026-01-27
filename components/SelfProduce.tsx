@@ -30,8 +30,17 @@ const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
     }
   ];
 
+  const breakdownItems = [
+    "打合せを数回、ヒアリングを実施",
+    "カメラマンによる撮影",
+    "ディレクターによるブランドプロフィールの設計構築",
+    "ライターによるコピーライティング",
+    "PC版/Mobile版のレスポンシブ仕様のウェブ構築",
+    "納品まで約3ヶ月"
+  ];
+
   return (
-    <div className="min-h-screen bg-white animate-fade-in font-sans selection:bg-brand-gold selection:text-white">
+    <div id="self-produce" className="min-h-screen bg-white animate-fade-in font-sans selection:bg-brand-gold selection:text-white">
       {/* ① Hero Section */}
       <section className="relative h-[65vh] md:h-[75vh] flex flex-col items-center justify-center px-6 bg-brand-black overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(175,150,98,0.1),transparent_70%)]" />
@@ -112,23 +121,62 @@ const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
       </section>
 
       {/* ⑥ Pricing Section */}
-      <section className="py-20 md:py-28 px-6 max-w-[800px] mx-auto">
-        <div className="bg-neutral-50 rounded-3xl p-8 md:p-14 text-center space-y-12 border border-neutral-100 shadow-sm">
-          <div className="space-y-3">
-            <h3 className="text-[clamp(1.2rem,3vw,1.8rem)] font-bold text-brand-black tracking-widest font-feature-palt">リッチプロフィール制作費</h3>
-            <div className="w-10 h-px bg-[#AF9662] mx-auto" />
+      <section className="py-20 md:py-32 px-6 max-w-[900px] mx-auto">
+        <div className="space-y-6 md:space-y-10">
+          <div className="text-center space-y-4 mb-12">
+             <div className="inline-flex items-center gap-4">
+                <span className="w-8 h-px bg-brand-black/30"></span>
+                <span className="text-brand-black font-mono text-[10px] font-bold tracking-[0.4em] uppercase">Pricing Plan</span>
+                <span className="w-8 h-px bg-brand-black/30"></span>
+             </div>
+             <h2 className="text-2xl md:text-3xl font-sans font-bold text-brand-black tracking-tight">リッチプロフィール制作費</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-neutral-200">
-            <div className="space-y-3 py-6 md:py-0 md:px-6">
-              <span className="text-neutral-400 font-sans text-[10px] font-bold tracking-[0.3em] uppercase">一般価格</span>
-              <p className="text-2xl md:text-3xl font-sans font-bold text-neutral-300 lining-nums">330,000<span className="text-[10px] ml-1">円</span></p>
-            </div>
-            <div className="space-y-3 py-6 md:py-0 md:px-6">
-              <span className="text-[#AF9662] font-sans text-[10px] font-bold tracking-[0.3em] uppercase">メンバー限定価格</span>
-              <div className="flex flex-col items-center">
-                <p className="text-4xl md:text-5xl font-sans font-bold text-[#AF9662] tracking-tighter lining-nums">110,000<span className="text-[10px] ml-1">円（税込）</span></p>
-              </div>
-            </div>
+
+          <div className="bg-white rounded-none md:rounded-lg border border-neutral-200 overflow-hidden shadow-[0_10px_40px_-15px_rgba(0,0,0,0.08)]">
+             {/* Header */}
+             <div className="bg-brand-black text-white p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                  <span className="text-[#AF9662] font-mono text-[10px] tracking-[0.3em] uppercase font-bold">Total Branding Package</span>
+                  <h3 className="text-xl md:text-2xl font-bold tracking-widest mt-2">リッチプロフィール制作</h3>
+                </div>
+                <div className="flex flex-col items-end">
+                   <div className="flex items-center gap-4 text-neutral-400">
+                      <span className="text-[10px] tracking-widest uppercase line-through decoration-neutral-500/50">一般価格</span>
+                      <span className="text-lg font-bold lining-nums line-through decoration-neutral-500/50">¥330,000</span>
+                   </div>
+                   <div className="flex items-baseline gap-2 text-[#AF9662]">
+                      <span className="text-[10px] tracking-widest uppercase font-bold text-white">メンバー限定価格</span>
+                      <span className="text-3xl md:text-4xl font-bold lining-nums tracking-tighter">¥110,000</span>
+                      <span className="text-xs text-white/60">(税込)</span>
+                   </div>
+                </div>
+             </div>
+
+             {/* Content */}
+             <div className="p-6 md:p-10 bg-white">
+                <div className="mb-8">
+                  <h4 className="text-sm font-bold text-brand-black border-l-2 border-[#AF9662] pl-3 mb-6 tracking-widest uppercase">Included Services / 内訳</h4>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                    {breakdownItems.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-3 text-sm text-neutral-600 font-light">
+                        <span className="text-[#AF9662] mt-1.5 w-1.5 h-1.5 bg-[#AF9662] rounded-full flex-shrink-0" />
+                        <span className="font-feature-palt">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="pt-8 border-t border-neutral-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                   <div className="space-y-1">
+                      <p className="text-sm font-bold text-brand-black">Webページ運用管理費</p>
+                      <p className="text-xs text-neutral-500 font-light">サーバー保守・ドメイン管理・システム更新</p>
+                   </div>
+                   <div className="flex flex-col items-end gap-1">
+                      <p className="text-xl font-bold text-brand-black lining-nums">¥3,300 <span className="text-xs font-normal text-neutral-500">/ 月(税込)</span></p>
+                      <p className="text-[10px] text-[#AF9662] font-bold tracking-wide">※完成後の修正・変更なども可能です</p>
+                   </div>
+                </div>
+             </div>
           </div>
         </div>
       </section>

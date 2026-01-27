@@ -66,20 +66,20 @@ const Hero: React.FC = () => {
       <div className="relative z-10 text-center max-w-7xl w-full flex flex-col items-center">
         {/* Main Title Section */}
         <div 
-          className="mb-12 md:mb-16 transition-transform duration-700 ease-out w-full"
+          className="mb-12 md:mb-16 transition-transform duration-700 ease-out w-full max-w-full"
           style={{ 
             transform: `perspective(1000px) rotateX(${mousePos.y * -1.5}deg) rotateY(${mousePos.x * 1.5}deg) translateZ(0)` 
           }}
         >
-          <h1 ref={titleRef} className="flex flex-col items-center font-display font-bold leading-[1.1] tracking-[0.05em] uppercase w-full">
-            <span className="hero-line block overflow-hidden">
-              <span className="block text-[clamp(2.5rem,6vw,5rem)] text-brand-black">Honest</span>
+          <h1 ref={titleRef} className="flex flex-col items-center font-display font-bold leading-[1.1] tracking-[0.05em] uppercase w-full max-w-full">
+            <span className="hero-line block overflow-hidden w-full text-center">
+              <span className="block text-[clamp(24px,6vw,80px)] text-brand-black whitespace-normal break-words w-full">Honest</span>
             </span>
-            <span className="hero-line block overflow-hidden -mt-1 md:-mt-2">
-              <span className="block text-[clamp(2.5rem,6vw,5rem)] text-brand-gold">Marketing</span>
+            <span className="hero-line block overflow-hidden -mt-1 md:-mt-2 w-full text-center">
+              <span className="block text-[clamp(24px,6vw,80px)] text-brand-gold whitespace-normal break-words w-full">Marketing</span>
             </span>
-            <span className="hero-line block overflow-hidden -mt-1 md:-mt-2">
-              <span className="block text-[clamp(2.5rem,6vw,5rem)] text-brand-black">Club Stars.</span>
+            <span className="hero-line block overflow-hidden -mt-1 md:-mt-2 w-full text-center">
+              <span className="block text-[clamp(24px,6vw,80px)] text-brand-black whitespace-normal break-words w-full">Club Stars.</span>
             </span>
           </h1>
         </div>

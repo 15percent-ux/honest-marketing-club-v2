@@ -5,7 +5,7 @@ import GalleryModal from './GalleryModal';
 const SITES = [
   {
     id: 'site-a',
-    title: '魚勝商店 / 麹王子',
+    title: 'AMAZAKE CAMP',
     url: 'https://koujiouji.vercel.app/',
     image: 'https://res.cloudinary.com/dxr2aeoze/image/upload/v1769342204/koujiouji_product_wiwtqw.png',
     category: 'Brand Identity',
@@ -53,10 +53,10 @@ const PortfolioGallery: React.FC = () => {
             <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">Produced Archives</span>
           </div>
           <h2 className="text-[clamp(1.5rem,4vw,2.5rem)] font-sans font-bold text-white tracking-tight leading-tight [word-break:keep-all] font-feature-palt">
-            制作実績：<span className="text-white">プロダクト・ショーケース</span>
+            制作実績
           </h2>
           <p className="text-[14px] md:text-[15px] text-white/60 leading-[1.6] font-light text-justify font-feature-palt tracking-[-0.01em] max-w-2xl">
-            ディレクション、デザイン、ライティング。全ての工程において「美意識」と「戦略」を両立させた、one scene チームによる成果物の一部をご紹介します。画像をクリックすると、実際のサイトを閲覧可能です。
+            ディレクション、デザイン、ライティングを一貫して作成します、外部委託せずに自社完結で全て担当します、one scene チームによる成果物の一部をご紹介。画像をクリックすると、実際のサイトを閲覧可能です。
           </p>
         </div>
 

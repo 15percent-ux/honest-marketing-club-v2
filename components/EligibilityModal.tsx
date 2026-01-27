@@ -36,7 +36,12 @@ const EligibilityModal: React.FC<EligibilityModalProps> = ({ isOpen, onClose }) 
           
           {/* Header */}
           <div className="p-8 md:p-12 border-b border-neutral-900 text-center relative bg-neutral-950/50">
-            <button onClick={onClose} className="absolute top-8 right-8 text-neutral-600 hover:text-brand-gold transition-colors text-xl z-20">✕</button>
+            <button 
+              onClick={onClose} 
+              className="absolute top-8 right-8 md:right-auto md:left-1/2 md:-translate-x-1/2 text-neutral-600 hover:text-brand-gold transition-colors text-xl z-[9999] cursor-pointer"
+            >
+              ✕
+            </button>
             <span className="text-[10px] font-mono tracking-[0.6em] text-brand-gold uppercase block mb-4">Official Join Protocol</span>
             <h2 className="text-xl md:text-2xl font-display font-bold text-white tracking-[0.1em]">オネストマーケティングクラブへ参加する</h2>
           </div>
