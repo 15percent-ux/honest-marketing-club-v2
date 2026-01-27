@@ -45,13 +45,18 @@
       html {
         scroll-behavior: smooth;
       }
+      /* モバイル横揺れ防止のグローバル設定 */
+      html, body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+      }
       body {
         background-color: #ffffff;
         color: #111111;
         font-family: 'Zen Old Mincho', serif;
         line-height: 1.8;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
       }
       .glass {
         background: rgba(255, 255, 255, 0.7);

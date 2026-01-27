@@ -72,7 +72,8 @@ const Story: React.FC<StoryProps> = ({ onBack }) => {
       </div>
 
       {/* 1. Hero Section: 全画面ヘッダー */}
-      <section className="relative w-screen h-screen flex flex-col items-center justify-center overflow-hidden bg-brand-black">
+      {/* w-screenはスクロールバー幅を含むため横揺れの原因になるのでw-fullに変更 */}
+      <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-brand-black">
         <div className="absolute inset-0 z-0 bg-brand-black">
           <img 
             src={optimizeUrl("https://res.cloudinary.com/dxr2aeoze/image/upload/v1769388223/%E5%90%8D%E7%A7%B0%E6%9C%AA%E8%A8%AD%E5%AE%9A%E3%81%AE%E3%83%86%E3%82%99%E3%82%B5%E3%82%99%E3%82%A4%E3%83%B3_1_fjmrxi.png", 2000)} 
