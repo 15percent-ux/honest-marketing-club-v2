@@ -87,8 +87,8 @@ const Provision: React.FC = () => {
         </div>
       </div>
 
-      {/* Portfolio Gallery Integration (Static but visual trigger) */}
-      <div className="bg-white border-t border-neutral-100">
+      {/* Portfolio Gallery Integration */}
+      <div className="bg-brand-black">
         <PortfolioGallery />
       </div>
 
