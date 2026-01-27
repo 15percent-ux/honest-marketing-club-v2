@@ -84,13 +84,15 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
                   )}
                 </div>
 
-                <button 
-                  onClick={() => toggleStory(story.id)}
-                  className="text-[10px] font-bold text-brand-black tracking-[0.3em] uppercase border-b border-brand-black/20 hover:border-brand-gold hover:text-brand-gold transition-colors pb-1 inline-flex items-center gap-2"
-                >
-                  {expandedId === story.id ? 'Close Story' : 'Read Full Story'}
-                  <span className={`transition-transform duration-500 ${expandedId === story.id ? 'rotate-180' : ''}`}>↓</span>
-                </button>
+                <div className="pt-4">
+                  <button 
+                    onClick={() => toggleStory(story.id)}
+                    className="w-full md:w-auto inline-flex items-center justify-center gap-3 px-6 py-3 border border-neutral-200 text-brand-black text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-brand-black hover:text-white hover:border-brand-black rounded-sm bg-transparent"
+                  >
+                    <span>{expandedId === story.id ? 'Close Story' : 'Read Full Story'}</span>
+                    <span className={`transition-transform duration-500 ${expandedId === story.id ? 'rotate-180' : ''}`}>↓</span>
+                  </button>
+                </div>
               </div>
 
               <div className={`mt-8 mx-4 p-5 bg-neutral-50 border-l-2 border-brand-gold/60 transition-colors group-hover:bg-brand-gold/5 ${expandedId === story.id ? 'opacity-50' : ''}`}>
