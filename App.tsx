@@ -30,8 +30,62 @@ const App: React.FC = () => {
   const [view, setView] = useState<'home' | 'stories' | 'ai-review' | 'journal' | 'legal' | 'self-produce' | 'story'>('home');
   
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // ページ遷移時にトップへ戻る（ただしハッシュがある場合はハッシュ処理に任せる）
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
   }, [view]);
+
+  // URLハッシュに基づく初期表示とスクロール制御
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+
+      const viewMap: Record<string, typeof view> = {
+        'stories': 'stories',
+        'ai-review': 'ai-review',
+        'journal': 'journal',
+        'legal': 'legal',
+        'self-produce': 'self-produce',
+        'story': 'story'
+      };
+
+      const targetView = viewMap[hash];
+
+      if (targetView) {
+        // 特定のビュー（ページ）に該当する場合
+        if (view !== targetView) setView(targetView);
+        // ビュー切り替え後のレンダリング待ち
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          else window.scrollTo(0, 0);
+        }, 100);
+      } else {
+        // ホーム画面内のセクション（reviews, price, provisionなど）の場合
+        if (view !== 'home') {
+          setView('home');
+          // ホーム画面への切り替え待ち
+          setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        } else {
+          // 既にホーム画面にいる場合
+          const el = document.getElementById(hash);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    };
+
+    // 初回ロード時
+    handleHashChange();
+
+    // ハッシュ変更時
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [view]); // viewの変更も監視し、適切なタイミングでスクロールを実行できるようにする
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();

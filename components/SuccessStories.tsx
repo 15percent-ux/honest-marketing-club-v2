@@ -14,7 +14,7 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-48 px-6 animate-fade-in">
+    <div id="stories" className="min-h-screen bg-white pt-32 pb-48 px-6 animate-fade-in">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-32 space-y-6">
@@ -112,8 +112,16 @@ const SuccessStories: React.FC<SuccessStoriesProps> = ({ onBack }) => {
           animation: fade-in-content 0.5s ease-out forwards;
         }
         @keyframes blink-action {
-          0%, 100% { opacity: 1; border-color: #e5e5e5; color: #111111; }
-          50% { opacity: 0.6; border-color: #c5a059; color: #c5a059; }
+          0%, 100% { 
+            background-color: transparent; 
+            border-color: #e5e5e5; 
+            color: #111111; 
+          }
+          50% { 
+            background-color: rgba(197, 160, 89, 0.15); 
+            border-color: #c5a059; 
+            color: #c5a059; 
+          }
         }
         .animate-blink-action {
           animation: blink-action 2s infinite ease-in-out;

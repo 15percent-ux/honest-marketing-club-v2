@@ -59,7 +59,7 @@ const PricingSection: React.FC = () => {
   }, [isModalOpen]);
 
   return (
-    <section id="pricing" className="py-24 md:py-32 bg-brand-black text-white px-6 relative overflow-hidden">
+    <section id="price" className="py-24 md:py-32 bg-brand-black text-white px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(197,160,89,0.05),transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
