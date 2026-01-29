@@ -103,11 +103,11 @@ const Hero: React.FC = () => {
             <span className="text-[8px] font-sans text-neutral-400 uppercase tracking-[0.4em] block mb-2 font-bold">スケジュール</span>
             <div className="space-y-1">
               <p className="text-brand-black text-sm md:text-base font-sans font-bold tracking-tight">
-                1月26日（月）開塾
+                2月8日（土）開塾
               </p>
               <div className="flex items-center justify-center gap-2">
                 <span className="h-px w-2 bg-brand-gold/20"></span>
-                <p className="text-brand-gold font-sans text-[8px] tracking-[0.2em] font-medium">一粒万倍日・月徳日</p>
+                <p className="text-brand-gold font-sans text-[8px] tracking-[0.2em] font-medium">一粒万倍日</p>
                 <span className="h-px w-2 bg-brand-gold/20"></span>
               </div>
             </div>
@@ -124,7 +124,7 @@ const Hero: React.FC = () => {
               <p className="text-white text-sm md:text-base font-sans font-bold tracking-tight">
                 第0期メンバー募集開始
               </p>
-              <p className="text-brand-gold font-sans text-[8px] tracking-[0.3em] font-bold mt-0.5">※1月25日締切※</p>
+              <p className="text-brand-gold font-sans text-[8px] tracking-[0.3em] font-bold mt-0.5">※2月5日締切※</p>
             </div>
           </div>
         </div>

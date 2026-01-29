@@ -2,7 +2,11 @@
 import React from 'react';
 import PortfolioGallery from './PortfolioGallery';
 
-const Provision: React.FC = () => {
+interface ProvisionProps {
+  onNavigateToSelfProduce?: () => void;
+}
+
+const Provision: React.FC<ProvisionProps> = ({ onNavigateToSelfProduce }) => {
   const provisions = [
     {
       category: "Environment",
@@ -89,7 +93,27 @@ const Provision: React.FC = () => {
 
       {/* Portfolio Gallery Integration */}
       <div className="bg-brand-black">
-        <PortfolioGallery />
+        <PortfolioGallery 
+          enableModal={false}
+          subtitle="セルフプロデュースもしっかりおこないます。"
+          title="ブランド価値を高めるリッチプロフィールを制作できる"
+          description={
+            <div className="space-y-8">
+              <span className="text-white font-medium text-[15px] md:text-[16px] leading-relaxed block border-l-2 border-brand-gold pl-6 py-2">
+                コミュニティはメンバーのブランド作りをお手伝いします。自分だけのリッチなプロフィールです、オネマクラブの専属チームからディレクター、デザイナー、撮影、コピーライター達が一貫して制作します、優秀なチーム一丸でビジョンや目的を深掘りながら取り組む大好評のセルフブランディングコンテンツです。
+              </span>
+              <div className="pl-6">
+                <button 
+                  onClick={onNavigateToSelfProduce}
+                  className="group relative px-10 py-4 bg-brand-gold text-white text-[12px] font-bold tracking-[0.2em] uppercase overflow-hidden shadow-[0_10px_30px_-5px_rgba(197,160,89,0.4)] transition-all hover:shadow-brand-gold/60 hover:-translate-y-1"
+                >
+                  <span className="relative z-10">※詳しく見る</span>
+                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                </button>
+              </div>
+            </div>
+          }
+        />
       </div>
 
       <style>{`

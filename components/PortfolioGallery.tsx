@@ -37,8 +37,26 @@ const SITES = [
   }
 ];
 
-const PortfolioGallery: React.FC = () => {
+interface PortfolioGalleryProps {
+  enableModal?: boolean;
+  subtitle?: string;
+  title?: string;
+  description?: React.ReactNode;
+}
+
+const PortfolioGallery: React.FC<PortfolioGalleryProps> = ({
+  enableModal = true,
+  subtitle = "Produced Archives",
+  title = "制作実績",
+  description = "ディレクション、デザイン、ライティングを一貫して作成します、外部委託せずに自社完結で全て担当します、one scene チームによる成果物の一部をご紹介。画像をクリックすると、実際のサイトを閲覧可能です。"
+}) => {
   const [selectedSite, setSelectedSite] = useState<typeof SITES[0] | null>(null);
+
+  const handleSiteClick = (site: typeof SITES[0]) => {
+    if (enableModal) {
+      setSelectedSite(site);
+    }
+  };
 
   return (
     <section className="py-24 md:py-40 px-6 bg-brand-black relative overflow-hidden">
@@ -50,14 +68,14 @@ const PortfolioGallery: React.FC = () => {
         <div className="mb-20 space-y-8">
           <div className="flex items-center gap-4">
             <span className="w-12 h-px bg-brand-gold"></span>
-            <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">Produced Archives</span>
+            <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">{subtitle}</span>
           </div>
           <h2 className="text-[clamp(1.5rem,4vw,2.5rem)] font-sans font-bold text-white tracking-tight leading-tight [word-break:keep-all] font-feature-palt">
-            制作実績
+            {title}
           </h2>
-          <p className="text-[14px] md:text-[15px] text-white/60 leading-[1.6] font-light text-justify font-feature-palt tracking-[-0.01em] max-w-2xl">
-            ディレクション、デザイン、ライティングを一貫して作成します、外部委託せずに自社完結で全て担当します、one scene チームによる成果物の一部をご紹介。画像をクリックすると、実際のサイトを閲覧可能です。
-          </p>
+          <div className="text-[14px] md:text-[15px] text-white/60 leading-[1.6] font-light text-justify font-feature-palt tracking-[-0.01em] max-w-2xl">
+            {description}
+          </div>
         </div>
 
         {/* Gallery Grid */}
@@ -65,22 +83,24 @@ const PortfolioGallery: React.FC = () => {
           {SITES.map((site) => (
             <div 
               key={site.id}
-              onClick={() => setSelectedSite(site)}
-              className="group cursor-pointer space-y-6"
+              onClick={() => handleSiteClick(site)}
+              className={`group space-y-6 ${enableModal ? 'cursor-pointer' : 'cursor-default'}`}
             >
               {/* Card Thumbnail */}
-              <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-neutral-900/50 border border-white/5 transition-all duration-700 hover:border-brand-gold/40 hover:shadow-[0_20px_50px_rgba(197,160,89,0.1)] group-hover:-translate-y-2">
+              <div className={`relative aspect-[16/10] overflow-hidden rounded-xl bg-neutral-900/50 border border-white/5 transition-all duration-700 ${enableModal ? 'hover:border-brand-gold/40 hover:shadow-[0_20px_50px_rgba(197,160,89,0.1)] group-hover:-translate-y-2' : ''}`}>
                 <img 
                   src={site.image} 
                   alt={site.title} 
-                  className="w-full h-full object-contain grayscale opacity-40 transition-all duration-1000 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"
+                  className={`w-full h-full object-contain grayscale opacity-40 transition-all duration-1000 ${enableModal ? 'group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105' : 'grayscale-0 opacity-80'}`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                  <div className="flex items-center gap-3">
-                    <span className="w-6 h-px bg-brand-gold" />
-                    <span className="text-[9px] font-mono text-brand-gold font-bold tracking-widest uppercase">Open Live Site</span>
+                {enableModal && (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                    <div className="flex items-center gap-3">
+                      <span className="w-6 h-px bg-brand-gold" />
+                      <span className="text-[9px] font-mono text-brand-gold font-bold tracking-widest uppercase">Open Live Site</span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Card Meta */}
@@ -89,7 +109,7 @@ const PortfolioGallery: React.FC = () => {
                   <span className="text-brand-gold font-mono text-[9px] font-bold tracking-[0.3em] uppercase">{site.category}</span>
                   <span className="text-white/30 font-sans text-[10px] italic">{site.accent}</span>
                 </div>
-                <h4 className="text-xl font-bold text-white font-feature-palt transition-colors group-hover:text-brand-gold">
+                <h4 className={`text-xl font-bold text-white font-feature-palt transition-colors ${enableModal ? 'group-hover:text-brand-gold' : ''}`}>
                   {site.title}
                 </h4>
               </div>

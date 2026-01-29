@@ -9,7 +9,7 @@ const LineNavigator: React.FC = () => {
       label: "コミュニティ参加",
       desc: "LINEオープンチャットの秘密のグループへ。匿名での参加も可能です。",
       messages: [
-        { type: "date", text: "2025年1月26日(日)" },
+        { type: "date", text: "2025年2月8日(土)" },
         { type: "system", text: "新しいメンバーが参加しました" },
         { sender: "Member A", text: "よろしくお願いします！ずっと気になっていたので嬉しいです。", time: "11:02", side: "left" },
         { sender: "Strategist Omi", text: "歓迎します。ここでは『答え合わせ』を習慣にしていきましょう！", time: "11:05", side: "left" },
@@ -20,7 +20,7 @@ const LineNavigator: React.FC = () => {
       label: "事業の壁打ち",
       desc: "戦略エンジンの活用、メンバー間での仮説共有が始まります。",
       messages: [
-        { type: "date", text: "2025年1月27日(月)" },
+        { type: "date", text: "2025年2月9日(日)" },
         { sender: "Member D", text: "新規サービスの価格を3倍に再設計してみました。このロジックでいこうと思います。", time: "14:15", side: "left" },
         { sender: "Strategist Omi", text: "その『価値の言語化』、非常に鋭いですね。顧客視点でも納得感があります。Goです！", time: "14:20", side: "left" },
         { sender: "Member A", text: "Dさんの仮説、めちゃくちゃ勉強になります...！", time: "14:22", side: "left" }

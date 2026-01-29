@@ -22,6 +22,7 @@ import PricingSection from './components/PricingSection';
 import Consultation from './components/Consultation';
 import SelfProduce from './components/SelfProduce';
 import Story from './components/Story';
+import FAQ from './components/FAQ';
 
 const App: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -132,7 +133,7 @@ const App: React.FC = () => {
 
                 <div className="flex flex-col items-center gap-4">
                   <p className="text-[#AF9662] font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase font-bold">
-                    募集締切：2025年1月25日(土) 23:59まで
+                    募集締切：2025年2月5日(水) 23:59まで
                   </p>
                   <div 
                     className="relative inline-block group perspective-1000 cursor-pointer"
@@ -179,10 +180,11 @@ const App: React.FC = () => {
             <LineNavigator />
             <Curriculum />
             <HWD />
-            <Provision />
-            <RichProfile />
+            <Provision onNavigateToSelfProduce={() => handleViewChange('self-produce')} />
+            <RichProfile onNavigateToSelfProduce={() => handleViewChange('self-produce')} />
             <IdealMembers />
             <PricingSection />
+            <FAQ />
             <Consultation />
           </>
         ) : view === 'stories' ? (
