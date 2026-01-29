@@ -48,7 +48,7 @@ const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
           <span className="text-[#AF9662] font-mono text-[9px] md:text-[10px] font-bold tracking-[0.8em] uppercase block animate-reveal-up">
             HMC MEMBERS ONLY
           </span>
-          <h1 className="text-[clamp(2rem,6vw,60px)] font-sans font-bold text-white tracking-tight leading-none [word-break:keep-all] animate-reveal-up delay-200">
+          <h1 className="text-[clamp(28px,8vw,60px)] font-sans font-bold text-white tracking-tight leading-tight [word-break:normal] break-words md:[word-break:keep-all] animate-reveal-up delay-200">
             セルフプロデュース
           </h1>
           <p className="text-base md:text-xl text-white/50 font-light tracking-[0.2em] animate-reveal-up delay-500">
@@ -65,8 +65,8 @@ const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
             <span className="text-[#AF9662] font-mono text-[9px] font-bold tracking-[0.4em] uppercase">Philosophy</span>
             <span className="w-6 h-px bg-[#AF9662]" />
           </div>
-          <h2 className="text-[clamp(1.2rem,3vw,1.6rem)] font-bold text-brand-black leading-tight [word-break:keep-all] font-feature-palt">
-            サービスの価値と代表者のプロフィールは比例する
+          <h2 className="text-[clamp(20px,5vw,2rem)] md:text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-brand-black leading-tight [word-break:normal] break-words md:[word-break:keep-all] font-feature-palt">
+            サービスの価値は代表者のプロフィールに比例する
           </h2>
           <p className="text-[14px] md:text-[15px] text-neutral-500 leading-[1.6] font-light text-justify max-w-[650px] mx-auto font-feature-palt tracking-[-0.01em]">
             「なぜあなたがそれをやっているのか？」「誰のために？」といった価値の根拠を徹底的に深掘りし、言語化します。単なる経歴の羅列ではない、あなたの使命と想いが詰まったストーリーを、市場で選ばれるブランドへと昇華させます。
@@ -184,7 +184,7 @@ const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
       {/* ⑦ CTA Section */}
       <section className="py-20 md:py-32 px-6 bg-[#0a0a0a] text-center">
         <div className="max-w-[800px] mx-auto space-y-12">
-          <h2 className="text-xl md:text-3xl font-bold text-white tracking-tight leading-tight [word-break:keep-all] font-feature-palt">
+          <h2 className="text-[clamp(20px,5vw,2.5rem)] md:text-3xl font-bold text-white tracking-tight leading-tight [word-break:normal] break-words md:[word-break:keep-all] font-feature-palt">
             あなたの本質を、ブランドへと昇華させる。
           </h2>
           <div className="flex flex-col items-center gap-8">

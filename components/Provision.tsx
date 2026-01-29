@@ -47,7 +47,7 @@ const Provision: React.FC<ProvisionProps> = ({ onNavigateToSelfProduce }) => {
       <div className="py-16 md:py-24 px-6 max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16 space-y-4">
           <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">What is provided</span>
-          <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-sans font-bold text-brand-black tracking-tight leading-tight [word-break:keep-all]">
+          <h2 className="text-[clamp(24px,6vw,3rem)] md:text-[clamp(1.75rem,4vw,3rem)] font-sans font-bold text-brand-black tracking-tight leading-tight [word-break:normal] break-words md:[word-break:keep-all]">
             <span className="relative inline-block">
               <span className="relative z-10">６つの成長コンテンツ</span>
               <span className="absolute bottom-1 left-0 w-full h-3 bg-yellow-200/40 -z-0" />

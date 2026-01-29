@@ -70,7 +70,7 @@ const PortfolioGallery: React.FC<PortfolioGalleryProps> = ({
             <span className="w-12 h-px bg-brand-gold"></span>
             <span className="text-brand-gold font-mono text-[10px] font-bold tracking-[0.5em] uppercase">{subtitle}</span>
           </div>
-          <h2 className="text-[clamp(1.5rem,4vw,2.5rem)] font-sans font-bold text-white tracking-tight leading-tight [word-break:keep-all] font-feature-palt">
+          <h2 className="text-[clamp(20px,6vw,2.5rem)] md:text-[clamp(1.5rem,4vw,2.5rem)] font-sans font-bold text-white tracking-tight leading-tight [word-break:normal] break-words md:[word-break:keep-all] font-feature-palt">
             {title}
           </h2>
           <div className="text-[14px] md:text-[15px] text-white/60 leading-[1.6] font-light text-justify font-feature-palt tracking-[-0.01em] max-w-2xl">
