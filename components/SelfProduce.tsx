@@ -5,9 +5,10 @@ import PortfolioGallery from './PortfolioGallery';
 interface SelfProduceProps {
   onBack: () => void;
   onOpenModal: () => void;
+  onNavigateToStory: () => void;
 }
 
-const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
+const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal, onNavigateToStory }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -66,30 +67,102 @@ const SelfProduce: React.FC<SelfProduceProps> = ({ onBack, onOpenModal }) => {
             <span className="w-6 h-px bg-[#AF9662]" />
           </div>
           <h2 className="text-[clamp(20px,5vw,2rem)] md:text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-brand-black leading-tight [word-break:normal] break-words md:[word-break:keep-all] font-feature-palt">
-            サービスの価値は代表者のプロフィールに比例する
+            「何を買うか」から「誰から買うか」へ
           </h2>
           <p className="text-[14px] md:text-[15px] text-neutral-500 leading-[1.6] font-light text-justify max-w-[650px] mx-auto font-feature-palt tracking-[-0.01em]">
-            「なぜあなたがそれをやっているのか？」「誰のために？」といった価値の根拠を徹底的に深掘りし、言語化します。単なる経歴の羅列ではない、あなたの使命と想いが詰まったストーリーを、市場で選ばれるブランドへと昇華させます。
+            AIの登場によって良くも悪くも、差別化の均衡を破壊されました。文章が苦手でも優れた言葉を紡ぎ、デザイン経験がなくとも美しいビジュアルを生成できる現在。「表現の質」だけで差別化を図るのは、もはや博打に近いと言わざるを得ない、、<br/><br/>
+            <span className="bg-[#FFF450] text-black px-1 font-bold">最後に残る差別化できる唯一の価値は「在り方」</span>です。なぜ、その仕事を選ぶのか。なぜ、それを届けるのか。なぜ、あなたでなければならないのか。<span className="bg-[#FFF450] text-black px-1 font-bold">「選ばれる理由」</span>が無ければ、これからの時代の<span className="bg-[#FFF450] text-black px-1 font-bold">「差別化」</span>で生き残ることが難しくなるかもしれません。スペックや価格の競争からいち早く抜け出して、消費者が最後に選ぶ決め手となる「理由づくり」にコミットして欲しい。<span className="bg-[#FFF450] text-black px-1 font-bold">理由があなたの単価を上げることに繋がります、必ず。</span>
           </p>
         </div>
       </section>
 
+      {/* NEW: Director Profile Section */}
+      <section className="py-20 px-6 bg-[#fafafa] border-y border-neutral-100">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+            {/* Image */}
+            <div className="w-full md:w-5/12">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-sm shadow-xl">
+                 <div className="absolute inset-0 bg-[#AF9662]/10 mix-blend-overlay z-10 pointer-events-none"></div>
+                 <img 
+                   src="https://res.cloudinary.com/dxr2aeoze/image/upload/v1769273848/profile2_yfeic4.jpg" 
+                   alt="Masaomi Sakata"
+                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                 />
+                 <div className="absolute bottom-6 left-6 z-20">
+                   <p className="text-white text-[10px] font-mono tracking-[0.3em] uppercase opacity-80 font-bold">Director Profile</p>
+                 </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="w-full md:w-7/12 space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-3">
+                  <span className="w-8 h-px bg-[#AF9662]"></span>
+                  <span className="text-[#AF9662] font-mono text-[10px] font-bold tracking-[0.3em] uppercase">Representative</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-sans font-bold text-brand-black tracking-tight leading-tight">
+                  阪田 真臣 <span className="text-lg md:text-xl font-normal text-neutral-400 ml-3 font-display">Masaomi Sakata</span>
+                </h2>
+                <p className="text-xs font-bold text-brand-black/40 uppercase tracking-widest font-mono">
+                  Brand Director / Producer
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <p className="text-[14px] md:text-[15px] text-neutral-800 leading-[1.8] text-justify font-feature-palt tracking-tighter font-medium">
+                  アパレル、広告代理店、楽天グループを経て独立。「良いものを高く売る」を信条に、<span className="bg-[#FFF450] text-black px-1 font-bold">相場の8倍</span>の価格帯の甘酒『AMAZAKE』をプロデュースし、<span className="bg-[#FFF450] text-black px-1 font-bold">広告費ゼロで6ヶ月で1,500万円の売上</span>を達成。アイスクリーム業界初の砂糖96％削減した無添加アイスクリームを開発、 国内最大級のピッチイベントICCサミットにてフードアワード<span className="bg-[#FFF450] text-black px-1 font-bold">3部門入賞</span>など、実績に裏打ちされた<span className="bg-[#FFF450] text-black px-1 font-bold">「言語化セルフプロデュース」</span>で、起業家やメーカーのアドバイザーもおこなっています、見栄えだけのデザインだけでなく、ヒト・モノの本質的な価値を掘り起こして選ばれる<span className="bg-[#FFF450] text-black px-1 font-bold">「売れる理由」</span>を設計することが得意。
+                </p>
+
+                <div className="pt-2">
+                   <button 
+                     onClick={onNavigateToStory}
+                     className="group relative inline-flex items-center gap-3 px-8 py-3 bg-brand-black text-white text-[10px] font-bold tracking-[0.2em] uppercase overflow-hidden transition-all hover:shadow-xl"
+                   >
+                     <span className="relative z-10">View Full Story</span>
+                     <div className="absolute inset-0 bg-[#AF9662] translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+                     <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">→</span>
+                   </button>
+                </div>
+              </div>
+              
+              <div className="pt-4 border-t border-neutral-200">
+                 <div className="grid grid-cols-2 gap-4 pt-4">
+                    <div className="space-y-1">
+                       <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest">Career</p>
+                       <p className="text-xs font-sans font-bold text-brand-black">Rakuten Group Award</p>
+                    </div>
+                    <div className="space-y-1">
+                       <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-widest">Achievement</p>
+                       <p className="text-xs font-sans font-bold text-brand-black">ICC Summit 3部門入賞</p>
+                    </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ③ Team Section */}
-      <section className="py-12 bg-neutral-50 px-6">
+      <section className="py-12 bg-white px-6">
         <div className="max-w-[800px] mx-auto text-center space-y-8">
           <div className="space-y-2">
             <h3 className="text-xl md:text-2xl font-display font-bold text-brand-black tracking-widest uppercase">one scene</h3>
             <div className="w-8 h-px bg-[#AF9662] mx-auto" />
+            <p className="text-[10px] text-neutral-400 font-sans tracking-widest pt-2">
+              プロジェクトごとに編成される、<br className="md:hidden" />スペシャリストチーム
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { role: 'Director', name: 'Masaomi Sakata' },
               { role: 'Visual', name: 'Imarun' },
-              { role: 'Writer', name: 'Miyabi' }
+              { role: 'Writer', name: 'Miyabi' },
+              { role: 'Design', name: 'Kouji' }
             ].map((member) => (
-              <div key={member.name} className="space-y-1">
+              <div key={member.name} className="space-y-1 p-4 border border-neutral-100 rounded-lg">
                 <span className="text-[#AF9662] font-mono text-[8px] font-bold tracking-widest uppercase">{member.role}</span>
-                <p className="text-base font-bold text-brand-black">{member.name}</p>
+                <p className="text-sm font-bold text-brand-black">{member.name}</p>
               </div>
             ))}
           </div>

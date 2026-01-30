@@ -109,23 +109,36 @@ const Letter: React.FC = () => {
             <div className="hidden md:block absolute -left-3 top-10 w-6 h-6 bg-white border-l border-t border-neutral-100 rotate-[-45deg] z-10" />
             
             <div className="relative bg-white border border-neutral-100 p-8 md:p-12 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)]">
-              <div className="space-y-6 text-neutral-600 leading-[1.8] md:leading-[2] font-sans font-light">
-                <p className="text-sm md:text-base text-brand-black font-medium">
-                  Honest Marketing Clubの阪田真臣です。
-                </p>
-                <p className="text-sm md:text-base">
-                  このWebページには直接招待させていただいた方、紹介で辿り着いた方が大半かと思います。
-                </p>
-                <p className="text-sm md:text-base">
-                  これから僕たちが始める
-                  <span className="relative inline-block mx-1 group">
-                    <span className="relative z-10 text-brand-black font-bold px-1">
-                      セルフブランディングプロデュース/マーケティングコミュニティ
-                    </span>
-                    <span className="absolute bottom-0.5 left-0 w-full h-1 bg-brand-gold/20 -rotate-1 z-0 group-hover:h-full transition-all duration-500" />
-                  </span>
-                  についてご案内させていただければと思います。
-                </p>
+              <div className="space-y-8 text-neutral-600 leading-[1.8] md:leading-[2] font-sans font-light">
+                
+                <h3 className="text-xl md:text-2xl font-bold text-brand-black tracking-tight leading-snug">
+                  「何を買うか」から<br className="md:hidden" />「誰から買うか」へ
+                </h3>
+
+                <div className="space-y-6 text-sm md:text-base">
+                  <p>
+                    AIの登場によって良くも悪くも、差別化の均衡を破壊されました。文章が苦手でも優れた言葉を紡ぎ、デザイン経験がなくとも美しいビジュアルを生成できる現在。「表現の質」だけで差別化を図るのは、もはや博打に近いと言わざるを得ない、、、
+                  </p>
+                  
+                  <p>
+                    最後に残る差別化できる唯一の価値は<span className="font-bold text-brand-black border-b-2 border-brand-gold/30">「在り方」</span>です。
+                  </p>
+                  
+                  <div className="pl-4 border-l-2 border-brand-gold/20 py-2 space-y-2 italic text-brand-black/80">
+                    <p>なぜ、その仕事を選ぶのか。</p>
+                    <p>なぜ、それを届けるのか。</p>
+                    <p>なぜ、あなたでなければならないのか。</p>
+                  </div>
+
+                  <p>
+                    「選ばれる理由」が無ければ、これからの時代の「差別化」で生き残ることが難しくなるかもしれません。スペックや価格の競争からいち早く抜け出して、消費者が最後に選ぶ決め手となる「理由づくり」にコミットして欲しい。
+                  </p>
+
+                  <p className="font-bold text-brand-black">
+                    理由があなたの単価を上げることに繋がります、必ず。
+                  </p>
+                </div>
+
               </div>
             </div>
 

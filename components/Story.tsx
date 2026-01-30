@@ -243,7 +243,7 @@ const Story: React.FC<StoryProps> = ({ onBack }) => {
             <div className="gallery-img w-full my-12 md:my-24 overflow-hidden flex justify-center will-change-transform">
               <img 
                 src={optimizeUrl("https://res.cloudinary.com/dxr2aeoze/image/upload/v1769278486/0170D55F-EA78-42ED-BE30-F1BAB1C0D0BB_mqew3v.jpg", 1200)} 
-                className="max-w-full md:max-w-[85%] h-auto object-contain grayscale hover:grayscale-0 transition-all duration-1000" 
+                className="max-w-full md:max-w-[60%] h-auto object-contain grayscale hover:grayscale-0 transition-all duration-1000" 
                 alt="第三章 実績と栄光" 
                 loading="lazy"
               />
@@ -262,7 +262,7 @@ const Story: React.FC<StoryProps> = ({ onBack }) => {
             
             <div className="space-y-12">
               <p className="text-[14px] md:text-[15px] leading-[1.6] text-justify font-light font-feature-palt tracking-[-0.01em] text-neutral-300">
-                僕は文字通りの”凡人””出来損ない”でした、頭では分かっているのに、想いはあるのに上手くいかない、伝え方を知らなかったから文章を書く力も欠落していました、全てが上手くいかなったんです、伝える力があることを知ってからは人一倍努力しました、SNSもセールスコピーも商談も事業計画も人間関係も<span className="killer-phrase">全て伝え方を変えただけで</span>成果が出ていきました、順序や文字数を変えるだけで価値が変化するんです、これは面白い、思考を具現化する、価値を創る、それらは”言語化する”ということなんだと思います。
+                僕は文字通りの”凡人””出来損ない”でした、頭では分かっているのに、想いはあるのに上手くいかない、伝え方を知らなかったから文章を書く力も欠落していました、全てが上手くいかなったんです、伝える力があることを知ってからは人一倍努力しました、SNSもセールスコピーも商談も事業計画も人間関係も<span className="killer-phrase">全て伝え方を変えただけで</span>成果が出ていきました、順序や文字数を変えるだけで価値を創ることができる、思考を具現化する、価値を創る、それらは”言語化する”ということなんだと思います。
               </p>
               
               <p className="text-[clamp(1.2rem,3vw,1.8rem)] font-bold text-center text-brand-gold leading-tight font-serif font-feature-palt">

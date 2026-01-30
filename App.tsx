@@ -196,7 +196,11 @@ const App: React.FC = () => {
         ) : view === 'legal' ? (
           <LegalDisclosure onBack={() => setView('home')} />
         ) : view === 'self-produce' ? (
-          <SelfProduce onBack={() => setView('home')} onOpenModal={handleOpenInvitation} />
+          <SelfProduce 
+            onBack={() => setView('home')} 
+            onOpenModal={handleOpenInvitation} 
+            onNavigateToStory={() => handleViewChange('story')}
+          />
         ) : (
           <Story onBack={() => setView('home')} />
         )}
