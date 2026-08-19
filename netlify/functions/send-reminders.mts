@@ -2,7 +2,8 @@
 
 import type { Config } from '@netlify/functions';
 import { assertServerConfig } from './lib/config';
-import { sendGmail } from './lib/google';
+import { getCalendarEventStatus, sendGmail } from './lib/google';
+import { deleteZoomMeeting } from './lib/zoom';
 import { listUpcomingBookings, saveBooking } from './lib/store';
 import { reminder1hEmail, reminder24hEmail } from './lib/emails';
 
@@ -23,6 +24,15 @@ export default async () => {
     const hoursUntil = msUntilStart / (60 * 60 * 1000);
 
     try {
+      // 主催者がカレンダーから予定を削除した場合はキャンセル扱いにし、Zoomも片付ける
+      if ((await getCalendarEventStatus(b.calendarEventId)) === 'deleted') {
+        b.status = 'cancelled';
+        await saveBooking(b);
+        await deleteZoomMeeting(b.zoomMeetingId).catch(() => {});
+        console.log(`send-reminders: booking ${b.id} はカレンダーから削除されたためキャンセル扱いにしました`);
+        continue;
+      }
+
       // 前日リマインド：残り24時間を切ったら一度だけ送る（1時間前リマインドと近すぎる場合は省略）
       if (!b.reminded24h && hoursUntil <= 24 && hoursUntil > 2) {
         const m = reminder24hEmail(b);

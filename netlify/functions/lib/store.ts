@@ -16,6 +16,8 @@ export interface Booking {
   reminded24h: boolean;
   reminded1h: boolean;
   status: 'confirmed' | 'cancelled';
+  cancelToken: string;
+  cancelUrl: string;
 }
 
 function bookingsStore() {
@@ -29,6 +31,11 @@ export function bookingKey(b: Pick<Booking, 'id' | 'start'>): string {
 
 export async function saveBooking(b: Booking): Promise<void> {
   await bookingsStore().setJSON(bookingKey(b), b);
+}
+
+export async function getBookingByKey(key: string): Promise<Booking | null> {
+  if (!key || key.length > 200) return null;
+  return (await bookingsStore().get(key, { type: 'json' })) as Booking | null;
 }
 
 export async function listBookings(): Promise<Booking[]> {

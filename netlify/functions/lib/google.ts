@@ -96,6 +96,19 @@ export async function createCalendarEvent(params: {
   return (await res.json()) as { id: string; htmlLink: string };
 }
 
+/** 予定の状態を返す。'deleted' = 予定が存在しない or 中止済み */
+export async function getCalendarEventStatus(eventId: string): Promise<'active' | 'deleted' | 'unknown'> {
+  const token = await getGoogleAccessToken();
+  const res = await fetch(
+    `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CONFIG.calendarId)}/events/${encodeURIComponent(eventId)}`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  if (res.status === 404 || res.status === 410) return 'deleted';
+  if (!res.ok) return 'unknown';
+  const data = (await res.json()) as { status?: string };
+  return data.status === 'cancelled' ? 'deleted' : 'active';
+}
+
 export async function deleteCalendarEvent(eventId: string): Promise<void> {
   const token = await getGoogleAccessToken();
   await fetch(

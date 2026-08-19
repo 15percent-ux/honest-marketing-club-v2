@@ -18,7 +18,7 @@ function layout(title: string, bodyHtml: string): string {
       ${bodyHtml}
       <p style="font-size:11px;color:#a8a29e;margin-top:32px;border-top:1px solid #e7e5e4;padding-top:16px;">
         このメールは ${CONFIG.hostName}（${CONFIG.hostEmail}）の予約システムから自動送信されています。<br/>
-        日程の変更・キャンセルをご希望の場合は、このメールに返信してお知らせください。
+        ご不明な点は、このメールに返信してお問い合わせください。
       </p>
     </div>
   </div>
@@ -39,6 +39,13 @@ function detailsTable(b: Booking): string {
   </div>`;
 }
 
+function cancelSection(b: Booking): string {
+  if (!b.cancelUrl) return '';
+  return `<p style="text-align:center;font-size:12px;margin:8px 0 0;">
+    <a href="${b.cancelUrl}" style="color:#78716c;text-decoration:underline;">ご予約のキャンセル・日程変更はこちら</a>
+  </p>`;
+}
+
 export function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -56,7 +63,8 @@ export function confirmationEmail(b: Booking): { subject: string; html: string }
       この度はご予約いただきありがとうございます。以下の内容でZoomミーティングを確定しました。<br/>
       Googleカレンダーの招待も別途お送りしていますので、「はい」で承諾いただくとご自身のカレンダーに自動で追加されます。</p>
       ${detailsTable(b)}
-      <p style="font-size:13px;line-height:1.9;color:#57534e;">・開始前日と1時間前にリマインドメールをお送りします。<br/>・当日は時間になりましたら上記リンクからご参加ください。</p>`
+      <p style="font-size:13px;line-height:1.9;color:#57534e;">・開始前日と1時間前にリマインドメールをお送りします。<br/>・当日は時間になりましたら上記リンクからご参加ください。</p>
+      ${cancelSection(b)}`
     ),
   };
 }
@@ -69,7 +77,8 @@ export function reminder24hEmail(b: Booking): { subject: string; html: string } 
       `<p style="font-size:14px;line-height:1.9;">${escapeHtml(b.name)} 様<br/><br/>
       ご予約いただいたZoomミーティングが明日に迫りましたのでお知らせします。</p>
       ${detailsTable(b)}
-      <p style="font-size:13px;line-height:1.9;color:#57534e;">ご都合が悪くなった場合は、このメールへの返信でお気軽にご連絡ください。</p>`
+      <p style="font-size:13px;line-height:1.9;color:#57534e;">ご都合が悪くなった場合は、下記リンクからキャンセルいただけます。</p>
+      ${cancelSection(b)}`
     ),
   };
 }
@@ -81,7 +90,39 @@ export function reminder1hEmail(b: Booking): { subject: string; html: string } {
       'まもなく開始します',
       `<p style="font-size:14px;line-height:1.9;">${escapeHtml(b.name)} 様<br/><br/>
       Zoomミーティングの開始まで約1時間です。お時間になりましたら以下のリンクからご参加ください。</p>
-      ${detailsTable(b)}`
+      ${detailsTable(b)}
+      ${cancelSection(b)}`
+    ),
+  };
+}
+
+export function cancellationEmail(b: Booking): { subject: string; html: string } {
+  return {
+    subject: `【キャンセル完了】${jstLabel(new Date(b.start))}〜 のご予約`,
+    html: layout(
+      'ご予約をキャンセルしました',
+      `<p style="font-size:14px;line-height:1.9;">${escapeHtml(b.name)} 様<br/><br/>
+      以下のご予約のキャンセルを承りました。Zoomミーティングとカレンダーの予定は削除済みです。</p>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #e7e5e4;">
+        <tr><td style="padding:8px 12px;background:#fafaf9;font-size:12px;color:#78716c;white-space:nowrap;">キャンセルした日時</td><td style="padding:8px 12px;font-size:14px;">${jstLabel(new Date(b.start))}〜（日本時間）</td></tr>
+      </table>
+      <p style="font-size:13px;line-height:1.9;color:#57534e;">改めてのご予約は、予約ページからいつでもお取りいただけます。</p>`
+    ),
+  };
+}
+
+/** 主催者向け：キャンセルの通知 */
+export function cancellationHostEmail(b: Booking): { subject: string; html: string } {
+  return {
+    subject: `【予約キャンセル】${jstLabel(new Date(b.start))}〜 ${b.name} 様`,
+    html: layout(
+      '予約がキャンセルされました',
+      `<table style="width:100%;border-collapse:collapse;border:1px solid #e7e5e4;">
+        <tr><td style="padding:8px 12px;background:#fafaf9;font-size:12px;color:#78716c;white-space:nowrap;">日時</td><td style="padding:8px 12px;font-size:14px;">${jstLabel(new Date(b.start))}〜（日本時間）</td></tr>
+        <tr><td style="padding:8px 12px;background:#fafaf9;font-size:12px;color:#78716c;">お名前</td><td style="padding:8px 12px;font-size:14px;">${escapeHtml(b.name)} 様</td></tr>
+        <tr><td style="padding:8px 12px;background:#fafaf9;font-size:12px;color:#78716c;">メール</td><td style="padding:8px 12px;font-size:14px;">${escapeHtml(b.email)}</td></tr>
+      </table>
+      <p style="font-size:13px;color:#57534e;">Zoomミーティングとカレンダーの予定は自動削除済みです。この枠は再び予約可能になります。</p>`
     ),
   };
 }

@@ -10,7 +10,7 @@ import { CONFIG, assertServerConfig, json } from './lib/config';
 import { createZoomMeeting, deleteZoomMeeting } from './lib/zoom';
 import { createCalendarEvent, sendGmail } from './lib/google';
 import { isSlotAvailable } from './lib/slots';
-import { saveBooking, type Booking } from './lib/store';
+import { bookingKey, saveBooking, type Booking } from './lib/store';
 import { confirmationEmail, hostNotificationEmail } from './lib/emails';
 import { jstLabel } from './lib/time';
 
@@ -91,8 +91,11 @@ export default async (req: Request) => {
       throw err;
     }
 
+    const id = crypto.randomUUID();
+    const cancelToken = crypto.randomUUID();
+    const origin = new URL(req.url).origin;
     const booking: Booking = {
-      id: crypto.randomUUID(),
+      id,
       name,
       email,
       note,
@@ -105,7 +108,10 @@ export default async (req: Request) => {
       reminded24h: false,
       reminded1h: false,
       status: 'confirmed',
+      cancelToken,
+      cancelUrl: '',
     };
+    booking.cancelUrl = `${origin}/api/cancel?key=${encodeURIComponent(bookingKey(booking))}&token=${encodeURIComponent(cancelToken)}`;
 
     // 3) 保存（リマインド送信に必要）
     await saveBooking(booking);
