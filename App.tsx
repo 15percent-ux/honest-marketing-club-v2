@@ -20,6 +20,7 @@ import Footer from './components/Footer';
 import LegalDisclosure from './components/LegalDisclosure';
 import PricingSection from './components/PricingSection';
 import Consultation from './components/Consultation';
+import ZoomBooking from './components/ZoomBooking';
 import SelfProduce from './components/SelfProduce';
 import Story from './components/Story';
 import FAQ from './components/FAQ';
@@ -185,6 +186,7 @@ const App: React.FC = () => {
             <IdealMembers />
             <PricingSection />
             <FAQ />
+            <ZoomBooking />
             <Consultation />
           </>
         ) : view === 'stories' ? (

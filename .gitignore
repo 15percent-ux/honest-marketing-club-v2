@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Netlify CLI のローカル状態
+.netlify
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
