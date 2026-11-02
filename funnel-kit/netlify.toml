@@ -1,0 +1,9 @@
+# Netlify：サイトごとに環境変数 BRAND（例：omijuku）を設定してデプロイする
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

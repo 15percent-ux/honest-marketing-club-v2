@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+}
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f-body);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+/* PCでは中央に480pxの列。左右は淡い背景 */
+.page-shell {
+  min-height: 100dvh;
+  background: color-mix(in srgb, var(--c-primary-soft) 55%, var(--c-bg));
+}
+.page-col {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--c-bg);
+  min-height: 100dvh;
+  position: relative;
+  box-shadow: 0 0 40px rgb(0 0 0 / 0.06);
+  overflow-x: clip;
+}
+
+@layer components {
+  .h-head {
+    font-family: var(--f-head);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+  }
+  .wide {
+    letter-spacing: 0.14em;
+  }
+  /* 方眼の背景 */
+  .bg-grid {
+    background-color: var(--c-surface);
+    background-image: linear-gradient(var(--c-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--c-border) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .bg-aurora {
+    background: var(--g-aurora);
+  }
+  /* 下半分だけの蛍光マーカー */
+  .marker {
+    background: linear-gradient(transparent 58%, var(--c-highlight) 58%);
+    padding: 0 0.1em;
+  }
+  .underline-p {
+    background: linear-gradient(transparent 72%, color-mix(in srgb, var(--c-primary) 45%, transparent) 72%);
+  }
+  .dots {
+    text-emphasis: filled dot var(--c-primary);
+    -webkit-text-emphasis: filled dot var(--c-primary);
+    text-emphasis-position: over right;
+  }
+  .inv {
+    display: inline-block;
+    padding: 0.05em 0.4em;
+    margin: 0.08em 0.1em;
+    color: #fff;
+    background: var(--c-navy);
+    line-height: 1.45;
+  }
+  /* ポップ見出し（白フチ＋影） */
+  .pop-stroke {
+    font-family: var(--f-pop);
+    -webkit-text-stroke: 6px #fff;
+    paint-order: stroke fill;
+    text-shadow: 3px 4px 0 color-mix(in srgb, var(--c-navy) 70%, #7a3fa0);
+    line-height: 1.15;
+  }
+  /* メインCTA：押すと沈む */
+  .cta-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: 100%;
+    min-height: 60px;
+    padding: 0.8em 1.4em;
+    border-radius: 9999px;
+    background: var(--c-cta);
+    color: #fff;
+    font-family: var(--f-head);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    box-shadow: 0 5px 0 var(--c-cta-shadow);
+    transition: transform 0.08s, box-shadow 0.08s;
+  }
+  .cta-pill:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 var(--c-cta-shadow);
+  }
+  .cta-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 -60%;
+    width: 40%;
+    transform: skewX(-20deg);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
+    animation: shine 3.2s ease-in-out infinite;
+  }
+  /* しっぽ付きの吹き出し */
+  .bubble {
+    position: relative;
+  }
+  .bubble::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -9px;
+    transform: translateX(-50%);
+    border: 9px solid transparent;
+    border-bottom: 0;
+    border-top-color: inherit;
+  }
+  .warn-stripe {
+    height: 22px;
+    background: repeating-linear-gradient(-45deg, #1f1f1f 0 14px, #ffd400 14px 28px);
+  }
+  /* 落ち着いたテーマでは、工事ストライプをやわらかい配色にする */
+  [data-preset='calm'] .warn-stripe,
+  [data-preset='natural'] .warn-stripe {
+    height: 14px;
+    background: repeating-linear-gradient(-45deg, var(--c-teal-soft) 0 14px, var(--c-primary-soft) 14px 28px);
+  }
+  .zigzag-top {
+    -webkit-mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
+    mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
+  }
+  .scallop {
+    clip-path: polygon(
+      50% 0%, 61% 6%, 73% 3%, 80% 13%, 92% 15%, 93% 27%, 100% 36%, 96% 48%, 100% 61%, 92% 69%, 91% 82%, 79% 85%,
+      71% 96%, 59% 93%, 50% 100%, 40% 93%, 28% 96%, 21% 85%, 9% 82%, 8% 69%, 0% 61%, 4% 48%, 0% 36%, 7% 27%, 8% 15%,
+      20% 13%, 27% 3%, 39% 6%
+    );
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes shine {
+  0%, 55% { left: -60%; }
+  100% { left: 130%; }
+}
+@keyframes wipe {
+  0% { transform: translateX(-100%); }
+  45%, 55% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--c-step);
+  animation: wipe 0.6s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  pointer-events: none;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up {
+  animation: fadeUp 0.35s ease-out both;
+}
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}
+.typing span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 2px;
+  border-radius: 9999px;
+  background: var(--c-form);
+  animation: blink 1s infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.15s; }
+.typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+.bob { animation: bob 1.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
