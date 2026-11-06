@@ -18,7 +18,7 @@ export default defineBrand({
       tokushoho: '#', // 要入力
       contact: '#', // 要入力
     },
-    sns: {},
+    sns: { line: 'https://lin.ee/o0UYNIM' },
   },
   theme: { preset: 'calm' },
   offer: { name: '無料個別相談', duration: '45分', format: 'Zoom（顔出しなしOK）', priceLabel: '無料' }, // 要確認：時間
@@ -222,7 +222,7 @@ export default defineBrand({
     prep: { title: '当日までのご準備', steps: ['Zoomアプリを入れておく', '相談したいことをメモしておく（なくても大丈夫です）'] },
   },
 
-  // 要入力：公式LINEのベーシックID（@xxxx）と友だち追加URL
-  line: { mode: 'B', oaId: '', addFriendUrl: '', messageTemplate: '相談予約:{rid}' },
+  // テスト用の公式LINE（オミ塾（テスト））。本番では本番アカウントに差し替える
+  line: { mode: 'B', oaId: '@203nrsnd', addFriendUrl: 'https://lin.ee/o0UYNIM', messageTemplate: '相談予約:{rid}' },
   backend: { type: 'demo' }, // 本番は { type: 'gas', endpoint: 'https://script.google.com/macros/s/.../exec' }
 });

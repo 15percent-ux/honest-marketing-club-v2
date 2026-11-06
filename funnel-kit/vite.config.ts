@@ -16,6 +16,8 @@ const meta = JSON.parse(fs.readFileSync(path.join(brandDir, 'brand.json'), 'utf8
   ogImage?: string;
   themeColor?: string;
   siteUrl?: string;
+  /** true にすると検索エンジンに載せない（テスト・下書き公開用） */
+  noindex?: boolean;
 };
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -35,6 +37,7 @@ function brandMeta(): Plugin {
         og ? `<meta property="og:image" content="${esc(og)}" />` : '',
         `<meta name="twitter:card" content="summary_large_image" />`,
         `<meta name="theme-color" content="${esc(meta.themeColor || '#ffffff')}" />`,
+        meta.noindex ? `<meta name="robots" content="noindex, nofollow" />` : '',
       ].filter(Boolean).join('\n    ');
       return html.replace('<!--brand-meta-->', tags);
     },
