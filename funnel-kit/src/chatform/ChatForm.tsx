@@ -33,6 +33,23 @@ const PASS_CHARS = /^[\x21-\x7e]*$/;
 
 type Phase = 'steps' | 'final' | 'sending' | 'done';
 
+/** スプレッドシートと通知メールで読めるよう、回答に設問文と診断結果を添える */
+function labeledSurvey(): Record<string, string[]> | undefined {
+  const raw = load<Record<string, string[]>>('survey');
+  if (!raw) return undefined;
+  const out: Record<string, string[]> = {};
+  for (const [id, v] of Object.entries(raw)) {
+    const q = brand.survey.questions.find((x) => x.id === id);
+    out[q ? `${id} ${q.text.replace(/\n/g, '')}` : id] = v;
+  }
+  const result = brand.lp.sections.find((s) => s.type === 'surveyResult');
+  if (result && result.type === 'surveyResult') {
+    const r = result.results[raw[result.questionId]?.[0] ?? ''];
+    if (r) out['診断結果'] = [r.name];
+  }
+  return out;
+}
+
 export function ChatForm({ onClose }: { onClose: () => void }) {
   const cfg = brand.form;
   const steps = useMemo(() => cfg.steps.filter((s): s is Exclude<FormStepId, 'greeting'> => s !== 'greeting'), [cfg.steps]);
@@ -138,7 +155,7 @@ export function ChatForm({ onClose }: { onClose: () => void }) {
       birthdate: birthOk ? `${v.by}-${v.bm!.padStart(2, '0')}-${v.bd!.padStart(2, '0')}` : undefined,
       message: v.message.trim() || undefined,
       password: steps.includes('password') ? v.password : undefined,
-      survey: load('survey'),
+      survey: labeledSurvey(),
       utm: load('utm'),
       lineUserId: load<{ userId: string }>('liff')?.userId,
     };
