@@ -286,5 +286,6 @@ export default defineBrand({
 
   // テスト用の公式LINE（LPファネル運用）。本番では本番アカウントに差し替える
   line: { mode: 'B', oaId: '@203nrsnd', addFriendUrl: 'https://lin.ee/o0UYNIM', messageTemplate: '相談予約:{rid}' },
-  backend: { type: 'demo' }, // 本番は { type: 'gas', endpoint: 'https://script.google.com/macros/s/.../exec' }
+  // 予約の保存先：Googleドライブ「オミ塾 LPファネル（テスト）」の「オミ塾 予約管理（テスト）」に紐づく Apps Script
+  backend: { type: 'gas', endpoint: 'https://script.google.com/macros/s/AKfycby8vVZrdRn-Pv_AteBsQQDwwhXU9Zrvgv2FBwuTdIElM9f7bDoFGlEeR9F69IaW8_PTqQ/exec' },
 });
