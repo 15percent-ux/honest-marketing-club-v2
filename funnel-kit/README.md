@@ -69,6 +69,14 @@ BRAND=omijuku npm run build # dist/ に出力
 Netlify・Vercel のどちらでも、**ベースディレクトリを `funnel-kit`**、**環境変数 `BRAND=<id>`** にして新しいサイトを作ります
 （`netlify.toml`・`vercel.json` 設定済み）。同じリポジトリから、クライアントの数だけサイトを作れます。
 
+### Vercel にコマンドで公開する（Git連携なし）
+1. Vercel で新しいプロジェクトを作り、環境変数 `BRAND=<id>` を設定する（Framework は Vite、Build Command は `npm run build`、Output は `dist`）
+2. `VERCEL_TOKEN=<トークン> python3 scripts/deploy-vercel.py . <teamId> <projectId> <プロジェクト名>`
+
+ソースを Vercel にアップロードし、Vercel 上でビルドして本番に公開します（`node_modules` と `dist` は送りません）。
+
+テスト公開中のサイト：オミ塾 https://omijuku-funnel-test.vercel.app （検索エンジンに載らない設定・予約は demo モードで保存されません）
+
 ## 予約データの保存先（GAS）
 
 `config.ts` の `backend` が `{ type: 'demo' }` の間は、予約はどこにも保存されません（画面の確認用）。本番は次の手順です。
