@@ -10,6 +10,7 @@
  * 初回だけ setup() を実行すると、シートとトリガーが作られる。
  */
 
+// ==== CONFIG START ====（scripts/build-gas.py がブランドごとに差し替える）
 const CONFIG = {
   BRAND_NAME: 'AIはじめて塾',
   OFFER_NAME: '無料体験レッスン',
@@ -18,11 +19,11 @@ const CONFIG = {
   CAPACITY_PER_SLOT: 3, // 1枠あたりの定員
   FROM_NAME: 'AIはじめて塾 事務局',
   REPLY_TO: '', // 返信先（空なら送信元アドレス）
-  MEETING_URL: 'https://zoom.us/j/0000000000', // 参加URL
-  MEETING_ID: '000 0000 0000',
+  MEETING_URL: '', // 固定の参加URL（空なら「前日までにお送りします」と案内する）
+  MEETING_ID: '',
   MEETING_PASSCODE: '',
   THANKS_URL: 'https://example.com/thanks', // LP側の完了ページ
-  NOTIFY_TO: '', // 予約が入ったら通知するアドレス（空なら通知しない）
+  NOTIFY_TO: 'me', // 予約が入ったら通知するアドレス（'me'＝デプロイした本人／空なら通知しない）
   LINE: {
     MODE: 'B', // 'A' | 'B' | 'C' | 'none'（LP側の config と合わせる）
     OA_ID: '@demo',
@@ -34,7 +35,10 @@ const CONFIG = {
     MESSAGING_TOKEN_PROP: 'LINE_MESSAGING_TOKEN',
   },
   COLORS: { primary: '#EF5A86', cta: '#C5282C', line: '#06C755', ink: '#3A3F4B', soft: '#FBEFF2' },
+  // メール末尾の「安心ポイント」
+  EMAIL_POINTS: ['オンライン開催（スマホ参加OK）', '無理な勧誘はしません', '参加費は無料です'],
 };
+// ==== CONFIG END ====
 
 const HEADERS = [
   'rid', 'created_at', 'status', 'date', 'time', 'last_name', 'first_name', 'email', 'tel',
@@ -90,8 +94,10 @@ function reserve_(r) {
     ]);
     const rec = Object.assign({}, r, { rid: rid, email: email });
     sendConfirm_(rec);
-    if (CONFIG.NOTIFY_TO) {
-      MailApp.sendEmail(CONFIG.NOTIFY_TO, `【新規予約】${r.lastName} ${r.firstName} 様 ${r.date} ${r.time}`, JSON.stringify(rec, null, 2));
+    const notifyTo = CONFIG.NOTIFY_TO === 'me' ? Session.getEffectiveUser().getEmail() : CONFIG.NOTIFY_TO;
+    if (notifyTo) {
+      const { password: _p, ...shown } = rec;
+      MailApp.sendEmail(notifyTo, `【新規予約】${r.lastName} ${r.firstName} 様 ${fmtDate_(r.date)} ${r.time}`, JSON.stringify(shown, null, 2));
     }
     return { ok: true, rid: rid };
   } finally {
@@ -208,9 +214,11 @@ ${line}
   <p style="margin:0 0 8px;font-weight:bold">（3分で完了）Zoomのご準備</p>
   <p style="margin:0">① Zoomアプリをダウンロード<br>② アプリを開いて、サインインまで済ませておく</p>
 </td></tr>
-<tr><td style="padding-top:16px">${btn(CONFIG.MEETING_URL, '当日はこちらから参加する（Zoom）', c.cta)}</td></tr>
-<tr><td style="font-size:13px;color:#666">ミーティングID：<span style="background:#FFF04A">${esc_(CONFIG.MEETING_ID)}</span>${CONFIG.MEETING_PASSCODE ? '　パスコード：' + esc_(CONFIG.MEETING_PASSCODE) : ''}</td></tr>
-<tr><td style="padding:20px 0 0;font-size:14px">当日お会いできるのを楽しみにしています。<br>✓ オンライン開催（スマホ参加OK）<br>✓ 無理な勧誘はしません<br>✓ 参加費は無料です</td></tr>
+${CONFIG.MEETING_URL
+  ? `<tr><td style="padding-top:16px">${btn(CONFIG.MEETING_URL, '当日はこちらから参加する（Zoom）', c.cta)}</td></tr>
+<tr><td style="font-size:13px;color:#666">${CONFIG.MEETING_ID ? 'ミーティングID：<span style="background:#FFF04A">' + esc_(CONFIG.MEETING_ID) + '</span>' : ''}${CONFIG.MEETING_PASSCODE ? '　パスコード：' + esc_(CONFIG.MEETING_PASSCODE) : ''}</td></tr>`
+  : `<tr><td style="padding-top:16px;font-size:14px">当日の参加URLは、前日までにこのメールアドレス${CONFIG.LINE.MODE !== 'none' ? 'と公式LINE' : ''}にお送りします。</td></tr>`}
+<tr><td style="padding:20px 0 0;font-size:14px">当日お会いできるのを楽しみにしています。<br>${CONFIG.EMAIL_POINTS.map((x) => '✓ ' + esc_(x)).join('<br>')}</td></tr>
 <tr><td style="padding-top:24px;font-size:11px;color:#999;border-top:1px solid #eee">このメールは送信専用です。ご予約の変更・キャンセルは公式LINEまたはお問い合わせ窓口からご連絡ください。<br>${esc_(CONFIG.OPERATOR)}｜${esc_(CONFIG.BRAND_NAME)}</td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -221,7 +229,7 @@ function emailText_(r) {
     `${CONFIG.OFFER_NAME}のご予約ありがとうございます。`,
     `日時：${fmtDate_(r.date)} ${r.time.replace('-', '〜')}`,
     `予約番号：${r.rid}`,
-    `参加URL：${CONFIG.MEETING_URL}`,
+    CONFIG.MEETING_URL ? `参加URL：${CONFIG.MEETING_URL}` : '参加URLは前日までにお送りします。',
     lineUrl_(r.rid) ? `LINE連携：${lineUrl_(r.rid)}` : '',
   ].filter(Boolean).join('\n');
 }
@@ -277,9 +285,15 @@ function pushLine_(to, text) {
 // ───────────────────────── セットアップ・ユーティリティ ─────────────────────────
 
 function setup() {
+  // ウェブアプリから呼ばれたときにも同じシートを使えるよう、IDを保存しておく
+  const ss = CONFIG.SHEET_ID ? SpreadsheetApp.openById(CONFIG.SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+  PropertiesService.getScriptProperties().setProperty('SHEET_ID', ss.getId());
   const sh = sheet_();
   if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
   sh.setFrozenRows(1);
+  // 日付・時間・電話番号が自動で別の形式に変換されないよう、文字列として扱う
+  const idx = indexOf_(HEADERS);
+  ['date', 'time', 'tel', 'rid'].forEach((k) => sh.getRange(1, idx[k] + 1, sh.getMaxRows(), 1).setNumberFormat('@'));
   ScriptApp.getProjectTriggers().forEach((t) => {
     if (t.getHandlerFunction() === 'sendReminders') ScriptApp.deleteTrigger(t);
   });
@@ -287,7 +301,8 @@ function setup() {
 }
 
 function sheet_() {
-  const ss = CONFIG.SHEET_ID ? SpreadsheetApp.openById(CONFIG.SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+  const id = CONFIG.SHEET_ID || PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  const ss = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.getActiveSpreadsheet();
   return ss.getSheetByName('reservations') || ss.insertSheet('reservations');
 }
 

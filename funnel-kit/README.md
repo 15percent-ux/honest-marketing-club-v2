@@ -82,7 +82,8 @@ Netlify・Vercel のどちらでも、**ベースディレクトリを `funnel-k
 `config.ts` の `backend` が `{ type: 'demo' }` の間は、予約はどこにも保存されません（画面の確認用）。本番は次の手順です。
 
 1. クライアント用のGoogleスプレッドシートを作る →「拡張機能」→「Apps Script」
-2. `backend/gas/Code.gs` と `appsscript.json` の中身を貼り付け、先頭の `CONFIG` を書き換える（定員・Zoom・LINE・完了ページのURL）
+2. `brands/<id>/gas.json` に設定（定員・Zoom・LINE・完了ページのURL・スプレッドシートID）を書き、
+   `python3 scripts/build-gas.py <id>` で生成した `brands/<id>/apps-script.gs` の中身を貼り付ける
 3. `setup` を1回実行する（シートと、1時間ごとのリマインドのトリガーが作られる）
 4. 「デプロイ」→「新しいデプロイ」→ 種類「ウェブアプリ」、アクセス「全員」でデプロイし、URLを控える
 5. `config.ts` を `backend: { type: 'gas', endpoint: '<控えたURL>' }` にする

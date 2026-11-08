@@ -1,0 +1,35 @@
+{
+  "BRAND_NAME": "オミ塾",
+  "OFFER_NAME": "無料個別相談",
+  "OPERATOR": "株式会社麹王子",
+  "SHEET_ID": "1CVo2kl02jo-kfI0WwOHcgeVVWQWa17VCxx6dEiCXvnE",
+  "CAPACITY_PER_SLOT": 1,
+  "FROM_NAME": "オミ塾",
+  "REPLY_TO": "",
+  "MEETING_URL": "",
+  "MEETING_ID": "",
+  "MEETING_PASSCODE": "",
+  "THANKS_URL": "https://omijuku-funnel-test.vercel.app/thanks",
+  "NOTIFY_TO": "me",
+  "LINE": {
+    "MODE": "B",
+    "OA_ID": "@203nrsnd",
+    "ADD_FRIEND_URL": "https://lin.ee/o0UYNIM",
+    "MESSAGE_TEMPLATE": "相談予約:{rid}",
+    "LOGIN_CHANNEL_ID": "",
+    "LOGIN_CHANNEL_SECRET_PROP": "LINE_LOGIN_SECRET",
+    "MESSAGING_TOKEN_PROP": "LINE_MESSAGING_TOKEN"
+  },
+  "COLORS": {
+    "primary": "#C47F75",
+    "cta": "#5C7A6B",
+    "line": "#06C755",
+    "ink": "#3B3A36",
+    "soft": "#F7F2EC"
+  },
+  "EMAIL_POINTS": [
+    "Zoomで開催（顔出しなしOK）",
+    "押し売りはしません",
+    "相談は無料です"
+  ]
+}
