@@ -212,6 +212,18 @@ type LpSectionBody =
     }
   | { type: 'profile'; title: string; name: string; role: string; image: ImgRef; body: string[] }
   | { type: 'faq'; title: string; items: { q: string; a: string }[] }
+  /**
+   * 診断結果。アンケートの questionId の回答（選んだ選択肢の文言）に応じて結果を出し分ける。
+   * アンケートを通らずにLPへ来た人には表示しない。
+   */
+  | {
+      type: 'surveyResult';
+      questionId: string;
+      kicker: string;
+      results: Record<string, { name: string; icon?: string; desc: string[]; step: string }>;
+      stepLabel?: string;
+      note?: string;
+    }
   | { type: 'closing'; icon?: string; lines: RichText[]; box?: string; cta: string; micro?: string };
 
 // ───────────────────────── フォーム ─────────────────────────

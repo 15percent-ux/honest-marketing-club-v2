@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { LpSection } from '../types';
 import { rt } from '../lib/rt';
 import { useOpenForm } from '../lib/formContext';
+import { load } from '../lib/store';
+import { track } from '../lib/track';
 import {
   BubbleLabel,
   Carousel,
@@ -550,6 +552,41 @@ function Profile({ s }: { s: S<'profile'> }) {
 }
 
 // ───────── よくある質問（追加） ─────────
+// ───────── 診断結果（アンケートの回答で出し分け） ─────────
+function SurveyResult({ s }: { s: S<'surveyResult'> }) {
+  const answer = load<Record<string, string[]>>('survey')?.[s.questionId]?.[0];
+  const r = answer ? s.results[answer] : undefined;
+  useEffect(() => {
+    if (r) track('survey_result_view', { result: r.name });
+  }, [r]);
+  if (!r) return null;
+  return (
+    <section className="bg-aurora px-5 py-8">
+      <p className="text-center font-head text-[15px] font-bold text-navy wide">{s.kicker}</p>
+      <div className="relative mt-4 rounded-2xl bg-white px-5 pb-5 pt-6 text-center shadow ring-2 ring-primary-soft">
+        {r.icon && (
+          <span className="text-[44px] leading-none" aria-hidden>
+            {r.icon}
+          </span>
+        )}
+        <h2 className="h-head mt-2 text-[24px] text-accent">
+          <span className="underline-p">{r.name}</span>
+        </h2>
+        <div className="mt-4 space-y-2 text-left text-[14px]">
+          {r.desc.map((d, i) => (
+            <p key={i}>{rt(d)}</p>
+          ))}
+        </div>
+        <div className="mt-5 rounded-xl bg-teal-soft p-4 text-left">
+          <p className="text-[12px] font-bold text-teal">{s.stepLabel || '無料相談でやること'}</p>
+          <p className="mt-1 font-head text-[15px] font-bold">{rt(r.step)}</p>
+        </div>
+      </div>
+      {s.note && <Footnote>{s.note}</Footnote>}
+    </section>
+  );
+}
+
 function Faq({ s }: { s: S<'faq'> }) {
   return (
     <section className="bg-grid px-5 py-8">
@@ -628,6 +665,8 @@ export function RenderSection({ s, index }: { s: LpSection; index: number }) {
       return <CampaignDetail s={s} />;
     case 'profile':
       return <Profile s={s} />;
+    case 'surveyResult':
+      return <SurveyResult s={s} />;
     case 'faq':
       return <Faq s={s} />;
     case 'closing':
