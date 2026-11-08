@@ -3,10 +3,14 @@ funnel-kit のソースを Vercel にアップロードして本番デプロイ�
 Vercel 側のプロジェクトに環境変数 BRAND=<ブランドid> を設定しておくこと（ビルドは Vercel 上で行われる）。
 認証：手元のPCでは環境変数 VERCEL_TOKEN にトークンを入れて実行する（Claude のクラウド環境ではプロキシが自動で付与）。
 
-使い方: python3 scripts/deploy-vercel.py <funnel-kitのパス> <teamId> <projectId> <プロジェクト名>
+使い方: python3 scripts/deploy-vercel.py <funnel-kitのパス> <teamId> <projectId> <プロジェクト名> [ブランドid]
+（ブランドidを渡すと、brands/<id>/line-bot.ts があれば LINEボット（api/line.js）も作ってから送る）
 """
 import hashlib, json, os, subprocess, sys
 root, team, project, name = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+brand = sys.argv[5] if len(sys.argv) > 5 else None
+if brand:
+    subprocess.run(['node', 'scripts/build-line-bot.mjs'], cwd=root, env={**os.environ, 'BRAND': brand}, check=True)
 API = 'https://api.vercel.com'
 skip_dirs = {'node_modules', '.git', '.netlify', '.vercel'}
 files = []

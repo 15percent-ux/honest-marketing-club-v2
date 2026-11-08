@@ -1,0 +1,67 @@
+{
+  "photo": "hero.webp",
+  "colors": {
+    "bg": "#FBF8F4",
+    "ink": "#34424F",
+    "accent": "#A85E55",
+    "sage": "#5C7A6B",
+    "sand": "#EFE6DC",
+    "mark": "#F4E3DF",
+    "mist": "#E3EFEC"
+  },
+  "brandLine": "OMIJUKU",
+  "banner": {
+    "en": "FREE DIAGNOSIS",
+    "title": "無料診断",
+    "lead": "3つの質問で、あなたに合う\n稼ぎ方が分かる",
+    "cta": "タップしてはじめる",
+    "cardLead": "3つの質問で\nあなたに合う\n稼ぎ方が分かる"
+  },
+  "tiles": [
+    {
+      "en": "STYLE",
+      "label": "稼ぎ方を見る",
+      "icon": "compass"
+    },
+    {
+      "en": "BOOKING",
+      "label": "個別相談を予約",
+      "icon": "calendar"
+    },
+    {
+      "en": "FAQ",
+      "label": "よくある質問",
+      "icon": "question"
+    }
+  ],
+  "types": [
+    {
+      "file": "type-experience",
+      "no": "01",
+      "name": "経験を\n商品にする",
+      "icon": "gift",
+      "tone": "accent"
+    },
+    {
+      "file": "type-production",
+      "no": "02",
+      "name": "AIで制作を\nサポートする",
+      "icon": "pen",
+      "tone": "sage"
+    },
+    {
+      "file": "type-marketing",
+      "no": "03",
+      "name": "集客を\n仕組みにする",
+      "icon": "compass",
+      "tone": "ink"
+    },
+    {
+      "file": "type-unknown",
+      "no": "04",
+      "name": "まずは\n棚卸しから",
+      "icon": "sprout",
+      "tone": "accent"
+    }
+  ]
+}

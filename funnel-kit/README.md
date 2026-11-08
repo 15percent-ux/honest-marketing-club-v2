@@ -99,6 +99,26 @@ Netlify・Vercel のどちらでも、**ベースディレクトリを `funnel-k
 | `C` | LIFFで開き、最初からLINEのIDを取得する | LIFFアプリ | 流入がLINEからだけ |
 | `none` | LINEを使わない | — | メールだけで運用する |
 
+## 公式LINEボット（トーク内で診断・予約を完結）
+
+`brands/<id>/line-bot.ts` を置くと、`/api/line` に LINE の Webhook が入ります（設問・診断結果・FAQは LP の設定を流用）。
+
+- 友だち追加 → 写真入りカード＋「無料診断をはじめる」
+- 診断：3問をカードのボタンで回答 → 結果カード（タイプ別の画像）
+- 予約：日にち→時間をボタンで選ぶ → 確認 → 完了。スプレッドシートに `source=line` で記録、オーナーに通知メール
+- LPで予約した人が「相談予約:R…」を送ると、予約とLINEを自動で紐付け
+- リッチメニュー：大きな「無料診断」＋「稼ぎ方を見る／個別相談を予約／よくある質問」
+
+画像は `node scripts/make-line-assets.cjs <id>`（`brands/<id>/line-assets.json` から生成）。
+公開は `python3 scripts/deploy-vercel.py . <teamId> <projectId> <名前> <id>`（ボットも一緒に作って送る）。
+Vercel の環境変数に `LINE_CHANNEL_SECRET` と `LINE_CHANNEL_ACCESS_TOKEN` が必要です。
+
+## 管理画面（/admin）
+
+予約の一覧（今日／これから／過去／キャンセル）、状態の変更（予約中・完了・キャンセル・無断欠席）、メモ、検索ができます。
+Apps Script の `setup` を実行すると、スプレッドシートに「管理画面」シートができ、合言葉つきのリンクが入ります。
+そのリンクを一度開けば、その端末では次回から自動で開けます（合言葉は他の人に教えないこと）。
+
 ## 計測
 GA4 と Meta ピクセルのIDを `tracking` に入れると、次のイベントが送られます（`dataLayer` にも積まれます）。
 `survey_view` `survey_answer` `video_start` `video_complete` `survey_complete` `lp_view` `section_view` `cta_click`

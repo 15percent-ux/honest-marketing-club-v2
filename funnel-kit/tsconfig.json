@@ -16,8 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@brand": ["brands/demo/config.ts"]
+      "@brand": ["brands/demo/config.ts"],
+      "@line-bot": ["brands/omijuku/line-bot.ts"]
     }
   },
-  "include": ["src", "brands", "vite.config.ts"]
+  "include": ["src", "brands", "vite.config.ts"],
+  "exclude": ["api"]
 }

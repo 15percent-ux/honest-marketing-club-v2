@@ -52,8 +52,10 @@ const CONFIG = {
 const HEADERS = [
   'rid', 'created_at', 'status', 'date', 'time', 'last_name', 'first_name', 'email', 'tel',
   'intent', 'region', 'birthdate', 'message', 'survey', 'utm', 'line_user_id',
-  'reminded_day_before', 'reminded_1h',
+  'reminded_day_before', 'reminded_1h', 'source', 'note',
 ];
+// 予約の状態：active＝予約中／done＝完了／cancelled＝キャンセル／noshow＝無断欠席
+const STATUSES = ['active', 'done', 'cancelled', 'noshow'];
 
 // ───────────────────────── エントリポイント ─────────────────────────
 
@@ -72,6 +74,9 @@ function doPost(e) {
     return json_({ ok: false, error: 'invalid', message: '送信内容を読み取れませんでした。' });
   }
   if (body.action === 'reserve') return json_(reserve_(body.reservation || {}));
+  if (body.action === 'link') return json_(link_(body.rid, body.lineUserId));
+  if (body.action === 'admin_list') return json_(adminGuard_(body.key, () => adminList_()));
+  if (body.action === 'admin_update') return json_(adminGuard_(body.key, () => adminUpdate_(body)));
   return json_({ ok: false, error: 'invalid' });
 }
 
@@ -85,9 +90,11 @@ function reserve_(r) {
   lock.waitLock(20000);
   try {
     const sh = sheet_();
+    ensureHeaders_(sh);
     const rows = activeRows_(sh);
-    const email = String(r.email).trim().toLowerCase();
-    if (rows.some((x) => x.email === email && x.date === r.date && x.time === r.time)) {
+    const email = String(r.email || '').trim().toLowerCase();
+    const same = (x) => (r.lineUserId ? x.lineUserId === r.lineUserId : x.email === email);
+    if (rows.some((x) => same(x) && x.date === r.date && x.time === r.time)) {
       return { ok: false, error: 'duplicate', message: 'この日時はすでにご予約済みです。確認メールをご覧ください。' };
     }
     const taken = rows.filter((x) => x.date === r.date && x.time === r.time).length;
@@ -100,14 +107,11 @@ function reserve_(r) {
       rid, new Date(), 'active', r.date, r.time, r.lastName, r.firstName, email, normalizeTel_(r.tel),
       r.intent || '', r.region || '', r.birthdate || '', r.message || '',
       JSON.stringify(r.survey || {}), JSON.stringify(r.utm || {}), r.lineUserId || '', '', '',
+      r.source === 'line' ? 'line' : 'lp', '',
     ]);
     const rec = Object.assign({}, r, { rid: rid, email: email });
-    sendConfirm_(rec);
-    const notifyTo = CONFIG.NOTIFY_TO === 'me' ? Session.getEffectiveUser().getEmail() : CONFIG.NOTIFY_TO;
-    if (notifyTo) {
-      const { password: _p, ...shown } = rec;
-      MailApp.sendEmail(notifyTo, `【新規予約】${r.lastName} ${r.firstName} 様 ${fmtDate_(r.date)} ${r.time}`, JSON.stringify(shown, null, 2));
-    }
+    if (email) sendConfirm_(rec);
+    notifyOwner_(rec);
     return { ok: true, rid: rid };
   } finally {
     lock.releaseLock();
@@ -116,6 +120,12 @@ function reserve_(r) {
 
 function validate_(r) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(r.date || '') || !/^\d{2}:\d{2}-\d{2}:\d{2}$/.test(r.time || '')) return '日時を選び直してください。';
+  // 公式LINEのトークで予約した人は、LINEで連絡がつくのでメール・電話は不要
+  if (r.source === 'line' && r.lineUserId) {
+    if (!r.lastName) return 'お名前を確認できませんでした。';
+    if (slotStart_(r.date, r.time).getTime() < Date.now()) return 'すでに過ぎた日時です。選び直してください。';
+    return '';
+  }
   if (!r.lastName || !r.firstName) return 'お名前を入力してください。';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(r.email || '').trim())) return 'メールアドレスを確認してください。';
   if (!/^0\d{9,10}$/.test(String(r.tel || '').replace(/\D/g, ''))) return '電話番号を確認してください。';
@@ -135,6 +145,106 @@ function slots_(from, to) {
   return Object.keys(count).map((k) => {
     const [date, time] = k.split(' ');
     return { date: date, time: time, remaining: Math.max(0, CONFIG.CAPACITY_PER_SLOT - count[k]) };
+  });
+}
+
+function notifyOwner_(r) {
+  const to = CONFIG.NOTIFY_TO === 'me' ? Session.getEffectiveUser().getEmail() : CONFIG.NOTIFY_TO;
+  if (!to) return;
+  const survey = Object.keys(r.survey || {}).map((k) => `・${k.replace(/^q\d+\s*/, '')}\n　→ ${(r.survey[k] || []).join(' / ')}`);
+  const lines = [
+    `${CONFIG.OFFER_NAME}に新しい予約が入りました。`,
+    '',
+    `■ 日時　　${fmtDate_(r.date)} ${r.time.replace('-', '〜')}`,
+    `■ お名前　${r.lastName} ${r.firstName || ''} 様`,
+    `■ 申込元　${r.source === 'line' ? '公式LINEのトーク' : 'LP（Webページ）'}`,
+    r.email ? `■ メール　${r.email}` : '',
+    r.tel ? `■ 電話　　${r.tel}` : '',
+    r.intent ? `■ 検討状況　${r.intent}` : '',
+    r.message ? `■ 相談したいこと\n${r.message}` : '',
+    survey.length ? `■ 診断の回答\n${survey.join('\n')}` : '',
+    '',
+    `予約番号：${r.rid}`,
+    adminUrl_() ? `管理画面：${adminUrl_()}` : '',
+  ].filter((x) => x !== '');
+  MailApp.sendEmail(to, `【新規予約】${fmtDate_(r.date)} ${r.time.split('-')[0]}〜 ${r.lastName} ${r.firstName || ''}様`, lines.join('\n'));
+}
+
+/** LPで予約した人が公式LINEに「相談予約:R…」を送ったとき、予約とLINEを紐付ける */
+function link_(rid, lineUserId) {
+  if (!rid || !lineUserId) return { ok: false };
+  const sh = sheet_();
+  const values = sh.getDataRange().getValues();
+  const idx = indexOf_(values[0]);
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][idx.rid]) === String(rid)) {
+      sh.getRange(i + 1, idx.line_user_id + 1).setValue(lineUserId);
+      return { ok: true };
+    }
+  }
+  return { ok: false };
+}
+
+// ───────────────────────── 管理画面用API ─────────────────────────
+
+function adminUrl_() {
+  const key = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  if (!key || !CONFIG.THANKS_URL) return '';
+  return CONFIG.THANKS_URL.replace(/\/thanks.*$/, '/admin') + '#key=' + key;
+}
+
+function adminGuard_(key, fn) {
+  const real = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  if (!real || key !== real) return { ok: false, error: 'unauthorized' };
+  return fn();
+}
+
+function adminList_() {
+  const values = sheet_().getDataRange().getValues();
+  if (values.length < 2) return { ok: true, reservations: [] };
+  const header = values[0];
+  const parse = (v) => {
+    try {
+      return v ? JSON.parse(v) : {};
+    } catch (e) {
+      return {};
+    }
+  };
+  const list = values.slice(1).map((row) => {
+    const o = {};
+    header.forEach((h, i) => (o[h] = row[i] instanceof Date ? (h === 'date' ? fmtCell_(row[i]) : row[i].toISOString()) : row[i]));
+    return {
+      rid: String(o.rid), createdAt: o.created_at, status: o.status || 'active', date: fmtCell_(o.date), time: String(o.time),
+      name: `${o.last_name || ''} ${o.first_name || ''}`.trim(), email: o.email || '', tel: o.tel || '',
+      intent: o.intent || '', message: o.message || '', survey: parse(o.survey), utm: parse(o.utm),
+      line: !!o.line_user_id, source: o.source || (o.line_user_id && !o.email ? 'line' : 'lp'), note: o.note || '',
+    };
+  });
+  return { ok: true, reservations: list, offerName: CONFIG.OFFER_NAME, brandName: CONFIG.BRAND_NAME };
+}
+
+function adminUpdate_(b) {
+  if (b.status && STATUSES.indexOf(b.status) < 0) return { ok: false, error: 'invalid' };
+  const sh = sheet_();
+  ensureHeaders_(sh);
+  const values = sh.getDataRange().getValues();
+  const idx = indexOf_(values[0]);
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i][idx.rid]) === String(b.rid)) {
+      if (b.status) sh.getRange(i + 1, idx.status + 1).setValue(b.status);
+      if (typeof b.note === 'string') sh.getRange(i + 1, idx.note + 1).setValue(b.note.slice(0, 2000));
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'not_found' };
+}
+
+/** 新しい列（source・note）が無い古いシートに見出しを足す */
+function ensureHeaders_(sh) {
+  const width = sh.getLastColumn();
+  const header = width ? sh.getRange(1, 1, 1, width).getValues()[0] : [];
+  HEADERS.forEach((h, i) => {
+    if (header[i] !== h && header.indexOf(h) < 0) sh.getRange(1, i + 1).setValue(h);
   });
 }
 
@@ -166,12 +276,15 @@ function sendReminders() {
     const dayBefore = new Date(start);
     dayBefore.setDate(dayBefore.getDate() - 1);
     dayBefore.setHours(20, 0, 0, 0);
+    const when = `${fmtDate_(r.date)} ${r.time.replace('-', '〜')}`;
     if (!row[idx.reminded_day_before] && now >= dayBefore.getTime() && start - now > 3 * 3600 * 1000) {
-      MailApp.sendEmail({ to: r.email, subject: `【明日】${CONFIG.OFFER_NAME}のご案内（${fmtDate_(r.date)} ${r.time.split('-')[0]}〜）`, htmlBody: emailHtml_(r, 'day_before'), name: CONFIG.FROM_NAME });
+      if (r.email) MailApp.sendEmail({ to: r.email, subject: `【明日】${CONFIG.OFFER_NAME}のご案内（${fmtDate_(r.date)} ${r.time.split('-')[0]}〜）`, htmlBody: emailHtml_(r, 'day_before'), name: CONFIG.FROM_NAME });
+      if (r.lineUserId) pushLine_(r.lineUserId, `${r.lastName}様\nいよいよ明日です🍵\n\n${CONFIG.OFFER_NAME}\n${when}\n\n${CONFIG.MEETING_URL ? '参加URL：' + CONFIG.MEETING_URL : '参加URLは、このトークでお送りします。'}`);
       sh.getRange(i + 1, idx.reminded_day_before + 1).setValue(new Date());
     }
     if (!row[idx.reminded_1h] && start - now <= 3600 * 1000) {
-      MailApp.sendEmail({ to: r.email, subject: `【まもなく開始】${CONFIG.OFFER_NAME}は${r.time.split('-')[0]}からです`, htmlBody: emailHtml_(r, 'hour_before'), name: CONFIG.FROM_NAME });
+      if (r.email) MailApp.sendEmail({ to: r.email, subject: `【まもなく開始】${CONFIG.OFFER_NAME}は${r.time.split('-')[0]}からです`, htmlBody: emailHtml_(r, 'hour_before'), name: CONFIG.FROM_NAME });
+      if (r.lineUserId) pushLine_(r.lineUserId, `まもなく開始です（${r.time.split('-')[0]}〜）\n${CONFIG.MEETING_URL ? '参加URL：' + CONFIG.MEETING_URL : 'お時間になりましたら、お送りした参加URLからお入りください。'}`);
       sh.getRange(i + 1, idx.reminded_1h + 1).setValue(new Date());
     }
   }
@@ -301,8 +414,20 @@ function setup() {
   if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
   sh.setFrozenRows(1);
   // 日付・時間・電話番号が自動で別の形式に変換されないよう、文字列として扱う
+  ensureHeaders_(sh);
   const idx = indexOf_(HEADERS);
   ['date', 'time', 'tel', 'rid'].forEach((k) => sh.getRange(1, idx[k] + 1, sh.getMaxRows(), 1).setNumberFormat('@'));
+  // 管理画面の合言葉（初回だけ作る）と、ワンタップで開けるリンク
+  const props = PropertiesService.getScriptProperties();
+  if (!props.getProperty('ADMIN_KEY')) props.setProperty('ADMIN_KEY', Utilities.getUuid().replace(/-/g, ''));
+  const admin = ss.getSheetByName('管理画面') || ss.insertSheet('管理画面', 0);
+  admin.getRange('A1:B3').setValues([
+    ['管理画面', adminUrl_()],
+    ['使い方', 'B1のリンクを開くと、予約の一覧・状態の変更・メモができます（このリンクは他の人に教えないでください）'],
+    ['予約データ', '「reservations」シートに自動で記録されます（直接編集しなくて大丈夫です）'],
+  ]);
+  admin.setColumnWidth(1, 120);
+  admin.setColumnWidth(2, 640);
   ScriptApp.getProjectTriggers().forEach((t) => {
     if (t.getHandlerFunction() === 'sendReminders') ScriptApp.deleteTrigger(t);
   });
@@ -324,7 +449,7 @@ function indexOf_(header) {
 function rowToObj_(row, idx) {
   return {
     rid: row[idx.rid], date: fmtCell_(row[idx.date]), time: String(row[idx.time]), lastName: row[idx.last_name],
-    firstName: row[idx.first_name], email: row[idx.email], lineUserId: row[idx.line_user_id],
+    firstName: row[idx.first_name], email: String(row[idx.email] || ''), lineUserId: String(row[idx.line_user_id] || ''),
   };
 }
 
@@ -333,7 +458,7 @@ function activeRows_(sh) {
   if (values.length < 2) return [];
   const idx = indexOf_(values[0]);
   return values.slice(1).filter((r) => r[idx.status] === 'active').map((r) => ({
-    date: fmtCell_(r[idx.date]), time: String(r[idx.time]), email: String(r[idx.email]).toLowerCase(),
+    date: fmtCell_(r[idx.date]), time: String(r[idx.time]), email: String(r[idx.email] || '').toLowerCase(), lineUserId: String(r[idx.line_user_id] || ''),
   }));
 }
 

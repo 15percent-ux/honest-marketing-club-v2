@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-export type Route = '/' | '/lp' | '/thanks';
+export type Route = '/' | '/lp' | '/thanks' | '/admin';
 
 function current(): Route {
   const p = window.location.pathname.slice(base.length).replace(/\/$/, '') || '/';
-  return (['/', '/lp', '/thanks'].includes(p) ? p : '/') as Route;
+  return (['/', '/lp', '/thanks', '/admin'].includes(p) ? p : '/') as Route;
 }
 
 export function navigate(to: Route, query?: Record<string, string>) {

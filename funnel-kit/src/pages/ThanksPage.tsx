@@ -116,7 +116,7 @@ export function ThanksPage() {
               ))}
             </ul>
             {linked ? (
-              <p className="mt-4 rounded-full bg-lineg/10 py-3 text-center font-bold text-lineg">✓ LINE連携が完了しています</p>
+              <p className="mt-4 rounded-full bg-[#E6F7EC] py-3 text-center font-bold text-lineg">✓ LINE連携が完了しています</p>
             ) : lineUrl ? (
               <a
                 href={lineUrl}
