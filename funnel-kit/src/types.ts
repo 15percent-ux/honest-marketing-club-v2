@@ -89,6 +89,8 @@ export interface SurveyConfig {
     /** 右側に縦に積むコピー。inverse＝濃色帯／box＝白箱／boxAccent＝白箱にメイン色の太字 */
     lines: { text: string; style: 'inverse' | 'box' | 'boxAccent' }[];
     tags?: string[];
+    /** 写真の隅に小さく出す注記（例：「※画像はイメージです」） */
+    imageNote?: string;
   };
   /** 回答後にもらえるものの予告 */
   teaser?: { label: string; lines: string[]; items: { image: ImgRef; label: string }[] };

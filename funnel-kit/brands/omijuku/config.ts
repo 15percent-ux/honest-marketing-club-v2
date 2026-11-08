@@ -36,7 +36,8 @@ export default defineBrand({
   survey: {
     enabled: true,
     hero: {
-      image: { alt: 'オミ塾の個別相談の様子', label: '写真：Zoomで話すオミさん（4:5）' },
+      image: { src: '/hero.webp', alt: 'カフェでくつろぐ女性' },
+      imageNote: '※画像はイメージです',
       lines: [
         { text: 'AIを味方に', style: 'inverse' },
         { text: '自分らしく', style: 'box' },

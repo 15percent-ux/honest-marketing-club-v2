@@ -81,8 +81,11 @@ function SurveyHero() {
   return (
     <>
       <div className="relative overflow-hidden bg-white">
-        <div className="w-[62%]">
+        <div className="relative w-[62%]">
           <Img img={hero.image} ratio="4/5" />
+          {hero.imageNote && (
+            <span className="absolute left-1.5 top-1 text-[9px] text-white [text-shadow:0_0_3px_rgba(0,0,0,0.6)]">{hero.imageNote}</span>
+          )}
         </div>
         <div className="absolute right-3 top-6 flex w-[58%] flex-col items-end gap-2">
           {hero.lines.map((l, i) =>
