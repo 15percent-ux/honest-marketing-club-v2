@@ -29,7 +29,9 @@ export function LpPage() {
       setFormOpen(true);
     } else if (window.location.hash.length > 1) {
       const id = decodeURIComponent(window.location.hash.slice(1));
-      window.setTimeout(() => document.querySelector(`[data-section="${CSS.escape(id)}"]`)?.scrollIntoView({ block: 'start' }), 300);
+      // セクションの id か種類（例：#faq, #futures）で探す
+      const sel = `[data-section="${CSS.escape(id)}"], [data-section^="${CSS.escape(id)}-"]`;
+      window.setTimeout(() => document.querySelector(sel)?.scrollIntoView({ block: 'start' }), 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
