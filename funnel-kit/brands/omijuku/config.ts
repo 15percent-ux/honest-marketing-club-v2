@@ -157,6 +157,7 @@ export default defineBrand({
       { type: 'cta', heading: 'まずは[a]話してみる[/a]ところから\n[invt]あなたに合う稼ぎ方[/invt]を一緒に考える', label: '無料で相談する' },
       {
         type: 'futures',
+        id: 'styles',
         title: ['AIを道具にすると', '稼ぎ方の選択肢が', 'こんなふうに広がります'],
         items: [
           {
@@ -225,6 +226,7 @@ export default defineBrand({
       },
       {
         type: 'faq',
+        id: 'faq',
         title: 'よくあるご質問',
         items: [
           {

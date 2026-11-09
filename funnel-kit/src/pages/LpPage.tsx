@@ -23,6 +23,14 @@ export function LpPage() {
 
   useEffect(() => {
     track('lp_view', { from_survey: fromSurvey });
+    // リッチメニューなどからの直リンク：?open=form で申込フォームを開く／#faq などでその位置へ
+    if (query('open') === 'form') {
+      track('form_open', { source: query('utm_medium') || 'deeplink' });
+      setFormOpen(true);
+    } else if (window.location.hash.length > 1) {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      window.setTimeout(() => document.querySelector(`[data-section="${CSS.escape(id)}"]`)?.scrollIntoView({ block: 'start' }), 300);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
