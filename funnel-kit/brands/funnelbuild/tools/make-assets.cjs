@@ -33,10 +33,10 @@ function lineChat() {
   const opt = (t) => `<div style="border:1px solid #E5DCD2;background:${C.bg};border-radius:9px;padding:8px 10px;margin-top:6px;font-weight:700;font-size:11px;display:flex;justify-content:space-between">${t}<span style="color:${C.accent}">›</span></div>`;
   return `${base}<div style="width:390px;height:844px;background:#8CABD9;position:relative;overflow:hidden">
     <div style="height:56px;background:#fff;display:flex;align-items:center;padding:0 14px;gap:10px;font-weight:700;font-size:15px"><span style="font-size:20px">‹</span>オミ塾<span style="margin-left:auto;font-size:18px">☰</span></div>
-    ${bubble('<div style="padding:10px 12px">友だち追加ありがとうございます。<br>まずは下の診断で、あなたに合う稼ぎ方を見てみませんか？</div>')}
-    ${bubble(`<img src="${diag}" style="display:block;width:100%"><div style="padding:10px 12px"><b style="font-size:13px">3つの質問で、あなたに合う稼ぎ方が分かる</b><div style="color:${C.accent};font-size:10px;margin-top:2px">所要30秒・タップだけで完了</div><div style="margin-top:10px;background:${C.accent};color:#fff;text-align:center;border-radius:8px;padding:8px;font-weight:700">無料診断をはじめる</div></div>`)}
+    ${bubble('<div style="padding:10px 12px">友だち追加ありがとうございます。<br>まずは3つの質問で、安心して始められるか確かめてみませんか？</div>')}
+    ${bubble(`<img src="${diag}" style="display:block;width:100%"><div style="padding:10px 12px"><b style="font-size:13px">3つの質問で、オミ塾を安心して始められるか分かる</b><div style="color:${C.accent};font-size:10px;margin-top:2px">所要30秒・タップだけで完了</div><div style="margin-top:10px;background:${C.accent};color:#fff;text-align:center;border-radius:8px;padding:8px;font-weight:700">無料診断をはじめる</div></div>`)}
     ${mine('無料診断をはじめる')}
-    ${bubble(`<div style="padding:10px 12px"><b style="color:${C.accent};font-size:20px">Q1</b><span style="color:#8A857C"> / 3</span><div style="font-weight:700;margin-top:2px">いまの働き方・収入について、いちばん近いものは？</div>${opt('本業の収入だけでは少し不安')}${opt('副業したいが、何をすればいいか迷う')}</div>`)}
+    ${bubble(`<div style="padding:10px 12px"><b style="color:${C.accent};font-size:20px">Q1</b><span style="color:#8A857C"> / 3</span><div style="font-weight:700;margin-top:2px">これまでのお仕事や得意なことに、いちばん近いものは？</div>${opt('接客・販売など、人と話す仕事')}${opt('事務・経理などのパソコン作業')}</div>`)}
     <div style="position:absolute;left:0;right:0;bottom:0">
       <img src="${menu}" style="display:block;width:100%">
       <div style="height:30px;background:#fff;text-align:center;font-size:11px;line-height:30px;color:#555">メニュー ▾</div>

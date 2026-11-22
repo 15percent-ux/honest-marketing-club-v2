@@ -4,14 +4,24 @@ import type { FormConfig } from '../types';
 export interface LineBotConfig {
   /** 画像の置き場所（LPと同じサイト） */
   siteUrl: string;
-  colors: { accent: string; sage: string; ink: string; bg: string; sub: string; soft: string };
+  /** line は選択肢の枠線・区切り線の色（省略時は薄いグレー） */
+  colors: { accent: string; sage: string; ink: string; bg: string; sub: string; soft: string; line?: string };
   greeting: { text: string; card: { image: string; title: string; sub: string; button: string } };
   diagnosis: {
     questions: { id: string; text: string; options: string[] }[];
     /** 結果を決める設問 */
     resultQuestionId: string;
-    results: Record<string, { key: string; name: string; image: string; desc: string[]; step: string }>;
+    results: Record<string, BotResult>;
+    /** 結果カードの小見出し（既定：「あなたに合いそうな稼ぎ方は…」） */
+    kicker?: string;
+    /** 結果の上に出す判定（例：「安心して進められます」） */
+    verdict?: string;
+    /** ほかの設問の回答に応じて足す補足 */
+    extras?: { questionId: string; label: string; answers: Record<string, string> }[];
+    stepLabel?: string;
     note: string;
+    /** リッチメニューの「一覧を見る」で出すカード（省略時は results を並べる） */
+    styles?: { title: string; kicker: string; button: string; items: BotResult[] };
   };
   booking: {
     offerName: string;
@@ -30,6 +40,14 @@ export interface LineBotConfig {
     chatBarText: string;
     areas: { bounds: { x: number; y: number; width: number; height: number }; data: string; displayText: string }[];
   };
+}
+
+export interface BotResult {
+  key: string;
+  name: string;
+  image: string;
+  desc: string[];
+  step: string;
 }
 
 export interface LineEvent {

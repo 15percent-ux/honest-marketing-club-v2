@@ -28,23 +28,50 @@ function ThanksBand({ s }: { s: S<'thanksBand'> }) {
 
 // ───────── 診断結果 ─────────
 function SurveyResult({ s }: { s: S<'surveyResult'> }) {
-  const answer = load<Record<string, string[]>>('survey')?.[s.questionId]?.[0];
+  const survey = load<Record<string, string[]>>('survey');
+  const answer = survey?.[s.questionId]?.[0];
   const r = answer ? s.results[answer] : undefined;
   useEffect(() => {
     if (r) track('survey_result_view', { result: r.name });
   }, [r]);
   if (!r) return null;
+  // ほかの設問の回答に応じた補足（回答が無いもの・対応する文が無いものは出さない）
+  const extras = (s.extras || [])
+    .map((x) => {
+      const a = survey?.[x.questionId]?.[0];
+      return a && x.answers[a] ? { label: x.label, answer: a, text: x.answers[a] } : null;
+    })
+    .filter((x): x is { label: string; answer: string; text: string } => !!x);
   return (
     <Pad className="!pt-10">
       {r.icon && <Char c={r.icon} size={56} />}
       <p className="mt-4 text-[13px] font-bold text-muted">{s.kicker}</p>
-      <h2 className="mt-1 font-head text-[26px] font-bold leading-[1.4] text-primary">{r.name}</h2>
+      {s.verdict && (
+        <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary py-1.5 pl-2 pr-4 text-[14px] font-bold text-white">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-primary">
+            <Icon name="check" size={14} weight="bold" />
+          </span>
+          {s.verdict}
+        </p>
+      )}
+      <h2 className="mt-3 font-head text-[26px] font-bold leading-[1.4] text-primary">{r.name}</h2>
       <div className="mt-5 space-y-3 text-[15px] leading-[1.9]">
         {r.desc.map((d, i) => (
           <p key={i}>{rt(d)}</p>
         ))}
       </div>
-      <div className="mt-6 rounded-2xl border border-line bg-surface p-5">
+      {extras.length > 0 && (
+        <dl className="mt-6 divide-y divide-line rounded-2xl border border-line bg-surface">
+          {extras.map((x) => (
+            <div key={x.label} className="p-5">
+              <dt className="text-[12px] font-bold text-primary">{x.label}</dt>
+              <dd className="mt-1 text-[13px] text-muted">「{x.answer}」</dd>
+              <dd className="mt-2 text-[15px] leading-[1.85]">{rt(x.text)}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      <div className="mt-4 rounded-2xl bg-primary-soft p-5">
         <p className="text-[12px] font-bold text-primary">{s.stepLabel || '無料相談でやること'}</p>
         <p className="mt-1.5 text-[15px] font-bold leading-[1.75]">{rt(r.step)}</p>
       </div>

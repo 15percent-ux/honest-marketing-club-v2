@@ -66,6 +66,7 @@ BRAND=omijuku npm run build # dist/ に出力
 | `schedule` | S12 | 開催時間帯 |
 | `campaignDetail` | S14 | 特典の詳細と条件 |
 | `profile` | 追加 | 担当者のプロフィール（個人事業のクライアント向け） |
+| `surveyResult` | 追加 | 診断の結果。`questionId` の回答で本文を出し分け、`verdict`（全員に同じ判定）と `extras`（ほかの設問の回答に応じた補足）を足せる。公式LINEボットも同じ内容を使う |
 | `faq` | 追加 | よくある質問 |
 | `closing` | S15 | クロージング（恐怖訴求ではなく事実ベース） |
 

@@ -66,13 +66,17 @@ function diag() {
 }
 
 function typeCard(t, ic) {
+  // 名前の行が長いときは、右の丸に重ならない大きさまで小さくする
+  const longest = Math.max(...t.name.split('\n').map((l) => [...l].length));
+  const size = Math.min(66, Math.floor(450 / (longest * 1.04)));
   return `${base}<div style="width:1040px;height:676px;position:relative;background:${c.bg};overflow:hidden">
     <div style="position:absolute;right:90px;top:50%;transform:translateY(-50%);width:400px;height:400px;border-radius:50%;background:${c.mark};display:flex;align-items:center;justify-content:center">${ic[t.icon]}</div>
     <div style="position:absolute;left:84px;top:96px">
-      <p class="en" style="font-size:28px;color:${c.accent}">TYPE ${esc(t.no)}</p>
-      <p style="margin-top:10px;font-size:28px;font-weight:700;color:${c.sage}">あなたに合う稼ぎ方</p>
+      <p class="en" style="font-size:28px;color:${c.accent}">${esc(t.en || `TYPE ${t.no}`)}</p>
+      <p style="margin-top:10px;font-size:${t.sub && t.sub.length > 14 ? 24 : 28}px;font-weight:700;color:${c.sage}">${esc(t.sub || 'あなたに合う稼ぎ方')}</p>
+      ${t.badge ? `<p style="margin-top:22px;display:inline-block;background:${c.accent};color:#fff;font-size:24px;font-weight:700;padding:8px 22px;border-radius:999px">✓ ${esc(t.badge)}</p>` : ''}
     </div>
-    <p style="position:absolute;left:84px;bottom:104px;font-size:66px;font-weight:900;letter-spacing:.04em;line-height:1.35;white-space:nowrap">${esc(t.name)}</p>
+    <p style="position:absolute;left:84px;bottom:104px;font-size:${size}px;font-weight:900;letter-spacing:.04em;line-height:1.35;white-space:nowrap">${esc(t.name)}</p>
     <div style="position:absolute;left:84px;bottom:76px;width:96px;height:6px;border-radius:3px;background:${c.accent}"></div>
     <p class="en" style="position:absolute;right:56px;bottom:40px;font-size:20px;color:${c.sage}">${esc(cfg.brandLine)}</p>
     </div></body></html>`;

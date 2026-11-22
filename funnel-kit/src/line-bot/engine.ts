@@ -2,7 +2,7 @@
  * 公式LINEボットの中身（LINEや外部サービスへの通信は BotContext 経由で注入する純粋なロジック）。
  * 状態はサーバーに持たず、ポストバックのデータ（a=操作&s=これまでの回答…）に載せて運ぶ。
  */
-import type { BotContext, LineBotConfig, LineEvent, LineMessage } from './types';
+import type { BotContext, BotResult, LineBotConfig, LineEvent, LineMessage } from './types';
 
 const DAY = 86_400_000;
 const JST = 9 * 3_600_000;
@@ -97,7 +97,7 @@ const optionRow = (bot: LineBotConfig, label: string, data: string) => ({
   paddingAll: '13px',
   cornerRadius: '10px',
   borderWidth: '1px',
-  borderColor: '#E5DCD2',
+  borderColor: bot.colors.line || '#E1E5DF',
   backgroundColor: bot.colors.bg,
   action: postback(label, data, label),
   contents: [text(label, { size: 'sm', color: bot.colors.ink, weight: 'bold', flex: 1 }), text('›', { size: 'md', color: bot.colors.accent, flex: 0, wrap: false })],
@@ -168,13 +168,30 @@ function resultFor(bot: LineBotConfig, answers: number[]) {
   return opt ? bot.diagnosis.results[opt] : undefined;
 }
 
-function resultCard(bot: LineBotConfig, r: LineBotConfig['diagnosis']['results'][string], s: string, withAlt = true) {
+const divider = (bot: LineBotConfig) => ({ type: 'separator', margin: 'md', color: bot.colors.line || '#E1E5DF' });
+
+/** 診断の結果（answers があれば判定と補足も出す）／一覧の1枚（answers なし） */
+function resultCard(bot: LineBotConfig, r: BotResult, s: string, answers?: number[]) {
+  const d = bot.diagnosis;
+  const isResult = !!answers;
+  const extras = isResult
+    ? (d.extras || [])
+        .map((x) => {
+          const qi = d.questions.findIndex((q) => q.id === x.questionId);
+          const a = d.questions[qi]?.options[answers[qi]];
+          return a && x.answers[a] ? [divider(bot), text(x.label, { size: 'xxs', color: bot.colors.sage, weight: 'bold', margin: 'md' }), text(`「${a}」`, { size: 'xxs', color: bot.colors.sub }), text(strip(x.answers[a]), { size: 'sm', color: bot.colors.ink })] : [];
+        })
+        .flat()
+    : [];
+  const styles = d.styles;
   return bubble(bot, {
     hero: r.image,
     body: [
-      kicker(bot, withAlt ? 'あなたに合いそうな稼ぎ方は…' : '稼ぎ方の一例'),
-      text(r.name, { size: 'xl', weight: 'bold', color: bot.colors.accent }),
-      ...r.desc.map((d) => text(strip(d), { size: 'sm', color: bot.colors.ink })),
+      kicker(bot, isResult ? d.kicker || 'あなたに合いそうな稼ぎ方は…' : styles?.kicker || '一例'),
+      ...(isResult && d.verdict ? [text(`✓ ${d.verdict}`, { size: 'sm', weight: 'bold', color: bot.colors.accent })] : []),
+      text(r.name, { size: 'xl', weight: 'bold', color: isResult ? bot.colors.ink : bot.colors.accent }),
+      ...r.desc.map((x) => text(strip(x), { size: 'sm', color: bot.colors.ink })),
+      ...extras,
       {
         type: 'box',
         layout: 'vertical',
@@ -182,21 +199,22 @@ function resultCard(bot: LineBotConfig, r: LineBotConfig['diagnosis']['results']
         paddingAll: '12px',
         cornerRadius: '10px',
         backgroundColor: bot.colors.soft,
-        contents: [text('無料相談でやること', { size: 'xxs', color: bot.colors.sage, weight: 'bold' }), text(strip(r.step), { size: 'sm', weight: 'bold', color: bot.colors.ink, margin: 'xs' })],
+        contents: [text(d.stepLabel || '無料相談でやること', { size: 'xxs', color: bot.colors.sage, weight: 'bold' }), text(strip(r.step), { size: 'sm', weight: 'bold', color: bot.colors.ink, margin: 'xs' })],
       },
-      text(bot.diagnosis.note, { size: 'xxs', color: bot.colors.sub, margin: 'md' }),
+      ...(isResult ? [text(d.note, { size: 'xxs', color: bot.colors.sub, margin: 'md' })] : []),
     ],
     footer: [
       primaryBtn(bot, 'この内容で相談を予約する', `a=book&${s}&t=${r.key}`, '相談を予約したい'),
-      ...(withAlt ? [linkBtn(bot, 'ほかの稼ぎ方も見る', 'a=styles', 'ほかの稼ぎ方も見たい')] : []),
+      ...(isResult && styles ? [linkBtn(bot, styles.button, 'a=styles', styles.button)] : []),
     ],
   });
 }
 
 function stylesCarousel(bot: LineBotConfig): LineMessage {
-  return flex('稼ぎ方の一例', {
+  const items = bot.diagnosis.styles?.items || Object.values(bot.diagnosis.results);
+  return flex(bot.diagnosis.styles?.title || '一覧', {
     type: 'carousel',
-    contents: Object.values(bot.diagnosis.results).map((r) => resultCard(bot, r, 's=', false)),
+    contents: items.map((r) => resultCard(bot, r, 's=')),
   });
 }
 
@@ -252,7 +270,7 @@ function confirmCard(bot: LineBotConfig, date: string, time: string, name: strin
       body: [
         kicker(bot, 'CONFIRM'),
         text('この内容で予約しますか？', { size: 'lg', weight: 'bold', color: bot.colors.ink }),
-        { type: 'separator', margin: 'md', color: '#EFE6DC' },
+        divider(bot),
         { type: 'box', layout: 'vertical', spacing: 'sm', margin: 'md', contents: [row('内容', bot.booking.offerName), row('日時', `${dateLong(date)} ${time.replace('-', '〜')}`), row('形式', bot.booking.format), row('お名前', `${name} 様`)] },
       ],
       footer: [primaryBtn(bot, 'この内容で予約する', `a=ok&d=${date}&tm=${time}${carry}`, 'この内容で予約します'), linkBtn(bot, '日時を選び直す', `a=book${carry}`, '日時を選び直したい')],
@@ -268,7 +286,7 @@ function doneCard(bot: LineBotConfig, date: string, time: string, rid: string): 
         text('✓ ご予約を受け付けました', { size: 'sm', weight: 'bold', color: bot.colors.sage }),
         text(`${dateLong(date)}\n${time.replace('-', '〜')}`, { size: 'xl', weight: 'bold', color: bot.colors.ink }),
         text(`${bot.booking.offerName}｜${bot.booking.format}`, { size: 'xs', color: bot.colors.sub }),
-        { type: 'separator', margin: 'md', color: '#EFE6DC' },
+        divider(bot),
         ...bot.booking.afterNote.map((t) => text(`・${t}`, { size: 'sm', color: bot.colors.ink })),
         text(`予約番号：${rid}`, { size: 'xxs', color: bot.colors.sub, margin: 'md' }),
       ],
@@ -284,7 +302,7 @@ function faqCard(bot: LineBotConfig): LineMessage {
         kicker(bot, 'FAQ'),
         text('よくある質問', { size: 'lg', weight: 'bold', color: bot.colors.ink }),
         ...bot.faq.flatMap((f, i) => [
-          ...(i ? [{ type: 'separator', margin: 'md', color: '#EFE6DC' }] : []),
+          ...(i ? [divider(bot)] : []),
           text(`Q. ${f.q}`, { size: 'sm', weight: 'bold', color: bot.colors.accent, margin: 'md' }),
           text(strip(f.a), { size: 'sm', color: bot.colors.ink }),
         ]),
@@ -325,7 +343,7 @@ export async function handleEvent(ev: LineEvent, ctx: BotContext): Promise<LineM
         {
           type: 'text',
           text: res.ok
-            ? `LINE連携が完了しました🍵\n予約番号：${rid}\n\n前日にこのトークでリマインドをお送りします。当日の参加URLもこちらでご案内します。`
+            ? `LINE連携が完了しました。\n予約番号：${rid}\n\n前日にこのトークでリマインドをお送りします。当日の参加URLもこちらでご案内します。`
             : `予約番号「${rid}」が見つかりませんでした。お手数ですが、予約完了画面の番号をもう一度お送りください。`,
         },
       ];
@@ -351,7 +369,7 @@ export async function handleEvent(ev: LineEvent, ctx: BotContext): Promise<LineM
       if (answers.length < bot.diagnosis.questions.length) return [question(bot, answers)];
       const r = resultFor(bot, answers);
       if (!r) return [question(bot, [])];
-      return [{ type: 'text', text: 'ご回答ありがとうございました🍵' }, flex(`あなたに合いそうな稼ぎ方：${r.name}`, resultCard(bot, r, `s=${answers.join('.')}`))];
+      return [{ type: 'text', text: 'ご回答ありがとうございました。' }, flex(`診断の結果：${r.name}`, resultCard(bot, r, `s=${answers.join('.')}`, answers))];
     }
     case 'styles':
       return [stylesCarousel(bot)];
@@ -371,7 +389,7 @@ export async function handleEvent(ev: LineEvent, ctx: BotContext): Promise<LineM
       const survey = labeledSurvey(bot, answers);
       const chosen = p.get('t');
       if (chosen && !survey['診断結果']) {
-        const r = Object.values(bot.diagnosis.results).find((x) => x.key === chosen);
+        const r = [...Object.values(bot.diagnosis.results), ...(bot.diagnosis.styles?.items || [])].find((x) => x.key === chosen);
         if (r) survey['選んだ稼ぎ方'] = [r.name];
       }
       const res = await ctx.reserve({

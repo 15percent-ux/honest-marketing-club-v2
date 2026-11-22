@@ -10,10 +10,10 @@ const pad = (n) => String(n).padStart(2, '0');
 const day = (o) => { const d = new Date(Date.now() + o * 86400000); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 const mk = (o) => ({ rid: 'R' + Math.random().toString(36).slice(2, 8).toUpperCase(), createdAt: new Date().toISOString(), status: 'active', email: '', tel: '', intent: '', message: '', survey: {}, utm: {}, line: false, source: 'lp', note: '', ...o });
 const sample = [
-  mk({ date: day(0), time: '13:00-13:45', name: '佐藤 陽子', source: 'line', line: true, survey: { '診断結果': ['集客を仕組みにする'] } }),
-  mk({ date: day(0), time: '20:00-20:45', name: '山田 花子', email: 'h@example.com', tel: '090-0000-0000', line: true, survey: { '診断結果': ['経験を商品にする'] }, note: 'Instagram歴2年' }),
-  mk({ date: day(2), time: '10:00-10:45', name: '鈴木 恵', email: 's@example.com', survey: { '診断結果': ['AIで制作をサポートする'] } }),
-  mk({ date: day(3), time: '13:00-13:45', name: '田中 美咲', source: 'line', line: true, survey: { '診断結果': ['まずは棚卸しから'] } }),
+  mk({ date: day(0), time: '13:00-13:45', name: '佐藤 陽子', source: 'line', line: true, survey: { '診断結果': ['いまの使い方を、稼ぐ力に変えられます'] } }),
+  mk({ date: day(0), time: '20:00-20:45', name: '山田 花子', email: 'h@example.com', tel: '090-0000-0000', line: true, survey: { '診断結果': ['AIゼロからでも大丈夫です'] }, note: 'Instagram歴2年' }),
+  mk({ date: day(2), time: '10:00-10:45', name: '鈴木 恵', email: 's@example.com', survey: { '診断結果': ['試したことがあれば十分です'] } }),
+  mk({ date: day(3), time: '13:00-13:45', name: '田中 美咲', source: 'line', line: true, survey: { '診断結果': ['使いこなす力を、すぐ形にできます'] } }),
 ];
 
 (async () => {
@@ -36,8 +36,9 @@ const sample = [
   await shot(p, 'survey');
   await p.getByRole('radio').first().click(); await p.waitForTimeout(900);
   await p.getByRole('radio').nth(2).click(); await p.waitForTimeout(900);
-  await p.getByRole('checkbox').nth(1).click();
-  await p.getByRole('button', { name: '回答して結果を見る' }).click();
+  // Q3：1つ選ぶと結果へ進む（複数選択の設問なら、チェックして送信ボタンを押す）
+  if (await p.getByRole('radio').count()) await p.getByRole('radio').nth(0).click();
+  else { await p.getByRole('checkbox').nth(1).click(); await p.getByRole('button', { name: '回答して結果を見る' }).click(); }
   await p.waitForURL('**/lp**'); await p.waitForTimeout(800);
   await p.evaluate(() => window.scrollTo(0, 60));
   await shot(p, 'result');

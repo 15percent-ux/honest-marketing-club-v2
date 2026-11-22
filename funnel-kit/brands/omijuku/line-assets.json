@@ -14,9 +14,9 @@
   "banner": {
     "en": "FREE DIAGNOSIS",
     "title": "無料診断",
-    "lead": "3つの質問で、あなたに合う\n稼ぎ方が分かる",
+    "lead": "3つの質問で、オミ塾を\n安心して始められるか分かる",
     "cta": "タップしてはじめる",
-    "cardLead": "3つの質問で\nあなたに合う\n稼ぎ方が分かる"
+    "cardLead": "3つの質問で\nオミ塾を安心して\n始められるか分かる"
   },
   "tiles": [
     {
@@ -63,6 +63,46 @@
       "name": "まずは\n棚卸しから",
       "icon": "sprout",
       "tone": "accent"
+    },
+    {
+      "file": "level-zero",
+      "no": "01",
+      "name": "AIゼロからでも\n大丈夫です",
+      "icon": "plant",
+      "tone": "accent",
+      "en": "AI LEVEL 01",
+      "sub": "AIの経験：ほとんど使ったことがない",
+      "badge": "安心して進められます"
+    },
+    {
+      "file": "level-tried",
+      "no": "02",
+      "name": "試したことが\nあれば十分です",
+      "icon": "steps",
+      "tone": "accent",
+      "en": "AI LEVEL 02",
+      "sub": "AIの経験：何度か試したことがある",
+      "badge": "安心して進められます"
+    },
+    {
+      "file": "level-sometimes",
+      "no": "03",
+      "name": "いまの使い方を\n稼ぐ力に変える",
+      "icon": "compass",
+      "tone": "accent",
+      "en": "AI LEVEL 03",
+      "sub": "AIの経験：ときどき使っている",
+      "badge": "安心して進められます"
+    },
+    {
+      "file": "level-daily",
+      "no": "04",
+      "name": "使いこなす力を\nすぐ形にする",
+      "icon": "sparkle",
+      "tone": "accent",
+      "en": "AI LEVEL 04",
+      "sub": "AIの経験：毎日のように使っている",
+      "badge": "安心して進められます"
     }
   ]
 }

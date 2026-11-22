@@ -19,6 +19,7 @@ const NAMES = {
   food: 'ForkKnife',
   phone: 'DeviceMobile',
   sparkle: 'Sparkle',
+  steps: 'Footprints',
   user: 'UserCircle',
 };
 

@@ -249,6 +249,10 @@ type LpSectionBody =
       questionId: string;
       kicker: string;
       results: Record<string, { name: string; icon?: string; desc: string[]; step: string }>;
+      /** 結果の上に出す判定（例：「安心して進められます」）。どの回答でも同じ文言 */
+      verdict?: string;
+      /** ほかの設問の回答に応じて足す補足（例：経験の活かし方、不安への答え） */
+      extras?: { questionId: string; label: string; answers: Record<string, RichText> }[];
       stepLabel?: string;
       note?: string;
     }

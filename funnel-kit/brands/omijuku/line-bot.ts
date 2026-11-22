@@ -1,39 +1,71 @@
 /**
- * オミ塾 公式LINEボットの設定。設問・診断結果・FAQは LP の設定（config.ts）をそのまま使う。
+ * オミ塾 公式LINEボットの設定。設問・診断結果（受講前チェック）・FAQは LP の設定（config.ts）をそのまま使う。
+ * リッチメニューの「稼ぎ方を見る」では、下の STYLES（稼ぎ方の一例）を並べる。
  */
-import config from './config';
+import config, { AI_LEVEL } from './config';
 import { defineLineBot } from '../../src/line-bot/define';
 
 const result = config.lp.sections.find((s) => s.type === 'surveyResult');
 const faq = config.lp.sections.find((s) => s.type === 'faq');
 if (!result || result.type !== 'surveyResult' || !faq || faq.type !== 'faq') throw new Error('config.ts に surveyResult と faq が必要です');
 
+// 診断結果（AIの経験ごと）のカード画像
 const IMAGES: Record<string, { key: string; image: string }> = {
-  経験を商品にする: { key: 'experience', image: '/line/type-experience.jpg' },
-  AIで制作をサポートする: { key: 'production', image: '/line/type-production.jpg' },
-  集客を仕組みにする: { key: 'marketing', image: '/line/type-marketing.jpg' },
-  まずは棚卸しから: { key: 'unknown', image: '/line/type-unknown.jpg' },
+  [AI_LEVEL.zero]: { key: 'zero', image: '/line/level-zero.jpg' },
+  [AI_LEVEL.tried]: { key: 'tried', image: '/line/level-tried.jpg' },
+  [AI_LEVEL.sometimes]: { key: 'sometimes', image: '/line/level-sometimes.jpg' },
+  [AI_LEVEL.daily]: { key: 'daily', image: '/line/level-daily.jpg' },
 };
+
+// 稼ぎ方の一例（リッチメニュー「稼ぎ方を見る」）
+const STYLES = [
+  {
+    key: 'experience',
+    name: '経験を商品にする',
+    image: '/line/type-experience.jpg',
+    desc: ['これまでの経験や知識を、相談・講座の形にして届ける稼ぎ方です。', '伝わる言葉づくり、資料やページづくりはAIと一緒に進めます。'],
+    step: 'あなたの経験を棚卸しして、最初の商品の形を一緒に考えます。',
+  },
+  {
+    key: 'production',
+    name: 'AIで制作をサポートする',
+    image: '/line/type-production.jpg',
+    desc: ['文章・画像・資料づくりなど、AIを道具にした制作のお手伝いで稼ぐ方法です。', '人と長い時間話し続けなくても進めやすい働き方です。'],
+    step: '得意なことと、AIに任せられる作業を一緒に洗い出します。',
+  },
+  {
+    key: 'marketing',
+    name: '集客を仕組みにする',
+    image: '/line/type-marketing.jpg',
+    desc: ['いまのお店やサービスに、ページと公式LINEの導線をつくる方法です。', '投稿や案内文づくりもAIに手伝ってもらえるので、毎日の負担を減らせます。'],
+    step: 'いまの集客の流れを一緒に見て、どこから整えるかを決めます。',
+  },
+  {
+    key: 'unknown',
+    name: 'まずは棚卸しから',
+    image: '/line/type-unknown.jpg',
+    desc: ['経験・好きなこと・苦手なことを整理するところから始めましょう。', '合う稼ぎ方は、整理したあとに見えてきます。'],
+    step: '45分で、あなたに合いそうな稼ぎ方の候補を一緒に出します。',
+  },
+];
 
 export default defineLineBot({
   siteUrl: 'https://omijuku-funnel-test.vercel.app',
-  colors: { accent: '#A85E55', sage: '#5C7A6B', ink: '#34424F', bg: '#FBF8F4', sub: '#8A857C', soft: '#E3EFEC' },
+  colors: { accent: '#2E5E4E', sage: '#5E6A63', ink: '#1F2A24', bg: '#F4F5F1', sub: '#5E6A63', soft: '#E5EEE9', line: '#E1E5DF' },
   greeting: {
-    text: '友だち追加ありがとうございます🍵\nオミ塾では、AIで自分らしく稼ぐ力をつける無料個別相談を行っています。\n\nまずは下の診断で、あなたに合う稼ぎ方を見てみませんか？',
-    card: { image: '/line/diag.jpg', title: '3つの質問で、あなたに合う稼ぎ方が分かる', sub: '所要30秒・タップだけで完了', button: '無料診断をはじめる' },
+    text: '友だち追加ありがとうございます。\nオミ塾は、AIを道具にして自分らしく稼ぐ力をつける講座です。\n\nAIを使ったことがなくても大丈夫。まずは3つの質問で、あなたが安心して始められるかを確かめてみませんか？',
+    card: { image: '/line/diag.jpg', title: '3つの質問で、オミ塾を安心して始められるか分かる', sub: '所要30秒・タップだけで完了', button: '無料診断をはじめる' },
   },
   diagnosis: {
-    // トークでは3問とも「1つ選ぶ」形にする
-    questions: config.survey.questions.map((q) => ({
-      id: q.id,
-      text: q.id === 'q3' ? 'オミ塾でいちばん気になるところは？' : q.text,
-      options: q.options,
-    })),
+    questions: config.survey.questions.map((q) => ({ id: q.id, text: q.text, options: q.options })),
     resultQuestionId: result.questionId,
-    results: Object.fromEntries(
-      Object.entries(result.results).map(([option, r]) => [option, { ...r, ...IMAGES[r.name] }]),
-    ),
-    note: '※ 回答から表示しています。収入や成果を保証するものではありません。',
+    results: Object.fromEntries(Object.entries(result.results).map(([option, r]) => [option, { ...r, ...IMAGES[option] }])),
+    kicker: result.kicker,
+    verdict: result.verdict,
+    extras: result.extras,
+    stepLabel: result.stepLabel,
+    note: result.note || '※ 回答から表示しています。収入や成果を保証するものではありません。',
+    styles: { title: '稼ぎ方の一例', kicker: '稼ぎ方の一例', button: '稼ぎ方の一例を見る', items: STYLES },
   },
   booking: {
     offerName: config.offer.name,
