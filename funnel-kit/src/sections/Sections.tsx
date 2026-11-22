@@ -1,595 +1,489 @@
-import { useEffect, useState } from 'react';
-import type { LpSection } from '../types';
-import { rt } from '../lib/rt';
-import { useOpenForm } from '../lib/formContext';
-import { load } from '../lib/store';
-import { track } from '../lib/track';
+import { useEffect, useState } from "react";
+import type { LpSection } from "../types";
+import { rt } from "../lib/rt";
+import { useOpenForm } from "../lib/formContext";
+import { load } from "../lib/store";
+import { track } from "../lib/track";
+import { Icon } from "../components/Icon";
 import {
   BubbleLabel,
   Carousel,
   Char,
   CheckList,
-  CircleBadge,
-  ConnectorPill,
   CtaPill,
   Footnote,
   Img,
-  SectionTitle,
-  Slashed,
-  Sparkles,
-  TripleArrow,
-} from '../components/ui';
+  SectionHead,
+} from "../components/ui";
 
-type S<T extends LpSection['type']> = Extract<LpSection, { type: T }>;
+type S<T extends LpSection["type"]> = Extract<LpSection, { type: T }>;
 
-// ───────── S01 回答のお礼 ─────────
-function ThanksBand({ s }: { s: S<'thanksBand'> }) {
+/** セクションの外枠：余白をそろえる */
+const Pad = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => <section className={`px-5 py-12 ${className}`}>{children}</section>;
+
+// ───────── 回答のお礼 ─────────
+function ThanksBand({ s }: { s: S<"thanksBand"> }) {
   return (
-    <div className="relative flex items-center justify-center bg-cta px-6 py-5 text-center text-white">
-      <p className="whitespace-pre-line font-head text-[17px] font-bold leading-relaxed wide">{s.text}</p>
-      {s.character && (
-        <div className="absolute bottom-0 right-3">
-          <Char c={s.character} size={52} ring={false} />
-        </div>
-      )}
+    <div className="flex items-center gap-3 border-b border-line bg-primary-soft px-5 py-3 text-[13px] font-bold text-primary">
+      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white">
+        <Icon name="check" size={14} weight="bold" />
+      </span>
+      <span className="whitespace-pre-line">{s.text.replace(/\n/g, "")}</span>
     </div>
   );
 }
 
-// ───────── S02 キャンペーンのFV ─────────
-function CampaignHero({ s }: { s: S<'campaignHero'> }) {
+// ───────── 診断結果 ─────────
+function SurveyResult({ s }: { s: S<"surveyResult"> }) {
+  const answer = load<Record<string, string[]>>("survey")?.[s.questionId]?.[0];
+  const r = answer ? s.results[answer] : undefined;
+  useEffect(() => {
+    if (r) track("survey_result_view", { result: r.name });
+  }, [r]);
+  if (!r) return null;
   return (
-    <section className="relative overflow-hidden px-4 pb-6 pt-6" style={{ background: 'var(--g-hero)' }}>
-      <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full opacity-60" viewBox="0 0 100 100" preserveAspectRatio="none">
-        {[8, 18, 82, 92].map((x) => (
-          <polygon key={x} points={`${x},100 ${x + 3},100 ${x < 50 ? 30 : 70},40`} fill="var(--c-accent)" opacity="0.35" />
+    <Pad className="!pt-10">
+      {r.icon && <Char c={r.icon} size={56} />}
+      <p className="mt-4 text-[13px] font-bold text-muted">{s.kicker}</p>
+      <h2 className="mt-1 font-head text-[26px] font-bold leading-[1.4] text-primary">
+        {r.name}
+      </h2>
+      <div className="mt-5 space-y-3 text-[15px] leading-[1.9]">
+        {r.desc.map((d, i) => (
+          <p key={i}>{rt(d)}</p>
         ))}
-      </svg>
-      <div className="relative text-center">
-        <div className="bubble mx-auto inline-block rounded-full border-[3px] border-navy bg-white px-5 py-1.5 font-head text-[15px] font-black wide text-navy">
-          {rt(s.bubble)}
-        </div>
-        {s.kicker && <p className="mt-4 font-head text-[14px] font-black text-accent">{s.kicker}</p>}
-        <h1 className="mt-2 space-y-1">
-          {s.headline.map((l, i) => (
-            <span
-              key={i}
-              className={`pop-stroke block ${i === 0 ? 'text-[30px] text-teal' : i === s.headline.length - 1 ? 'text-[34px] text-navy' : 'text-[42px] text-accent'}`}
-            >
-              {l}
-            </span>
-          ))}
-        </h1>
       </div>
-      <div className="relative mt-5 rounded-2xl border-2 border-accent bg-white px-3 pb-4 pt-5">
-        {s.groups && (
-          <div className="absolute -top-3 left-3 right-3 flex justify-between gap-2">
-            {s.groups.map((g) => (
-              <span
-                key={g.label}
-                className={`rounded-full px-4 py-0.5 text-[12px] font-bold text-white wide ${g.tone === 'dark' ? 'flex-1 bg-navy text-center' : 'bg-accent'}`}
-              >
-                {g.label}
-              </span>
-            ))}
-          </div>
-        )}
-        <div className="grid grid-cols-3 gap-2">
-          {s.items.map((it) => (
-            <figure key={it.label} className="relative text-center">
-              <div className="scallop bg-teal-soft p-2">
-                <Img img={it.image} ratio="1" className="rounded-lg" />
-              </div>
-              {it.badge && (
-                <span className="absolute -right-1 top-1 flex h-11 w-11 items-center justify-center rounded-full border-2 border-accent bg-white text-center text-[10px] font-bold leading-tight text-accent">
-                  {it.badge}
-                </span>
-              )}
-              <figcaption className="mt-1 rounded-full border border-navy/30 bg-white px-1 text-[11px] font-bold">{it.label}</figcaption>
-            </figure>
-          ))}
-        </div>
-        {s.deadlineBand && (
-          <p className="mt-4 rounded-lg bg-hl px-3 py-2 text-center font-head text-[15px] font-black leading-snug text-navy">{rt(s.deadlineBand)}</p>
-        )}
+      <div className="mt-6 rounded-2xl border border-line bg-surface p-5">
+        <p className="text-[12px] font-bold text-primary">
+          {s.stepLabel || "無料相談でやること"}
+        </p>
+        <p className="mt-1.5 text-[15px] font-bold leading-[1.75]">
+          {rt(r.step)}
+        </p>
       </div>
-      {s.note && (
-        <a href={s.note.href} className="relative mt-3 block text-center text-[11px] text-accent underline">
-          {s.note.label}
-        </a>
-      )}
-    </section>
+      <Footnote>{s.note}</Footnote>
+    </Pad>
   );
 }
 
-// ───────── S03 体験への招待 ─────────
-function Invite({ s }: { s: S<'invite'> }) {
+// ───────── お悩み（不安の解消） ─────────
+function Support({ s }: { s: S<"support"> }) {
   return (
-    <section className="bg-grid px-5 pb-8 pt-6">
-      {s.connector && <ConnectorPill>{s.connector}</ConnectorPill>}
-      <div className="mt-4 -rotate-1 bg-accent px-4 py-2 text-center font-head text-[21px] font-black text-white shadow-[4px_4px_0_var(--c-navy)] wide">
-        {s.title}
-      </div>
-      <p className="mt-5 text-center font-head text-[18px] font-bold leading-relaxed wide text-navy">{rt(s.lead)}</p>
-      <div className="mt-5 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-line">
-        <div className="grid grid-cols-3 divide-x divide-dashed divide-line">
-          {s.icons.map((ic) => (
-            <div key={ic.label} className="flex flex-col items-center gap-2 px-1">
-              <span className="text-[40px] leading-none" aria-hidden>
-                {ic.icon}
-              </span>
-              <span className="w-full rounded-full bg-teal px-1 py-0.5 text-center text-[11px] font-bold text-white">{ic.label}</span>
-            </div>
-          ))}
-        </div>
+    <Pad>
+      <h2 className="font-head text-[22px] font-bold leading-[1.6]">
+        {s.quote}
+      </h2>
+      {s.quoteSub && (
+        <p className="mt-1 text-[14px] text-muted">{s.quoteSub}</p>
+      )}
+      <ul className="mt-6 divide-y divide-line rounded-2xl border border-line bg-surface">
+        {s.items.map((it) => (
+          <li
+            key={it}
+            className="flex items-center gap-3 px-5 py-4 text-[15px] font-bold"
+          >
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+              <Icon name="check" size={14} weight="bold" />
+            </span>
+            {it.replace(/\n/g, "")}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-6 font-head text-[18px] font-bold leading-[1.6]">
+        <span className="text-primary">{s.title}</span>
+        <br />
+        {s.conclusion}
+      </p>
+      <Footnote>{s.footnote}</Footnote>
+    </Pad>
+  );
+}
+
+// ───────── 何をするサービスか ─────────
+function Invite({ s }: { s: S<"invite"> }) {
+  return (
+    <Pad>
+      <SectionHead title={s.title} lead={rt(s.lead)} />
+      <div className="mt-7 grid grid-cols-3 gap-2">
+        {s.icons.map((ic) => (
+          <div
+            key={ic.label}
+            className="flex flex-col items-center gap-2 rounded-2xl bg-primary-soft px-2 py-5 text-center"
+          >
+            <span className="text-primary">
+              <Icon name={ic.icon} size={30} weight="light" />
+            </span>
+            <span className="text-[12px] font-bold leading-snug">
+              {ic.label}
+            </span>
+          </div>
+        ))}
       </div>
       {s.checks && (
-        <>
-          <div className="relative z-10 mx-auto -my-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-primary bg-white text-primary">＋</div>
-          <div className="relative rounded-2xl bg-white p-5 pr-24 shadow-sm ring-1 ring-line">
-            <CheckList items={s.checks} />
-            {s.checksSuffix && <p className="mt-1 pl-7 font-head text-[16px] font-black underline-p">{s.checksSuffix}</p>}
-            {s.illustration && (
-              <div className="absolute bottom-3 right-3">
-                <Char c={s.illustration} size={72} />
-              </div>
-            )}
-          </div>
-        </>
+        <CheckList
+          className="mt-7"
+          items={s.checks.map((c) => `${c}${s.checksSuffix || ""}`)}
+        />
       )}
-    </section>
+    </Pad>
   );
 }
 
-// ───────── S04 信頼バッジ ─────────
-function Badges({ s }: { s: S<'badges'> }) {
+// ───────── 安心のポイント（チップ） ─────────
+function Badges({ s }: { s: S<"badges"> }) {
   return (
-    <section className="bg-grid px-5 pb-6">
-      <div className="rounded-2xl bg-white p-4 shadow-sm ring-2 ring-primary-soft">
-        <div className="grid grid-cols-3 gap-3">
-          {s.items.map((b) => (
-            <CircleBadge key={b.title} {...b} />
-          ))}
-        </div>
-        <Footnote>{s.footnote}</Footnote>
-      </div>
+    <section className="px-5 py-8">
+      <ul className="flex flex-wrap gap-2">
+        {s.items.map((b) => (
+          <li
+            key={b.title}
+            className="flex items-center gap-2 rounded-full border border-line bg-surface py-2 pl-2 pr-4 text-[13px] font-bold"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-soft text-primary">
+              <Icon name={b.icon} size={16} />
+            </span>
+            {b.title.replace(/\n/g, "")}
+          </li>
+        ))}
+      </ul>
+      <Footnote>{s.footnote}</Footnote>
     </section>
   );
 }
 
-// ───────── S05/S13 CTA ─────────
-function Cta({ s, index }: { s: S<'cta'>; index: number }) {
+// ───────── 申込ボタン ─────────
+function Cta({ s, index }: { s: S<"cta">; index: number }) {
   const open = useOpenForm();
   return (
-    <section className="bg-grid px-5 py-7">
+    <section className="px-5 py-12">
       {s.heading && (
-        <Slashed className="mb-5">
-          <p className="font-head text-[16px] font-bold leading-loose wide text-navy">{rt(s.heading)}</p>
-        </Slashed>
+        <p className="mb-6 text-center font-head text-[19px] font-bold leading-[1.7]">
+          {rt(s.heading)}
+        </p>
       )}
-      <CtaPill label={s.label} micro={s.micro} icon={s.icon} onClick={() => open(`cta_${index}`)} />
-      {s.arrows && <TripleArrow className="mt-5" />}
+      <CtaPill
+        label={s.label}
+        micro={s.micro}
+        onClick={() => open(`cta_${index}`)}
+      />
       {s.connector && (
-        <p className="mt-3 text-center font-head text-[18px] font-black text-white">
-          <span className="inline-block rounded-full bg-accent px-6 py-1.5">{rt(s.connector)}</span>
+        <p className="mt-8 text-center font-head text-[17px] font-bold text-primary">
+          {rt(s.connector)}
         </p>
       )}
     </section>
   );
 }
 
-// ───────── S06 応募／参加の手順 ─────────
-function Steps({ s }: { s: S<'steps'> }) {
-  const cards = [
-    ...s.steps.map((st, i) => ({ kind: 'step' as const, st, n: i + 1 })),
-    ...(s.finale ? [{ kind: 'finale' as const, finale: s.finale }] : []),
+// ───────── 公開までの流れ（縦のタイムライン） ─────────
+function Steps({ s }: { s: S<"steps"> }) {
+  const items = [
+    ...s.steps.map((st) => st.title),
+    ...(s.finale ? [`[p]${s.finale.title}[/p]\n${s.finale.body}`] : []),
   ];
   return (
-    <section className="bg-primary-soft pb-8">
-      <div className="bg-grid px-5 pt-2">
-        <div className="relative mx-auto -mb-2 max-w-[360px] rounded-xl bg-navy px-5 pb-5 pt-4 text-center text-white shadow-lg">
-          {s.kicker && <p className="-rotate-3 font-pop text-[15px] text-hl">{s.kicker}</p>}
-          <p className="font-head text-[19px] font-bold leading-relaxed wide">{rt(s.title)}</p>
-          <span aria-hidden className="absolute -bottom-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 bg-navy" />
-        </div>
-      </div>
-      <div className="pt-4">
-        <Carousel
-          label="手順"
-          items={cards}
-          render={(c) =>
-            c.kind === 'step' ? (
-              <div className="relative rounded-xl bg-white px-4 pb-5 pt-9 text-center shadow ring-1 ring-line">
-                <div className="absolute -top-5 left-1/2 flex h-14 w-14 -translate-x-1/2 flex-col items-center justify-center rounded-full bg-navy text-white">
-                  <span className="text-[10px] leading-none">STEP</span>
-                  <span className="font-num text-[20px] font-bold leading-none">{c.n}</span>
-                </div>
-                {c.st.image && <Img img={c.st.image} ratio="4/3" className="rounded-lg" />}
-                <p className="mt-3 font-head text-[16px] font-bold leading-relaxed">{rt(c.st.title)}</p>
-              </div>
-            ) : (
-              <div className="flex min-h-[260px] flex-col items-center justify-center rounded-xl bg-white px-4 py-6 text-center shadow ring-1 ring-line">
-                <span className="text-[44px]" aria-hidden>
-                  🎁
-                </span>
-                <p className="mt-2 font-head text-[26px] font-black text-accent">{c.finale.title}</p>
-                <p className="mt-2 font-head text-[15px] font-bold">{c.finale.body}</p>
-              </div>
-            )
-          }
-        />
-      </div>
-    </section>
+    <Pad>
+      <SectionHead title={rt(s.title)} />
+      <ol className="relative mt-8 space-y-6 before:absolute before:bottom-3 before:left-[15px] before:top-3 before:w-px before:bg-line">
+        {items.map((t, i) => (
+          <li key={i} className="relative flex gap-4">
+            <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary font-num text-[14px] font-semibold text-white">
+              {i === items.length - 1 && s.finale ? (
+                <Icon name="check" size={16} weight="bold" />
+              ) : (
+                i + 1
+              )}
+            </span>
+            <p className="pt-0.5 text-[15px] leading-[1.7]">{rt(t)}</p>
+          </li>
+        ))}
+      </ol>
+    </Pad>
   );
 }
 
-// ───────── S07 目指せる姿（カルーセル） ─────────
-function Futures({ s }: { s: S<'futures'> }) {
+// ───────── 目指せる姿／業種別（縦のリスト） ─────────
+function Futures({ s }: { s: S<"futures"> }) {
   return (
-    <section className="relative bg-[color-mix(in_srgb,var(--c-primary-soft)_45%,#fff)] pb-8 pt-8">
-      <Sparkles />
-      <div className="px-5 text-center">
-        {s.title.map((t, i) => (
-          <p
-            key={i}
-            className={`h-head ${i === s.title.length - 1 ? 'mt-1 text-[24px] text-navy' : 'text-[18px] text-navy'}`}
+    <Pad>
+      <SectionHead title={rt(s.title.join("\n"))} />
+      <div className="mt-7 space-y-4">
+        {s.items.map((it) => (
+          <article
+            key={it.role}
+            className="overflow-hidden rounded-2xl border border-line bg-surface"
           >
-            {i === s.title.length - 1 ? <span className="underline-p">{rt(t)}</span> : rt(t)}
-          </p>
-        ))}
-      </div>
-      <div className="mt-2">
-        <Carousel
-          label="目指せる働き方"
-          items={s.items}
-          render={(it) => (
-            <article className="rounded-xl bg-white pb-4 shadow-sm">
-              <div className="flex justify-center">
-                <span className="bubble -mt-4 rounded-full border-accent bg-accent px-6 py-1 font-head text-[16px] font-bold text-white wide">
-                  {it.role}
-                </span>
-              </div>
-              <div className="mx-4 mt-3 divide-y divide-dashed divide-line border-y border-dashed border-line text-center font-head text-[14px] font-bold leading-[2.2]">
-                {it.desc.map((d) => (
-                  <p key={d}>{d}</p>
-                ))}
-              </div>
-              <div className="relative mx-3 mt-4 grid grid-cols-2 gap-2">
-                {it.images.slice(0, 2).map((im, i) => (
-                  <Img key={i} img={im} ratio="1" className={`rounded-lg ${i === 0 ? '-rotate-2' : 'rotate-2'}`} />
-                ))}
-                {it.tags?.map((t, i) => (
-                  <span
-                    key={t}
-                    className={`absolute bottom-1 rounded border border-accent bg-white px-2 text-[11px] font-bold ${i === 0 ? 'left-1' : 'right-1'}`}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              {it.points && (
-                <div className="mx-3 mt-3 rounded-lg bg-primary-soft px-3 py-2">
-                  <CheckList items={it.points} />
+            <Img img={it.images[0]} ratio="16/9" />
+            <div className="p-5">
+              <h3 className="font-head text-[18px] font-bold">{it.role}</h3>
+              <p className="mt-2 text-[14px] leading-[1.85] text-muted">
+                {it.desc.join("")}
+              </p>
+              {it.tags && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {it.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full bg-primary-soft px-3 py-1 text-[12px] font-bold text-primary"
+                    >
+                      {t}
+                    </span>
+                  ))}
                 </div>
               )}
-            </article>
-          )}
-        />
+              {it.points && <CheckList items={it.points} className="mt-4" />}
+            </div>
+          </article>
+        ))}
       </div>
-      <div className="px-6">
-        <Footnote>{s.footnote}</Footnote>
-      </div>
-    </section>
+      <Footnote>{s.footnote}</Footnote>
+    </Pad>
   );
 }
 
-// ───────── S08 事例 ─────────
-function Cases({ s }: { s: S<'cases'> }) {
+// ───────── 事例 ─────────
+function Cases({ s }: { s: S<"cases"> }) {
   return (
-    <section className="relative bg-aurora pb-8 pt-8">
-      <Sparkles />
-      <div className="px-5 text-center">
-        <Slashed>
-          <p className="font-head text-[17px] font-bold leading-loose wide">{rt(s.title)}</p>
-        </Slashed>
+    <section className="py-12">
+      <div className="px-5">
+        <SectionHead title={rt(s.title)} />
       </div>
-      <div className="mt-1">
+      <div className="mt-6">
         <Carousel
           label="事例"
           items={s.items}
-          render={(c, i) => (
-            <article className="relative rounded bg-white p-3 shadow-md">
-              <span aria-hidden className="absolute -top-3 left-4 h-7 w-3 rounded-full border-2 border-muted" />
-              <div className="flex gap-2">
-                <div className="min-w-0 flex-1">
-                  <p className="font-num text-[13px] text-accent">
-                    case<span className="text-[34px] font-bold leading-none">{String(i + 1).padStart(2, '0')}</span>
-                  </p>
-                  <p className="text-[12px] font-bold">{c.name}</p>
-                  <div className="mt-2 space-y-1">
-                    {c.before.map((b) => (
-                      <span key={b} className="mr-1 inline-block bg-teal-soft px-2 text-[12px] font-bold text-navy">
-                        {b}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="w-[44%] shrink-0">
-                  <Img img={c.image} ratio="4/5" className="rounded" />
-                </div>
-              </div>
-              <div className="mt-2 space-y-1">
-                {c.after.map((a) => (
-                  <p key={a} className="bg-teal px-2 py-1 font-head text-[15px] font-bold text-white wide">
-                    {a}
-                  </p>
-                ))}
+          render={(c) => (
+            <article className="overflow-hidden rounded-2xl border border-line bg-surface">
+              <Img img={c.image} ratio="4/3" />
+              <div className="p-5">
+                <p className="text-[12px] font-bold text-muted">{c.name}</p>
+                <p className="mt-1 text-[13px] text-muted">
+                  {c.before.join("／")}
+                </p>
+                <p className="mt-2 font-head text-[17px] font-bold leading-[1.6]">
+                  {c.after.join("")}
+                </p>
               </div>
             </article>
           )}
         />
       </div>
-      <div className="px-6">
+      <div className="px-5">
         <Footnote>{s.footnote}</Footnote>
       </div>
     </section>
   );
 }
 
-// ───────── S09 価格メリット ─────────
-function PriceBenefit({ s }: { s: S<'priceBenefit'> }) {
+// ───────── 価格メリット ─────────
+function PriceBenefit({ s }: { s: S<"priceBenefit"> }) {
   return (
-    <section className="bg-teal-soft px-5 pb-6 pt-8">
-      <div className="text-center">
-        <BubbleLabel tone="teal">{s.kicker}</BubbleLabel>
-      </div>
-      <div className="mt-4 overflow-hidden rounded-xl bg-white text-center shadow">
-        <p className="px-3 py-3 font-head text-[18px] font-bold wide">{rt(s.label)}</p>
-        <div className="flex items-end justify-center gap-1 bg-primary px-3 pb-2 pt-1 text-white">
-          {s.bigPrefix && <span className="mb-3 w-5 font-head text-[16px] font-black leading-tight">{s.bigPrefix}</span>}
-          <span className="font-head text-[72px] font-black leading-none">{s.big}</span>
-          {s.bigSuffix && <span className="mb-2 font-head text-[34px] font-black">{s.bigSuffix}</span>}
-        </div>
-      </div>
+    <Pad>
+      <p className="text-[13px] font-bold text-primary">{s.kicker}</p>
+      <p className="mt-2 font-head text-[19px] font-bold">{rt(s.label)}</p>
+      <p className="mt-3 flex items-baseline gap-1 text-primary">
+        {s.bigPrefix && (
+          <span className="text-[16px] font-bold">{s.bigPrefix}</span>
+        )}
+        <span className="font-num text-[64px] font-semibold leading-none">
+          {s.big}
+        </span>
+        {s.bigSuffix && (
+          <span className="font-head text-[26px] font-bold">{s.bigSuffix}</span>
+        )}
+      </p>
       <Footnote>{s.footnote}</Footnote>
       {s.urgency && (
-        <Slashed className="mt-5">
-          <p className="font-head text-[16px] font-bold leading-loose">{rt(s.urgency)}</p>
-        </Slashed>
+        <p className="mt-5 text-[15px] font-bold leading-[1.8]">
+          {rt(s.urgency)}
+        </p>
       )}
-    </section>
+    </Pad>
   );
 }
 
-// ───────── S10 不安の解消 ─────────
-function Support({ s }: { s: S<'support'> }) {
-  const tones = ['ring-primary', 'ring-teal', 'ring-mustard'];
+// ───────── つくるもの／体験の中身 ─────────
+function OfferDetail({ s }: { s: S<"offerDetail"> }) {
   return (
-    <section className="bg-grid pb-8">
-      <div className="bg-navy px-5 py-5 text-center text-white">
-        <p className="font-head text-[18px] font-bold wide">“{s.quote}”</p>
-        {s.quoteSub && <p className="text-[13px]">{s.quoteSub}</p>}
-      </div>
-      <div className="px-5">
-        <div className="mt-5 text-center">
-          <BubbleLabel tone="primary">{s.title}</BubbleLabel>
-        </div>
-        <div className="mt-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-line">
-          <div className="grid grid-cols-3 gap-3">
-            {s.items.map((it, i) => (
-              <div
-                key={it}
-                className={`flex aspect-square items-center justify-center whitespace-pre-line rounded-full bg-white p-1 text-center font-head text-[12px] font-bold leading-snug ring-4 ${tones[i % 3]}`}
-              >
-                {it}
-              </div>
-            ))}
-          </div>
-          <TripleArrow className="mt-4" />
-          <Slashed className="mt-3">
-            <p className="font-head text-[17px] font-black">{s.conclusion}</p>
-          </Slashed>
-        </div>
-        <Footnote>{s.footnote}</Footnote>
-      </div>
-    </section>
-  );
-}
-
-// ───────── S11 体験の中身 ─────────
-function OfferDetail({ s }: { s: S<'offerDetail'> }) {
-  return (
-    <section className="bg-aurora px-5 pb-8">
-      <div className="-mx-5 bg-navy px-5 py-4 text-center">
-        <h2 className="pop-stroke text-[28px] text-primary" style={{ WebkitTextStroke: '5px #fff' }}>
-          {s.title}
-        </h2>
-      </div>
-      <div className="mt-6 text-center">
-        <span className="inline-block whitespace-pre-line rounded-2xl border-2 border-mustard bg-cream px-5 py-2 font-head text-[16px] font-bold leading-snug text-navy">
-          {s.label}
-        </span>
-      </div>
-      <div className="relative mt-4 rounded-2xl bg-white p-5 shadow ring-1 ring-line">
-        <CheckList items={s.checks} />
-        {s.character && (
-          <div className="absolute -top-5 right-3">
-            <Char c={s.character} size={48} />
-          </div>
-        )}
-      </div>
+    <Pad>
+      <SectionHead title={s.title} lead={s.label.replace(/\n/g, "")} />
+      <CheckList items={s.checks} className="mt-6" />
       {s.covers && (
-        <div className="mt-6 rounded-2xl bg-white p-4 shadow ring-1 ring-line">
+        <div className="mt-8">
           {s.subLabel && (
-            <p className="-mt-8 mb-3 text-center">
-              <span className="rounded-2xl border-2 border-mustard bg-cream px-4 py-1 font-head text-[15px] font-bold">{s.subLabel}</span>
+            <p className="mb-3 text-[13px] font-bold text-muted">
+              {s.subLabel}
             </p>
           )}
           <div className="grid grid-cols-3 gap-2">
             {s.covers.map((c) => (
-              <figure key={c.label} className="text-center">
-                <Img img={c.image} ratio="3/4" className="rounded shadow" />
-                <figcaption className="mt-1 font-head text-[12px] font-bold underline-p">{c.label}</figcaption>
+              <figure key={c.label}>
+                <div className="overflow-hidden rounded-xl border border-line">
+                  <Img img={c.image} ratio="3/4" className="object-top" />
+                </div>
+                <figcaption className="mt-1.5 text-center text-[12px] font-bold">
+                  {c.label}
+                </figcaption>
               </figure>
             ))}
           </div>
         </div>
       )}
-    </section>
+    </Pad>
   );
 }
 
-// ───────── S12 開催時間 ─────────
-function Schedule({ s }: { s: S<'schedule'> }) {
-  const tone = { morning: 'bg-[#E0525C]', noon: 'bg-[#E8A33A]', night: 'bg-[#2E78A8]' } as const;
+// ───────── 開催時間 ─────────
+function Schedule({ s }: { s: S<"schedule"> }) {
   return (
-    <section className="bg-aurora px-5 pb-8 pt-2">
-      <div className="text-center">
-        <span className="inline-block rounded-full border-2 border-mustard bg-cream px-6 py-1.5 font-head text-[18px] font-black">
-          {rt(s.title)}
-        </span>
-      </div>
-      <div className="mt-4 overflow-hidden rounded-xl bg-white shadow ring-1 ring-line">
-        <div className="grid grid-cols-3">
-          {s.slots.map((sl) => (
-            <div key={sl.label} className="text-center">
-              <Img img={sl.image} ratio="3/4" />
-              <div className={`${tone[sl.tone]} px-1 py-2 text-white`}>
-                <p className="mx-auto -mt-5 w-fit rounded-full bg-white px-3 text-[11px] font-bold text-ink">{sl.label}</p>
-                <p className="text-[11px] font-bold">{sl.sub}</p>
-                {sl.times.map((t) => (
-                  <p key={t} className="font-num text-[12px] font-bold leading-tight">
-                    {t}
-                  </p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ───────── S14 キャンペーン詳細 ─────────
-function CampaignDetail({ s }: { s: S<'campaignDetail'> }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <section className="relative overflow-hidden px-4 pb-8 pt-8" style={{ background: 'linear-gradient(180deg,var(--c-teal) 0 45%,var(--c-teal-soft) 45%)' }}>
-      <p className="text-center font-head text-[17px] font-bold text-white wide">{s.kicker}</p>
-      <h2 className="pop-stroke mt-1 text-center text-[34px] text-accent">{s.title}</h2>
-      <div className="mt-4 space-y-4 rounded-2xl bg-white p-4 shadow">
-        {s.groups.map((g) => (
-          <div key={g.label} className="relative rounded-xl bg-teal-soft p-3 pt-5">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded bg-teal px-4 py-0.5 text-[12px] font-bold text-white">{g.label}</span>
-            {g.deadline && (
-              <span className="absolute -right-1 -top-3 flex h-12 w-12 items-center justify-center whitespace-pre-line rounded-full bg-accent text-center text-[10px] font-bold leading-tight text-white">
-                {g.deadline}
-              </span>
-            )}
-            <div className={`grid gap-2 ${g.items.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-              {g.items.map((it) => (
-                <figure key={it.name} className="text-center">
-                  <Img img={it.image} ratio="4/3" className="rounded-lg" />
-                  <figcaption className="mt-1 font-head text-[15px] font-bold">{it.name}</figcaption>
-                  <p className="text-[11px] text-muted">{it.note}</p>
-                </figure>
+    <Pad>
+      <SectionHead title={rt(s.title)} />
+      <div className="mt-6 grid grid-cols-3 gap-2">
+        {s.slots.map((sl) => (
+          <div
+            key={sl.label}
+            className="overflow-hidden rounded-2xl border border-line bg-surface text-center"
+          >
+            <Img img={sl.image} ratio="3/4" />
+            <div className="p-2">
+              <p className="text-[12px] font-bold">
+                {sl.label}
+                {sl.sub}
+              </p>
+              {sl.times.map((t) => (
+                <p
+                  key={t}
+                  className="font-num text-[13px] font-semibold text-primary"
+                >
+                  {t}
+                </p>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-4 rounded-xl bg-white p-4 text-[13px] shadow">
-        <p className="bg-teal py-1 text-center text-[13px] font-bold text-white">実施期間</p>
-        <p className="py-2 text-center font-head text-[20px] font-black">{s.period}</p>
-        <p className="bg-teal py-1 text-center text-[13px] font-bold text-white">応募条件</p>
-        <ul className="list-disc space-y-1 py-2 pl-5">
-          {s.conditions.map((c) => (
-            <li key={c}>{c}</li>
-          ))}
-        </ul>
-        {s.howTo && (
-          <div className="border-t border-line pt-2">
-            <button type="button" className="flex w-full items-center justify-between font-bold text-teal" onClick={() => setOpen(!open)} aria-expanded={open}>
-              <span>{open ? '︿' : '﹀'} 応募方法</span>
-              <span className="text-[10px] text-muted">詳細は必ずご確認ください</span>
-            </button>
-            {open && (
-              <ol className="mt-2 list-decimal space-y-1 pl-5 text-[12px]">
-                {s.howTo.map((h) => (
-                  <li key={h}>{h}</li>
-                ))}
-              </ol>
-            )}
-          </div>
-        )}
-      </div>
-    </section>
+    </Pad>
   );
 }
 
-// ───────── プロフィール（個人事業のクライアント向けに追加） ─────────
-function Profile({ s }: { s: S<'profile'> }) {
+// ───────── プロフィール ─────────
+function Profile({ s }: { s: S<"profile"> }) {
   return (
-    <section className="bg-white px-5 py-8">
-      <SectionTitle>{s.title}</SectionTitle>
-      <div className="mt-5 flex items-center gap-4">
-        <div className="w-28 shrink-0 overflow-hidden rounded-full ring-4 ring-primary-soft">
-          <Img img={s.image} ratio="1" />
+    <Pad>
+      <SectionHead title={s.title} />
+      <div className="mt-6 flex items-center gap-4">
+        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full bg-primary-soft">
+          {s.image.src ? (
+            <Img img={s.image} ratio="1" />
+          ) : (
+            <span
+              aria-label={s.image.alt}
+              className="flex h-full w-full items-center justify-center font-head text-[28px] font-bold text-primary"
+            >
+              {s.name.slice(0, 1)}
+            </span>
+          )}
         </div>
         <div>
-          <p className="text-[12px] font-bold text-primary">{s.role}</p>
-          <p className="h-head text-[22px]">{s.name}</p>
+          <p className="font-head text-[20px] font-bold">{s.name}</p>
+          <p className="text-[12px] text-muted">{s.role}</p>
         </div>
       </div>
-      <div className="mt-4 space-y-3 text-[14px]">
+      <div className="mt-5 space-y-3 text-[15px] leading-[1.9]">
         {s.body.map((b, i) => (
           <p key={i}>{rt(b)}</p>
         ))}
       </div>
-    </section>
+    </Pad>
+  );
+}
+
+// ───────── よくある質問 ─────────
+function Faq({ s }: { s: S<"faq"> }) {
+  return (
+    <Pad>
+      <SectionHead title={s.title} />
+      <div className="mt-6 divide-y divide-line border-y border-line">
+        {s.items.map((f) => (
+          <details key={f.q} className="group py-1">
+            <summary className="flex cursor-pointer list-none items-start gap-3 py-4 text-[15px] font-bold">
+              <span className="flex-1">{f.q}</span>
+              <span
+                aria-hidden
+                className="mt-0.5 text-[18px] leading-none text-primary transition group-open:rotate-45"
+              >
+                +
+              </span>
+            </summary>
+            <p className="pb-4 text-[14px] leading-[1.9] text-muted">
+              {rt(f.a)}
+            </p>
+          </details>
+        ))}
+      </div>
+    </Pad>
   );
 }
 
 // ───────── 料金プラン ─────────
-function Plans({ s }: { s: S<'plans'> }) {
+function Plans({ s }: { s: S<"plans"> }) {
   const open = useOpenForm();
   return (
-    <section className="bg-grid px-5 py-9">
-      {s.kicker && <p className="text-center text-[12px] font-bold text-teal wide">{s.kicker}</p>}
-      <SectionTitle>{s.title}</SectionTitle>
-      {s.lead && <p className="mt-2 text-center text-[13px] text-muted">{rt(s.lead)}</p>}
-      <div className="mt-6 space-y-5">
+    <Pad>
+      <SectionHead title={s.title} lead={s.lead ? rt(s.lead) : undefined} />
+      <div className="mt-7 space-y-4">
         {s.plans.map((p) => (
           <article
             key={p.name}
-            className={`relative rounded-2xl bg-white p-5 shadow-sm ${p.recommended ? 'ring-2 ring-accent' : 'ring-1 ring-line'}`}
+            className={`rounded-2xl bg-surface p-6 ${p.recommended ? "border-2 border-primary" : "border border-line"}`}
           >
-            {p.recommended && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-0.5 text-[12px] font-bold text-white wide">
-                おすすめ
+            <div className="flex items-center gap-2">
+              <h3 className="font-head text-[19px] font-bold">{p.name}</h3>
+              {p.recommended && (
+                <span className="rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-bold text-white">
+                  おすすめ
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-[13px] text-muted">{p.target}</p>
+            <p className="mt-4">
+              <span className="font-num text-[34px] font-semibold tracking-tight">
+                {p.price}
               </span>
-            )}
-            <p className="text-center font-head text-[18px] font-bold">{p.name}</p>
-            <p className="mt-1 text-center text-[12px] text-muted">{p.target}</p>
-            <p className="mt-3 text-center">
-              <span className="font-num text-[30px] font-bold text-navy">{p.price}</span>
-              {p.priceNote && <span className="ml-1 text-[11px] text-muted">{p.priceNote}</span>}
+              {p.priceNote && (
+                <span className="ml-1 text-[12px] text-muted">
+                  {p.priceNote}
+                </span>
+              )}
             </p>
-            <ul className="mt-4 space-y-2 border-t border-dashed border-line pt-4 text-[13px]">
+            <ul className="mt-5 space-y-2.5 text-[14px]">
               {p.features.map((f) => (
-                <li key={f.label} className={`flex gap-2 ${f.included ? '' : 'text-muted/60'}`}>
-                  <span aria-hidden className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] ${f.included ? 'bg-teal text-white' : 'bg-line text-muted'}`}>
-                    {f.included ? '✓' : '−'}
+                <li
+                  key={f.label}
+                  className={`flex gap-2.5 ${f.included ? "" : "text-muted/60"}`}
+                >
+                  <span
+                    aria-hidden
+                    className={`mt-[3px] flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full ${f.included ? "bg-primary text-white" : "border border-line"}`}
+                  >
+                    {f.included && (
+                      <Icon name="check" size={11} weight="bold" />
+                    )}
                   </span>
-                  <span className={f.included ? '' : 'line-through'}>{f.label}</span>
+                  {f.label}
                 </li>
               ))}
             </ul>
             <button
               type="button"
               onClick={() => open(`plan_${p.name}`)}
-              className={`mt-5 w-full rounded-full py-3 font-head text-[15px] font-bold wide ${p.recommended ? 'bg-accent text-white' : 'bg-bg text-navy ring-1 ring-line'}`}
+              className={`mt-6 w-full rounded-full py-3.5 font-head text-[15px] font-bold ${p.recommended ? "bg-primary text-white" : "border border-ink/20 text-ink"}`}
             >
               {s.cta}
             </button>
@@ -597,42 +491,42 @@ function Plans({ s }: { s: S<'plans'> }) {
         ))}
       </div>
       <Footnote>{s.footnote}</Footnote>
-    </section>
+    </Pad>
   );
 }
 
 // ───────── 実際に触れるデモ ─────────
-function Demos({ s }: { s: S<'demos'> }) {
+function Demos({ s }: { s: S<"demos"> }) {
   return (
-    <section className="relative bg-aurora pb-9 pt-8">
-      <Sparkles />
-      <div className="px-5 text-center">
-        {s.kicker && <BubbleLabel tone="navy">{s.kicker}</BubbleLabel>}
-        <h2 className="h-head mt-4 text-[22px] text-navy">{rt(s.title)}</h2>
-        {s.lead && <p className="mt-2 text-[13px] text-ink">{s.lead}</p>}
+    <section className="py-12">
+      <div className="px-5">
+        <SectionHead kicker={s.kicker} title={rt(s.title)} lead={s.lead} />
       </div>
-      <div className="mt-3">
+      <div className="mt-7">
         <Carousel
           label="デモ"
           items={s.items}
           render={(d) => (
-            <article className="overflow-hidden rounded-2xl bg-white shadow-md">
-              <div className="bg-[#EEE9E2] px-10 pt-5">
-                <div className="overflow-hidden rounded-t-[22px] border-[6px] border-b-0 border-navy">
-                  <Img img={d.image} ratio="9/13" className="object-top" />
+            <article className="overflow-hidden rounded-2xl border border-line bg-surface">
+              <div className="bg-primary-soft px-10 pt-6">
+                <div className="overflow-hidden rounded-t-[26px] border-[5px] border-b-0 border-ink">
+                  <Img img={d.image} ratio="9/12" className="object-top" />
                 </div>
               </div>
-              <div className="p-4">
-                <p className="font-head text-[17px] font-bold">{d.title}</p>
-                <p className="mt-1 text-[13px] text-ink">{d.desc}</p>
+              <div className="p-5">
+                <h3 className="font-head text-[17px] font-bold">{d.title}</h3>
+                <p className="mt-1.5 text-[14px] leading-[1.8] text-muted">
+                  {d.desc}
+                </p>
                 {d.link && (
                   <a
                     href={d.link.href}
                     target="_blank"
                     rel="noopener"
-                    className="mt-3 block rounded-full bg-navy py-2.5 text-center text-[14px] font-bold text-white"
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-ink/20 px-4 py-2 text-[13px] font-bold"
                   >
-                    {d.link.label} ↗
+                    {d.link.label}
+                    <span aria-hidden>↗</span>
                   </a>
                 )}
               </div>
@@ -640,136 +534,210 @@ function Demos({ s }: { s: S<'demos'> }) {
           )}
         />
       </div>
-      <div className="px-6">
+      <div className="px-5">
         <Footnote>{s.footnote}</Footnote>
       </div>
     </section>
   );
 }
 
-// ───────── よくある質問（追加） ─────────
-// ───────── 診断結果（アンケートの回答で出し分け） ─────────
-function SurveyResult({ s }: { s: S<'surveyResult'> }) {
-  const answer = load<Record<string, string[]>>('survey')?.[s.questionId]?.[0];
-  const r = answer ? s.results[answer] : undefined;
-  useEffect(() => {
-    if (r) track('survey_result_view', { result: r.name });
-  }, [r]);
-  if (!r) return null;
-  return (
-    <section className="bg-aurora px-5 py-8">
-      <p className="text-center font-head text-[15px] font-bold text-navy wide">{s.kicker}</p>
-      <div className="relative mt-4 rounded-2xl bg-white px-5 pb-5 pt-6 text-center shadow ring-2 ring-primary-soft">
-        {r.icon && (
-          <span className="text-[44px] leading-none" aria-hidden>
-            {r.icon}
-          </span>
-        )}
-        <h2 className="h-head mt-2 text-[24px] text-accent">
-          <span className="underline-p">{r.name}</span>
-        </h2>
-        <div className="mt-4 space-y-2 text-left text-[14px]">
-          {r.desc.map((d, i) => (
-            <p key={i}>{rt(d)}</p>
-          ))}
-        </div>
-        <div className="mt-5 rounded-xl bg-teal-soft p-4 text-left">
-          <p className="text-[12px] font-bold text-teal">{s.stepLabel || '無料相談でやること'}</p>
-          <p className="mt-1 font-head text-[15px] font-bold">{rt(r.step)}</p>
-        </div>
-      </div>
-      {s.note && <Footnote>{s.note}</Footnote>}
-    </section>
-  );
-}
-
-function Faq({ s }: { s: S<'faq'> }) {
-  return (
-    <section className="bg-grid px-5 py-8">
-      <SectionTitle>{s.title}</SectionTitle>
-      <div className="mt-5 space-y-3">
-        {s.items.map((f) => (
-          <details key={f.q} className="group rounded-xl bg-white p-4 shadow-sm ring-1 ring-line">
-            <summary className="flex cursor-pointer list-none items-start gap-2 font-head text-[15px] font-bold">
-              <span className="text-primary">Q.</span>
-              <span className="flex-1">{f.q}</span>
-              <span aria-hidden className="text-muted transition group-open:rotate-180">﹀</span>
-            </summary>
-            <p className="mt-3 flex gap-2 text-[14px]">
-              <span className="font-bold text-teal">A.</span>
-              <span className="flex-1">{rt(f.a)}</span>
-            </p>
-          </details>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-// ───────── S15 クロージング（事実ベース） ─────────
-function Closing({ s }: { s: S<'closing'> }) {
+// ───────── クロージング ─────────
+function Closing({ s }: { s: S<"closing"> }) {
   const open = useOpenForm();
   return (
-    <section className="bg-cream pb-8">
-      <div className="warn-stripe" />
-      <div className="px-6 py-7 text-center">
-        <span className="text-[44px]" aria-hidden>
-          {s.icon || '📌'}
-        </span>
-        {s.lines.map((l) => (
-          <p key={l} className="h-head text-[22px] text-ink">
+    <section className="bg-primary-soft px-5 py-16 text-center">
+      {s.icon && (
+        <div className="mx-auto mb-5 flex justify-center">
+          <Char c={s.icon} size={56} ring={false} />
+        </div>
+      )}
+      <p className="font-head text-[23px] font-bold leading-[1.6]">
+        {s.lines.map((l, i) => (
+          <span key={i} className="block">
             {rt(l)}
-          </p>
+          </span>
         ))}
-        {s.box && <p className="mx-auto mt-4 whitespace-pre-line border-2 border-ink px-4 py-2 font-head text-[16px] font-bold">{s.box}</p>}
-      </div>
-      <div className="warn-stripe" />
-      <div className="px-5 pt-6">
-        <CtaPill label={s.cta} micro={s.micro} onClick={() => open('closing')} />
+      </p>
+      {s.box && (
+        <p className="mt-4 whitespace-pre-line text-[14px] text-muted">
+          {s.box}
+        </p>
+      )}
+      <div className="mt-8">
+        <CtaPill
+          label={s.cta}
+          micro={s.micro}
+          onClick={() => open("closing")}
+        />
       </div>
     </section>
+  );
+}
+
+// ───────── キャンペーン（ポップなテーマ向け） ─────────
+function CampaignHero({ s }: { s: S<"campaignHero"> }) {
+  return (
+    <section
+      className="relative overflow-hidden px-4 pb-6 pt-6"
+      style={{ background: "var(--g-hero)" }}
+    >
+      <div className="relative text-center">
+        <BubbleLabel>{rt(s.bubble)}</BubbleLabel>
+        {s.kicker && (
+          <p className="mt-4 font-head text-[14px] font-black text-accent">
+            {s.kicker}
+          </p>
+        )}
+        <h1 className="mt-2 space-y-1">
+          {s.headline.map((l, i) => (
+            <span
+              key={i}
+              className={`pop-stroke block ${i === 1 ? "text-[40px] text-accent" : "text-[30px] text-navy"}`}
+            >
+              {l}
+            </span>
+          ))}
+        </h1>
+      </div>
+      <div className="relative mt-5 rounded-2xl border-2 border-accent bg-white px-3 pb-4 pt-5">
+        <div className="grid grid-cols-3 gap-2">
+          {s.items.map((it) => (
+            <figure key={it.label} className="text-center">
+              <Img img={it.image} ratio="1" className="rounded-xl" />
+              <figcaption className="mt-1 text-[11px] font-bold">
+                {it.label}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        {s.deadlineBand && (
+          <p className="mt-4 rounded-lg bg-hl px-3 py-2 text-center font-head text-[15px] font-black leading-snug text-navy">
+            {rt(s.deadlineBand)}
+          </p>
+        )}
+      </div>
+      {s.note && (
+        <a
+          href={s.note.href}
+          className="relative mt-3 block text-center text-[11px] text-accent underline"
+        >
+          {s.note.label}
+        </a>
+      )}
+    </section>
+  );
+}
+
+function CampaignDetail({ s }: { s: S<"campaignDetail"> }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Pad>
+      <p className="text-[13px] font-bold text-primary">{s.kicker}</p>
+      <SectionHead title={s.title} />
+      <div className="mt-6 space-y-4">
+        {s.groups.map((g) => (
+          <div
+            key={g.label}
+            className="rounded-2xl border border-line bg-surface p-4"
+          >
+            <p className="text-[13px] font-bold text-primary">
+              {g.label}
+              {g.deadline && (
+                <span className="ml-2 text-muted">
+                  {g.deadline.replace(/\n/g, " ")}
+                </span>
+              )}
+            </p>
+            <div
+              className={`mt-3 grid gap-2 ${g.items.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}
+            >
+              {g.items.map((it) => (
+                <figure key={it.name}>
+                  <Img img={it.image} ratio="4/3" className="rounded-xl" />
+                  <figcaption className="mt-1 text-[14px] font-bold">
+                    {it.name}
+                  </figcaption>
+                  <p className="text-[12px] text-muted">{it.note}</p>
+                </figure>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <dl className="mt-6 space-y-2 text-[14px]">
+        <div>
+          <dt className="font-bold">実施期間</dt>
+          <dd>{s.period}</dd>
+        </div>
+        <div>
+          <dt className="font-bold">応募条件</dt>
+          {s.conditions.map((c) => (
+            <dd key={c}>・{c}</dd>
+          ))}
+        </div>
+      </dl>
+      {s.howTo && (
+        <div className="mt-4 border-t border-line pt-3">
+          <button
+            type="button"
+            className="text-[14px] font-bold text-primary"
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+          >
+            {open ? "− " : "+ "}応募方法
+          </button>
+          {open && (
+            <ol className="mt-2 list-decimal space-y-1 pl-5 text-[13px]">
+              {s.howTo.map((h) => (
+                <li key={h}>{h}</li>
+              ))}
+            </ol>
+          )}
+        </div>
+      )}
+    </Pad>
   );
 }
 
 export function RenderSection({ s, index }: { s: LpSection; index: number }) {
   switch (s.type) {
-    case 'thanksBand':
+    case "thanksBand":
       return <ThanksBand s={s} />;
-    case 'campaignHero':
+    case "campaignHero":
       return <CampaignHero s={s} />;
-    case 'invite':
+    case "invite":
       return <Invite s={s} />;
-    case 'badges':
+    case "badges":
       return <Badges s={s} />;
-    case 'cta':
+    case "cta":
       return <Cta s={s} index={index} />;
-    case 'steps':
+    case "steps":
       return <Steps s={s} />;
-    case 'futures':
+    case "futures":
       return <Futures s={s} />;
-    case 'cases':
+    case "cases":
       return <Cases s={s} />;
-    case 'priceBenefit':
+    case "priceBenefit":
       return <PriceBenefit s={s} />;
-    case 'support':
+    case "support":
       return <Support s={s} />;
-    case 'offerDetail':
+    case "offerDetail":
       return <OfferDetail s={s} />;
-    case 'schedule':
+    case "schedule":
       return <Schedule s={s} />;
-    case 'campaignDetail':
+    case "campaignDetail":
       return <CampaignDetail s={s} />;
-    case 'profile':
+    case "profile":
       return <Profile s={s} />;
-    case 'surveyResult':
+    case "surveyResult":
       return <SurveyResult s={s} />;
-    case 'faq':
+    case "faq":
       return <Faq s={s} />;
-    case 'plans':
+    case "plans":
       return <Plans s={s} />;
-    case 'demos':
+    case "demos":
       return <Demos s={s} />;
-    case 'closing':
+    case "closing":
       return <Closing s={s} />;
   }
 }

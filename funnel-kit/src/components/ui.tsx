@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import type { CharRef, ImgRef, RichText, Tone } from '../types';
+import type { CharRef, ImgRef, RichText } from '../types';
 import { rt } from '../lib/rt';
+import { Icon, isIconName } from './Icon';
 
-/** 画像。src が無ければラベル付きのプレースホルダー（差し替え箇所がひと目で分かる） */
-export function Img({ img, className = '', ratio }: { img: ImgRef; className?: string; ratio?: string }) {
+/**
+ * 共通の部品。形のルール：カード16px、ボタンは丸（pill）、入力欄10px、画像12px。
+ * 傾き・ずらした影・飾りの線は使わない。
+ */
+
+/** 画像。src が無ければ、差し替え箇所が分かる控えめなプレースホルダー */
+export function Img({ img, className = '', ratio, eager }: { img: ImgRef; className?: string; ratio?: string; eager?: boolean }) {
   if (img.src) {
     return (
       <img
         src={img.src}
         alt={img.alt}
-        loading="lazy"
+        loading={eager ? 'eager' : 'lazy'}
         decoding="async"
         className={`block w-full object-cover ${className}`}
         style={ratio ? { aspectRatio: ratio } : undefined}
@@ -20,22 +26,22 @@ export function Img({ img, className = '', ratio }: { img: ImgRef; className?: s
     <div
       role="img"
       aria-label={img.alt}
-      className={`flex w-full items-center justify-center bg-aurora p-2 text-center text-[11px] font-bold leading-snug text-muted ${className}`}
+      className={`flex w-full items-center justify-center bg-primary-soft p-3 text-center text-[11px] text-muted ${className}`}
       style={ratio ? { aspectRatio: ratio } : undefined}
     >
-      <span className="rounded bg-white/70 px-2 py-1">{img.label || img.alt}</span>
+      {img.label || img.alt}
     </div>
   );
 }
 
-/** キャラクター（画像 or 絵文字）を丸枠で表示 */
+/** アイコン名・絵文字・画像のどれでも受け取って、丸い枠で表示する */
 export function Char({ c, size = 88, ring = true }: { c?: CharRef; size?: number; ring?: boolean }) {
   if (!c) return null;
-  const box = `flex shrink-0 items-center justify-center overflow-hidden rounded-full ${ring ? 'bg-white shadow-sm' : ''}`;
+  const box = `flex shrink-0 items-center justify-center overflow-hidden rounded-full ${ring ? 'bg-primary-soft text-primary' : 'text-primary'}`;
   if (typeof c === 'string') {
     return (
-      <div className={box} style={{ width: size, height: size, fontSize: size * 0.52 }} aria-hidden>
-        {c}
+      <div className={box} style={{ width: size, height: size }} aria-hidden>
+        <Icon name={c} size={Math.round(size * (isIconName(c) ? 0.48 : 0.56))} weight="light" />
       </div>
     );
   }
@@ -46,68 +52,43 @@ export function Char({ c, size = 88, ring = true }: { c?: CharRef; size?: number
   );
 }
 
-/** しっぽ付きの吹き出しラベル */
-export function BubbleLabel({ children, tone = 'navy', className = '' }: { children: ReactNode; tone?: Tone | 'white'; className?: string }) {
-  const map: Record<string, string> = {
-    navy: 'bg-navy text-white border-navy',
-    primary: 'bg-primary text-white border-primary',
-    teal: 'bg-teal text-white border-teal',
-    mustard: 'bg-mustard text-white border-mustard',
-    white: 'bg-white text-navy border-white',
-  };
+/** 小さな見出しラベル（多用しない：3セクションに1つまで） */
+export function Kicker({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <p className={`text-[12px] font-bold tracking-[0.12em] text-primary ${className}`}>{children}</p>;
+}
+
+/** セクションの見出し＋リード（左揃えが基本） */
+export function SectionHead({ title, lead, kicker, center }: { title: ReactNode; lead?: ReactNode; kicker?: ReactNode; center?: boolean }) {
   return (
-    <div className={`bubble inline-block whitespace-nowrap rounded-full border-2 px-6 py-1.5 font-head text-[15px] font-bold wide ${map[tone]} ${className}`}>
+    <div className={center ? 'text-center' : ''}>
+      {kicker && <Kicker className="mb-2">{kicker}</Kicker>}
+      <h2 className="font-head text-[24px] font-bold leading-[1.45] tracking-[0.02em] text-ink">{title}</h2>
+      {lead && <p className="mt-3 text-[14px] leading-[1.9] text-muted">{lead}</p>}
+    </div>
+  );
+}
+
+/** 互換用：旧 SectionTitle */
+export function SectionTitle({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <h2 className={`font-head text-center text-[22px] font-bold leading-[1.5] text-ink ${className}`}>{children}</h2>;
+}
+
+/** しっぽ付きの吹き出しラベル（キャンペーン系のセクションでだけ使う） */
+export function BubbleLabel({ children, className = '' }: { children: ReactNode; tone?: string; className?: string }) {
+  return (
+    <div className={`bubble inline-block whitespace-nowrap rounded-full border-2 border-navy bg-navy px-5 py-1 text-[13px] font-bold text-white ${className}`}>
       {children}
-    </div>
-  );
-}
-
-/** \ 見出し / のスラッシュ囲み */
-export function Slashed({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={`flex items-center justify-center gap-3 ${className}`}>
-      <span aria-hidden className="h-14 w-[2px] shrink-0 -rotate-[25deg] bg-navy" />
-      <div className="text-center">{children}</div>
-      <span aria-hidden className="h-14 w-[2px] shrink-0 rotate-[25deg] bg-navy" />
-    </div>
-  );
-}
-
-export function Sparkles() {
-  return (
-    <>
-      <span aria-hidden className="absolute left-3 top-6 text-lg text-navy/70">✦</span>
-      <span aria-hidden className="absolute right-4 top-10 text-sm text-navy/60">✦</span>
-      <span aria-hidden className="absolute bottom-6 right-8 text-base text-navy/50">✦</span>
-    </>
-  );
-}
-
-const toneBg: Record<Tone, string> = {
-  primary: 'bg-primary',
-  teal: 'bg-teal',
-  mustard: 'bg-mustard',
-  navy: 'bg-navy',
-};
-
-export function CircleBadge({ title, icon, tone }: { title: string; icon: string; tone: Tone }) {
-  return (
-    <div className={`flex aspect-square w-full flex-col items-center justify-center rounded-full p-2 text-white ${toneBg[tone]}`}>
-      <span className="whitespace-pre-line text-center font-head text-[12px] font-bold leading-tight wide">{title}</span>
-      <span className="mt-1 text-[28px] leading-none" aria-hidden>
-        {icon}
-      </span>
     </div>
   );
 }
 
 export function CheckList({ items, className = '' }: { items: RichText[]; className?: string }) {
   return (
-    <ul className={`space-y-2 ${className}`}>
+    <ul className={`space-y-3 ${className}`}>
       {items.map((t, i) => (
-        <li key={i} className="flex items-start gap-2 font-head text-[15px] font-bold wide">
-          <span aria-hidden className="mt-[3px] flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] text-white">
-            ✓
+        <li key={i} className="flex items-start gap-3 text-[15px] leading-[1.7]">
+          <span aria-hidden className="mt-[3px] flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+            <Icon name="check" size={12} weight="bold" />
           </span>
           <span>{rt(t)}</span>
         </li>
@@ -116,42 +97,14 @@ export function CheckList({ items, className = '' }: { items: RichText[]; classN
   );
 }
 
-export function TripleArrow({ className = '' }: { className?: string }) {
+/** メインのボタン。上に小さな補足（例：「顔出しなしOK」）を添えられる */
+export function CtaPill({ label, micro, onClick }: { label: string; micro?: string; icon?: string; onClick: () => void }) {
   return (
-    <div aria-hidden className={`bob flex justify-center gap-3 text-navy ${className}`}>
-      {[0, 1, 2].map((i) => (
-        <svg key={i} width="26" height="30" viewBox="0 0 26 30" fill="currentColor">
-          <path d="M8 0h10v16h8L13 30 0 16h8z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
-export function ConnectorPill({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="h-5 w-[2px] bg-navy" />
-      <div className="rounded-full border-2 border-navy bg-white px-6 py-1 font-head text-[17px] font-bold wide text-navy">{children}</div>
-      <div className="h-5 w-[2px] bg-navy" />
-      <div aria-hidden className="-mt-1 h-0 w-0 border-x-[7px] border-t-[9px] border-x-transparent border-t-navy" />
-    </div>
-  );
-}
-
-/** メインCTA。上に小さな吹き出し（マイクロコピー） */
-export function CtaPill({ label, micro, icon, onClick }: { label: string; micro?: string; icon?: string; onClick: () => void }) {
-  return (
-    <div className="relative pt-3">
-      {micro && (
-        <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-cta bg-white px-3 text-[11px] font-bold leading-5 text-cta wide">
-          {micro}
-        </div>
-      )}
-      <button type="button" onClick={onClick} className="cta-pill cta-shine text-[17px]">
-        {icon && <span aria-hidden>{icon}</span>}
+    <div className="text-center">
+      {micro && <p className="mb-2 text-[12px] font-bold text-primary">{micro}</p>}
+      <button type="button" onClick={onClick} className="cta-pill">
         <span>{label}</span>
-        <span aria-hidden className="text-[11px]">▶</span>
+        <span aria-hidden className="text-[18px] leading-none">→</span>
       </button>
     </div>
   );
@@ -159,65 +112,67 @@ export function CtaPill({ label, micro, icon, onClick }: { label: string; micro?
 
 export function Footnote({ children }: { children?: ReactNode }) {
   if (!children) return null;
-  return <p className="mt-3 text-[10px] leading-relaxed text-muted">{children}</p>;
+  return <p className="mt-4 text-[11px] leading-relaxed text-muted">{children}</p>;
 }
 
-/** 横スワイプのカルーセル（左右の丸ボタン＋ドット） */
+/** 横スワイプのカルーセル（左右のボタン＋ドット） */
 export function Carousel<T>({ items, render, label }: { items: T[]; render: (item: T, i: number) => ReactNode; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [idx, setIdx] = useState(0);
 
+  // 1枚の幅（カード幅＋すき間12px）
+  const step = () => ((ref.current?.firstElementChild as HTMLElement | null)?.clientWidth || 1) + 12;
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const on = () => setIdx(Math.round(el.scrollLeft / el.clientWidth));
+    const on = () => setIdx(Math.min(items.length - 1, Math.round(el.scrollLeft / step())));
     el.addEventListener('scroll', on, { passive: true });
     return () => el.removeEventListener('scroll', on);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length]);
 
   const go = (i: number) => {
     const el = ref.current;
     if (!el) return;
     const n = (i + items.length) % items.length;
-    el.scrollTo({ left: n * el.clientWidth, behavior: 'smooth' });
+    el.scrollTo({ left: n * step(), behavior: 'smooth' });
   };
 
-  const btn =
-    'absolute top-[calc(50%-4px)] z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white text-navy shadow';
+  const btn = 'flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink';
   return (
-    <div className="relative" role="region" aria-roledescription="carousel" aria-label={label}>
-      <div ref={ref} className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto pb-2 pt-6">
+    <div role="region" aria-roledescription="carousel" aria-label={label}>
+      <div ref={ref} className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 pt-1">
         {items.map((it, i) => (
-          <div key={i} className="w-full shrink-0 snap-center px-7" aria-hidden={i !== idx}>
+          <div key={i} className="w-[86%] shrink-0 snap-center" aria-hidden={i !== idx}>
             {render(it, i)}
           </div>
         ))}
+        <div aria-hidden className="w-2 shrink-0" />
       </div>
       {items.length > 1 && (
-        <>
-          <button type="button" aria-label="前へ" className={`${btn} left-0`} onClick={() => go(idx - 1)}>
-            ‹
-          </button>
-          <button type="button" aria-label="次へ" className={`${btn} right-0`} onClick={() => go(idx + 1)}>
-            ›
-          </button>
-          <div className="mt-3 flex justify-center gap-2">
+        <div className="mt-4 flex items-center justify-between px-5">
+          <div className="flex gap-1.5">
             {items.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 aria-label={`${i + 1}枚目`}
                 onClick={() => go(i)}
-                className={`h-2 w-2 rounded-full ${i === idx ? 'bg-step' : 'bg-line'}`}
+                className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-6 bg-primary' : 'w-1.5 bg-line'}`}
               />
             ))}
           </div>
-        </>
+          <div className="flex gap-2">
+            <button type="button" aria-label="前へ" className={btn} onClick={() => go(idx - 1)}>
+              ‹
+            </button>
+            <button type="button" aria-label="次へ" className={btn} onClick={() => go(idx + 1)}>
+              ›
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
-}
-
-export function SectionTitle({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <h2 className={`h-head text-center text-[22px] text-navy ${className}`}>{children}</h2>;
 }

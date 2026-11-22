@@ -35,43 +35,43 @@ const pop: Preset = {
     'f-body': '"Noto Sans JP", sans-serif',
   },
   fontsHref:
-    'https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap',
+    'https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@500;600;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap',
 };
 
 const calm: Preset = {
-  // 繊細さん向け：煽らない・静か・やわらかい
+  // 落ち着いた森のトーン：生成りではなく少し青みのある白＋深い緑ひとつだけをアクセントに
   tokens: {
-    'c-bg': '#FBF8F4',
+    'c-bg': '#F4F5F1',
     'c-surface': '#FFFFFF',
-    'c-ink': '#3B3A36',
-    'c-muted': '#8A857C',
-    'c-border': '#E8E2D8',
-    'c-primary': '#C47F75',
-    'c-primary-soft': '#F4E3DF',
-    'c-accent': '#A85E55',
-    'c-cta': '#5C7A6B',
-    'c-cta-shadow': '#3E5449',
-    'c-navy': '#34424F',
-    'c-teal': '#6E9C94',
-    'c-teal-soft': '#E3EFEC',
-    'c-mustard': '#C9A55C',
-    'c-highlight': '#F6E7A8',
-    'c-step': '#5C7A6B',
-    'c-answer': '#C47F75',
-    'c-form': '#A3897A',
-    'c-form-soft': '#F7F2EC',
-    'c-form-off': '#D9CEC4',
+    'c-ink': '#1F2A24',
+    'c-muted': '#5E6A63',
+    'c-border': '#E1E5DF',
+    'c-primary': '#2E5E4E',
+    'c-primary-soft': '#E5EEE9',
+    'c-accent': '#2E5E4E',
+    'c-cta': '#2E5E4E',
+    'c-cta-shadow': '#1F4436',
+    'c-navy': '#1F2A24',
+    'c-teal': '#2E5E4E',
+    'c-teal-soft': '#E5EEE9',
+    'c-mustard': '#B08D3C',
+    'c-highlight': '#DCEBD9',
+    'c-step': '#2E5E4E',
+    'c-answer': '#2E5E4E',
+    'c-form': '#2E5E4E',
+    'c-form-soft': '#F4F5F1',
+    'c-form-off': '#B8C6BE',
     'c-line': '#06C755',
-    'c-cream': '#FBF6EA',
-    'c-survey-bg': '#EFE6DC',
-    'g-aurora': 'linear-gradient(135deg,#E6F0EA 0%,#F7ECE5 52%,#ECEAF5 100%)',
-    'g-hero': 'linear-gradient(160deg,#F6ECE6 0%,#FBF6EA 50%,#E7F0EC 100%)',
-    'f-head': '"Zen Maru Gothic", "Zen Kaku Gothic New", sans-serif',
-    'f-pop': '"Zen Maru Gothic", "Zen Kaku Gothic New", sans-serif',
-    'f-body': '"Zen Kaku Gothic New", "Noto Sans JP", sans-serif',
+    'c-cream': '#F4F5F1',
+    'c-survey-bg': '#F4F5F1',
+    'g-aurora': '#F4F5F1',
+    'g-hero': '#F4F5F1',
+    'f-head': '"Zen Kaku Gothic New", "Noto Sans JP", sans-serif',
+    'f-pop': '"Zen Kaku Gothic New", "Noto Sans JP", sans-serif',
+    'f-body': '"Noto Sans JP", sans-serif',
   },
   fontsHref:
-    'https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap',
+    'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap',
 };
 
 const natural: Preset = {
@@ -107,7 +107,7 @@ const natural: Preset = {
     'f-body': '"Zen Kaku Gothic New", "Noto Sans JP", sans-serif',
   },
   fontsHref:
-    'https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap',
+    'https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap',
 };
 
 export const presets: Record<ThemePresetName, Preset> = { pop, calm, natural };

@@ -1,11 +1,11 @@
 /**
  * 販売LP用のデモ画像を、オミ塾のテストサイトから撮る（予約の送信は横取りして本番に記録しない）。
- * 使い方: node brands/funnelbuild/tools/capture-demo.cjs <出力フォルダ>
+ * 使い方: node brands/funnelbuild/tools/capture-demo.cjs <出力フォルダ>（DEMO_BASE=http://localhost:4173 で手元のビルドから撮る）
  */
 const { chromium, devices } = require('playwright');
 const path = require('path');
 const out = process.argv[2];
-const B = 'https://omijuku-funnel-test.vercel.app';
+const B = process.env.DEMO_BASE || 'https://omijuku-funnel-test.vercel.app';
 const pad = (n) => String(n).padStart(2, '0');
 const day = (o) => { const d = new Date(Date.now() + o * 86400000); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
 const mk = (o) => ({ rid: 'R' + Math.random().toString(36).slice(2, 8).toUpperCase(), createdAt: new Date().toISOString(), status: 'active', email: '', tel: '', intent: '', message: '', survey: {}, utm: {}, line: false, source: 'lp', note: '', ...o });
@@ -19,7 +19,7 @@ const sample = [
 (async () => {
   const b = await chromium.launch();
   const ctx = async () => {
-    const c = await b.newContext({ ...devices['iPhone 13'], locale: 'ja-JP' });
+    const c = await b.newContext({ ...devices['iPhone 13'], locale: 'ja-JP', reducedMotion: 'reduce' });
     await c.route('**/script.google.com/**', (r) => {
       const req = r.request();
       if (req.method() === 'GET') return r.continue();

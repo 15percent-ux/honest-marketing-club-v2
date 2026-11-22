@@ -20,7 +20,7 @@ export default defineBrand({
     tagline: 'AIで、自分らしく稼ぐ力を',
     operator: '株式会社麹王子',
     staffName: 'オミ',
-    staffIcon: '🍵', // 要入力：オミさんの顔写真かアイコン（{ src: '/staff.png', alt: 'オミ' }）
+    staffIcon: 'オ', // 要入力：オミさんの顔写真（{ src: '/staff.png', alt: 'オミ' }）。文字1つならイニシャルの丸アイコン
     links: {
       privacy: '#', // 要入力
       tokushoho: '#', // 要入力
@@ -50,9 +50,9 @@ export default defineBrand({
       label: '3つの質問に答えると',
       lines: ['あなたに合う', '稼ぎ方が分かります'],
       items: [
-        { image: { alt: '経験を商品にする', label: '画像：経験を商品に' }, label: '経験を商品に' },
-        { image: { alt: 'AIで制作する', label: '画像：AIで制作' }, label: 'AIで制作' },
-        { image: { alt: '集客の仕組み', label: '画像：集客の仕組み' }, label: '集客の仕組み' },
+        { image: { src: '/art/experience.webp', alt: '講座スライドと予約の画面のイメージ' }, label: '経験を商品に' },
+        { image: { src: '/art/production.webp', alt: 'AIと文章をつくる画面のイメージ' }, label: 'AIで制作' },
+        { image: { src: '/art/marketing.webp', alt: '公式LINEと予約ページのイメージ' }, label: '集客の仕組み' },
       ],
     },
     questions: [
@@ -65,20 +65,20 @@ export default defineBrand({
           '個人で働いているが、収入が不安定',
           '人と関わりすぎる働き方に疲れた',
         ],
-        character: '🌿',
+        character: 'leaf',
       },
       {
         id: 'q2',
         text: 'AIを使って、どんな形で\n稼いでみたいですか？',
         options: [Q2.experience, Q2.production, Q2.marketing, Q2.unknown],
-        character: '🍃',
+        character: 'compass',
       },
       {
         id: 'q3',
         text: 'オミ塾で魅力に感じたところを\n教えてください（複数OK）',
         options: ['自分のペースで進められる', '一緒に手を動かして形にできる', '押し売りをしない', 'AIの使い方が仕事につながる'],
         multiple: true,
-        character: '☕',
+        character: 'sparkle',
       },
     ],
     // 動画を挟む場合：public/ に mp4 を置いて設定する
@@ -88,7 +88,7 @@ export default defineBrand({
 
   lp: {
     sections: [
-      { type: 'thanksBand', text: 'ご回答ありがとうございました', character: '🍵' },
+      { type: 'thanksBand', text: 'ご回答ありがとうございました' },
       {
         type: 'surveyResult',
         questionId: 'q2',
@@ -96,7 +96,7 @@ export default defineBrand({
         results: {
           [Q2.experience]: {
             name: '経験を商品にする',
-            icon: '🎁',
+            icon: 'gift',
             desc: [
               'これまでの経験や知識を、[p]相談・講座[/p]の形にして届ける稼ぎ方です。',
               '伝わる言葉づくり、資料やページづくりはAIと一緒に進めるので、ひとりで抱え込まずに形にできます。',
@@ -105,7 +105,7 @@ export default defineBrand({
           },
           [Q2.production]: {
             name: 'AIで制作をサポートする',
-            icon: '✍️',
+            icon: 'note',
             desc: [
               '文章・画像・資料づくりなど、[p]AIを道具にした制作のお手伝い[/p]で稼ぐ方法です。',
               '人と長い時間話し続けなくても進めやすく、自分のペースを守りやすい働き方です。',
@@ -114,7 +114,7 @@ export default defineBrand({
           },
           [Q2.marketing]: {
             name: '集客を仕組みにする',
-            icon: '🧭',
+            icon: 'compass',
             desc: [
               'いまのお店やサービスに、[p]ページと公式LINEの導線[/p]をつくって、申込みが入りやすい状態を整える方法です。',
               '投稿や案内文づくりもAIに手伝ってもらえるので、毎日の負担を減らせます。',
@@ -123,7 +123,7 @@ export default defineBrand({
           },
           [Q2.unknown]: {
             name: 'まずは棚卸しから',
-            icon: '🌱',
+            icon: 'plant',
             desc: [
               'あなたの経験・好きなこと・苦手なことを整理するところから始めましょう。',
               '[p]合う稼ぎ方は、整理したあとに見えてきます[/p]。急いで決めなくて大丈夫です。',
@@ -138,23 +138,22 @@ export default defineBrand({
         title: '無料個別相談のご案内',
         lead: 'あなたに合う[p]稼ぎ方[/p]と\n最初の一歩を一緒に決めます',
         icons: [
-          { icon: '🗂️', label: '経験の棚卸し' },
-          { icon: '🤖', label: 'AIの使いどころ' },
-          { icon: '👣', label: '最初の一歩' },
+          { icon: 'book', label: '経験の棚卸し' },
+          { icon: 'robot', label: 'AIの使いどころ' },
+          { icon: 'steps', label: '最初の一歩' },
         ],
         checks: ['あなたに合いそうな稼ぎ方', 'AIに任せられる作業'],
         checksSuffix: 'が分かる',
-        illustration: '🌿',
       },
       {
         type: 'badges',
         items: [
-          { title: '顔出し\nなしOK', icon: '🙂', tone: 'teal' },
-          { title: '1対1で\nじっくり', icon: '🤝', tone: 'primary' },
-          { title: '押し売り\nしません', icon: '🍵', tone: 'mustard' },
+          { title: '顔出し\nなしOK', icon: 'user', tone: 'teal' },
+          { title: '1対1で\nじっくり', icon: 'handshake', tone: 'primary' },
+          { title: '押し売り\nしません', icon: 'coffee', tone: 'mustard' },
         ],
       },
-      { type: 'cta', heading: 'まずは[a]話してみる[/a]ところから\n[invt]あなたに合う稼ぎ方[/invt]を一緒に考える', label: '無料で相談する' },
+      { type: 'cta', heading: 'まずは話してみるところから\n[p]あなたに合う稼ぎ方[/p]を一緒に考える', label: '無料で相談する' },
       {
         type: 'futures',
         title: ['AIを道具にすると', '稼ぎ方の選択肢が', 'こんなふうに広がります'],
@@ -162,28 +161,19 @@ export default defineBrand({
           {
             role: '経験を商品にする',
             desc: ['これまでの経験を、', '相談や講座の形にして', '必要な人に届ける。'],
-            images: [
-              { alt: '個別相談', label: '画像：個別相談' },
-              { alt: '講座資料', label: '画像：講座資料' },
-            ],
+            images: [{ src: '/art/experience.webp', alt: '講座スライドと予約の画面のイメージ' }],
             tags: ['個別相談', 'ミニ講座'],
           },
           {
             role: 'AIで制作する',
             desc: ['文章・画像・資料を', 'AIと一緒につくって、', '制作のお手伝いをする。'],
-            images: [
-              { alt: '文章づくり', label: '画像：文章づくり' },
-              { alt: '資料づくり', label: '画像：資料づくり' },
-            ],
+            images: [{ src: '/art/production.webp', alt: 'AIと文章をつくる画面のイメージ' }],
             tags: ['文章', 'スライド'],
           },
           {
             role: '集客を仕組みにする',
             desc: ['ページから公式LINEまで、', '申込みにつながる道を', '用意しておく。'],
-            images: [
-              { alt: 'LP', label: '画像：LP' },
-              { alt: '公式LINE', label: '画像：公式LINE' },
-            ],
+            images: [{ src: '/art/marketing.webp', alt: '公式LINEと予約ページのイメージ' }],
             tags: ['LP', '公式LINE'],
           },
         ],
@@ -209,7 +199,6 @@ export default defineBrand({
           '[p]AIに任せられる作業[/p]の見つけ方',
           '[p]最初の一歩[/p]の提案',
         ],
-        character: '🍵',
       },
       {
         type: 'profile',
@@ -238,7 +227,7 @@ export default defineBrand({
       },
       {
         type: 'closing',
-        icon: '🍵',
+        icon: 'leaf',
         lines: ['一人で抱えずに', 'まずは[p]話してみませんか[/p]'],
         cta: '無料で相談する',
         micro: '顔出しなしOK',
@@ -269,7 +258,7 @@ export default defineBrand({
       placeholder: '例：会社員を続けながら、これまでの経験を活かして副業を始めたい',
     },
     agreements: [{ text: 'プライバシーポリシーに同意します。', links: [{ label: 'プライバシーポリシー', href: '#' }] }],
-    completeMessage: 'お申込みありがとうございます。\n当日お話しできるのを楽しみにしています🍵',
+    completeMessage: 'お申込みありがとうございます。\n当日お話しできるのを楽しみにしています。',
   },
 
   thanks: {
@@ -280,7 +269,7 @@ export default defineBrand({
       title: '参加URLとリマインドは\n公式LINEでお届けします',
       benefits: ['参加URLを前日にお送りします', '前日にリマインドをお送りします', '事前の質問もLINEで受け付けます'],
       button: 'LINEで準備を完了する',
-      character: '💬',
+      character: 'chat',
     },
     prep: { title: '当日までのご準備', steps: ['Zoomアプリを入れておく', '相談したいことをメモしておく（なくても大丈夫です）'] },
   },

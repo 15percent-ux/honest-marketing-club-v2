@@ -9,29 +9,31 @@
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
+const { iconSvg } = require('../../../scripts/lib/icons.cjs');
 
 const brandDir = path.join(__dirname, '..');
 const kit = path.join(brandDir, '..', '..');
 const pub = path.join(brandDir, 'public');
 const omi = path.join(kit, 'brands', 'omijuku', 'public', 'line');
 const data = (file, mime) => `data:${mime};base64,${fs.readFileSync(file).toString('base64')}`;
-const C = { bg: '#FBF8F4', ink: '#34424F', accent: '#A85E55', sage: '#5C7A6B', sand: '#EFE6DC', mark: '#F4E3DF', mist: '#E3EFEC' };
+// LPの calm テーマと同じ色（深い緑ひとつだけをアクセントに）
+const C = { bg: '#F4F5F1', ink: '#1F2A24', accent: '#2E5E4E', sage: '#5E6A63', sand: '#E1E5DF', mark: '#E5EEE9', mist: '#DCEBD9' };
 const FONTS =
-  '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">';
-const base = `<!doctype html><html lang="ja"><head><meta charset="utf-8">${FONTS}<style>*{margin:0;box-sizing:border-box}body{font-family:'Zen Maru Gothic',sans-serif;color:${C.ink};-webkit-font-smoothing:antialiased}.en{font-family:'Cormorant Garamond',serif;font-style:italic;letter-spacing:.12em}</style></head><body>`;
+  '<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">';
+const base = `<!doctype html><html lang="ja"><head><meta charset="utf-8">${FONTS}<style>*{margin:0;box-sizing:border-box}body{font-family:'Zen Kaku Gothic New',sans-serif;color:${C.ink};-webkit-font-smoothing:antialiased}.en{font-family:'Outfit',sans-serif;font-weight:600;letter-spacing:.2em;text-transform:uppercase}</style></head><body>`;
 
 // ── 公式LINEのトーク画面（モック） ──
 function lineChat() {
   const diag = data(path.join(omi, 'diag.jpg'), 'image/jpeg');
   const menu = data(path.join(omi, 'richmenu.jpg'), 'image/jpeg');
   const bubble = (html, w = 250) => `<div style="display:flex;gap:6px;align-items:flex-start;margin:10px 12px">
-    <div style="width:30px;height:30px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:16px">🍵</div>
+    <div style="width:30px;height:30px;border-radius:50%;background:${C.mark};color:${C.accent};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">オ</div>
     <div style="max-width:${w}px;background:#fff;border-radius:16px;overflow:hidden;font-size:12px;line-height:1.55">${html}</div></div>`;
   const mine = (t) => `<div style="display:flex;justify-content:flex-end;margin:10px 12px"><div style="background:#85E249;border-radius:16px;padding:8px 12px;font-size:12px">${t}</div></div>`;
   const opt = (t) => `<div style="border:1px solid #E5DCD2;background:${C.bg};border-radius:9px;padding:8px 10px;margin-top:6px;font-weight:700;font-size:11px;display:flex;justify-content:space-between">${t}<span style="color:${C.accent}">›</span></div>`;
   return `${base}<div style="width:390px;height:844px;background:#8CABD9;position:relative;overflow:hidden">
     <div style="height:56px;background:#fff;display:flex;align-items:center;padding:0 14px;gap:10px;font-weight:700;font-size:15px"><span style="font-size:20px">‹</span>オミ塾<span style="margin-left:auto;font-size:18px">☰</span></div>
-    ${bubble('<div style="padding:10px 12px">友だち追加ありがとうございます🍵<br>まずは下の診断で、あなたに合う稼ぎ方を見てみませんか？</div>')}
+    ${bubble('<div style="padding:10px 12px">友だち追加ありがとうございます。<br>まずは下の診断で、あなたに合う稼ぎ方を見てみませんか？</div>')}
     ${bubble(`<img src="${diag}" style="display:block;width:100%"><div style="padding:10px 12px"><b style="font-size:13px">3つの質問で、あなたに合う稼ぎ方が分かる</b><div style="color:${C.accent};font-size:10px;margin-top:2px">所要30秒・タップだけで完了</div><div style="margin-top:10px;background:${C.accent};color:#fff;text-align:center;border-radius:8px;padding:8px;font-weight:700">無料診断をはじめる</div></div>`)}
     ${mine('無料診断をはじめる')}
     ${bubble(`<div style="padding:10px 12px"><b style="color:${C.accent};font-size:20px">Q1</b><span style="color:#8A857C"> / 3</span><div style="font-weight:700;margin-top:2px">いまの働き方・収入について、いちばん近いものは？</div>${opt('本業の収入だけでは少し不安')}${opt('副業したいが、何をすればいいか迷う')}</div>`)}
@@ -41,43 +43,33 @@ function lineChat() {
     </div></div></body></html>`;
 }
 
-const phone = (src, w, rot, extra = '') =>
-  `<div style="position:absolute;${extra};width:${w}px;transform:rotate(${rot}deg);border-radius:${w * 0.12}px;background:#1E2630;padding:${w * 0.035}px;box-shadow:0 30px 60px rgba(52,66,79,.28)">
-     <div style="border-radius:${w * 0.09}px;overflow:hidden;aspect-ratio:390/844;background:url(${src}) top/cover"></div></div>`;
+// スマホの枠。画面の画像はそのままの比率で入れる（切り抜かない）
+const phone = (src, w, extra = '') =>
+  `<div style="position:absolute;${extra};width:${w}px;border-radius:${w * 0.12}px;background:${C.ink};padding:${w * 0.035}px;box-shadow:0 40px 70px -30px rgba(31,68,54,.5)">
+     <img src="${src}" style="display:block;width:100%;border-radius:${w * 0.09}px"></div>`;
 
-// ── ファーストビュー（4:5） ──
+// ── ファーストビュー（4:3。診断ページの先頭で、この比率のまま表示される） ──
 function hero() {
-  return `${base}<div style="width:800px;height:1000px;position:relative;overflow:hidden;background:linear-gradient(160deg,${C.mist},${C.bg} 45%,${C.mark})">
-    <div style="position:absolute;left:-120px;top:-80px;width:520px;height:520px;border-radius:50%;background:${C.mark};opacity:.8"></div>
-    <div style="position:absolute;left:140px;bottom:-160px;width:460px;height:460px;border-radius:50%;background:${C.mist}"></div>
-    ${phone(data(path.join(pub, 'demo', 'admin.webp'), 'image/webp'), 300, 8, 'left:330px;top:150px;opacity:.95')}
-    ${phone(data(path.join(pub, 'demo', 'line.webp'), 'image/webp'), 330, -5, 'left:40px;top:90px')}
+  return `${base}<div style="width:1200px;height:900px;position:relative;overflow:hidden;background:${C.bg}">
+    <div style="position:absolute;right:-120px;top:-160px;width:620px;height:620px;border-radius:50%;background:${C.mist}"></div>
+    <div style="position:absolute;left:-140px;bottom:-220px;width:560px;height:560px;border-radius:50%;background:${C.mark}"></div>
+    ${phone(data(path.join(pub, 'demo', 'admin.webp'), 'image/webp'), 330, 'left:640px;top:230px')}
+    ${phone(data(path.join(pub, 'demo', 'line.webp'), 'image/webp'), 340, 'left:250px;top:60px')}
   </div></body></html>`;
 }
 
-const ICONS = {
-  scissors: '<circle cx="30" cy="74" r="12"/><circle cx="70" cy="74" r="12"/><path d="M38 66 74 16M62 66 26 16"/>',
-  sparkle: '<path d="M50 18c4 14 8 18 22 22-14 4-18 8-22 22-4-14-8-18-22-22 14-4 18-8 22-22z"/><path d="M76 62c2 7 4 9 10 11-6 2-8 4-10 11-2-7-4-9-10-11 6-2 8-4 10-11z"/>',
-  cutlery: '<path d="M34 14v28a8 8 0 0 1-16 0V14M26 14v72M72 14c-10 4-13 20-13 32h13v40"/>',
-  book: '<path d="M50 28c-10-8-24-8-34-4v54c10-4 24-4 34 4 10-8 24-8 34-4V24c-10-4-24-4-34 4z"/><path d="M50 28v54"/>',
-};
-const icon = (n, s, col) =>
-  `<svg width="${s}" height="${s}" viewBox="0 0 100 100" fill="none" stroke="${col}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]}</svg>`;
-
 const CARDS = [
   { file: 'salon', en: 'HAIR SALON', name: '美容院・\nヘアサロン', flow: '髪の悩み診断 → おすすめメニュー → 予約', icon: 'scissors', col: C.accent },
-  { file: 'esthe', en: 'ESTHE & NAIL', name: 'エステ・\nネイル', flow: '肌・爪の悩み診断 → コース提案 → 初回予約', icon: 'sparkle', col: C.sage },
-  { file: 'restaurant', en: 'RESTAURANT', name: '飲食店', flow: '人数・用途の質問 → コース提案 → 予約', icon: 'cutlery', col: C.ink },
+  { file: 'esthe', en: 'ESTHE & NAIL', name: 'エステ・\nネイル', flow: '肌・爪の悩み診断 → コース提案 → 初回予約', icon: 'sparkle', col: C.accent },
+  { file: 'restaurant', en: 'RESTAURANT', name: '飲食店', flow: '人数・用途の質問 → コース提案 → 予約', icon: 'food', col: C.accent },
   { file: 'school', en: 'SCHOOL & COACH', name: '講座・\nスクール', flow: 'タイプ診断 → 結果 → 体験会・相談の予約', icon: 'book', col: C.accent },
 ];
-function card(c) {
+function card(c, svg) {
   return `${base}<div style="width:1040px;height:676px;position:relative;background:${C.bg};overflow:hidden">
-    <div style="position:absolute;right:-110px;top:-110px;width:600px;height:600px;border-radius:50%;background:${C.mark}"></div>
-    <div style="position:absolute;right:140px;bottom:-210px;width:420px;height:420px;border-radius:50%;background:${C.mist}"></div>
-    <div style="position:absolute;right:150px;top:140px">${icon(c.icon, 300, c.col)}</div>
-    <p class="en" style="position:absolute;left:80px;top:100px;font-size:40px;color:${c.col}">${c.en}</p>
+    <div style="position:absolute;right:90px;top:90px;width:400px;height:400px;border-radius:50%;background:${C.mark};display:flex;align-items:center;justify-content:center">${svg}</div>
+    <p class="en" style="position:absolute;left:80px;top:100px;font-size:28px;color:${c.col}">${c.en}</p>
     <p style="position:absolute;left:80px;top:250px;font-size:76px;font-weight:900;line-height:1.25;white-space:pre-line">${c.name}</p>
-    <p style="position:absolute;left:80px;bottom:80px;font-size:28px;font-weight:700;color:${C.sage};background:#fff;padding:12px 22px;border-radius:999px">${c.flow}</p>
+    <p style="position:absolute;left:80px;bottom:80px;font-size:28px;font-weight:700;color:${C.accent};background:#fff;border:2px solid ${C.sand};padding:12px 24px;border-radius:999px">${c.flow}</p>
   </div></body></html>`;
 }
 
@@ -116,10 +108,10 @@ function card(c) {
   await toWebp(tmp, path.join(pub, 'demo', 'line.webp'), 780);
   fs.rmSync(tmp);
   const heroPng = path.join(pub, 'hero.png');
-  await shoot(hero(), 800, 1000, heroPng, 'png');
-  await toWebp(heroPng, path.join(pub, 'hero.webp'), 800);
+  await shoot(hero(), 1200, 900, heroPng, 'png');
+  await toWebp(heroPng, path.join(pub, 'hero.webp'), 1200);
   fs.rmSync(heroPng);
   fs.mkdirSync(path.join(pub, 'cards'), { recursive: true });
-  for (const c of CARDS) await shoot(card(c), 1040, 676, path.join(pub, 'cards', `${c.file}.jpg`));
+  for (const c of CARDS) await shoot(card(c, await iconSvg(c.icon, 210, c.col)), 1040, 676, path.join(pub, 'cards', `${c.file}.jpg`));
   await b.close();
 })();

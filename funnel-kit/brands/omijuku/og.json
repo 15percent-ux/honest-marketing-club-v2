@@ -1,8 +1,17 @@
 {
   "image": "hero.webp",
   "kicker": "オミ塾｜無料個別相談",
-  "title": ["AIで、自分らしく", "[稼ぐ力]をつける"],
+  "title": [
+    "AIで、自分らしく",
+    "[稼ぐ力]をつける"
+  ],
   "sub": "3つの質問で、あなたに合う稼ぎ方が分かる",
   "badge": "Zoom・顔出しなしOK",
-  "colors": { "bg": "#FBF8F4", "ink": "#34424F", "accent": "#A85E55", "sub": "#6E9C94", "mark": "#F4E3DF" }
+  "colors": {
+    "bg": "#F4F5F1",
+    "ink": "#1F2A24",
+    "accent": "#2E5E4E",
+    "sub": "#5E6A63",
+    "mark": "#DCEBD9"
+  }
 }

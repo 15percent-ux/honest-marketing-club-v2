@@ -37,6 +37,16 @@ BRAND=omijuku npm run build # dist/ に出力
 `theme.preset` で `pop`（元LP風・ポップ）／`calm`（繊細さん向け・静か）／`natural`（サロン・暮らし系）を選びます。
 色を個別に変えるときは `theme.overrides` に `{ 'c-primary': '#xxxxxx' }` のように書きます（トークンは `src/types.ts` の `ThemeToken`）。
 
+### アイコン
+`icon` や `character` には、絵文字ではなくアイコン名を書きます（例：`'leaf'` `'compass'` `'calendar'` `'chat'` `'gift'`）。
+使える名前は `src/components/Icon.tsx` の一覧です（Phosphor Icons）。一覧に無い文字を書くと、その文字が丸の中にそのまま出ます（`staffIcon: 'オ'` でイニシャルのアイコン）。
+
+### 画像をつくるスクリプト（どれも calm テーマと同じ色・書体）
+- `node scripts/make-line-assets.cjs <id>` … 公式LINEのリッチメニューとカード
+- `node scripts/make-og.cjs <id>` … 共有用のプレビュー画像
+- `node brands/omijuku/tools/make-art.cjs` … オミ塾LPの挿絵（3つの稼ぎ方）
+- `node brands/funnelbuild/tools/make-assets.cjs` … 販売LPのファーストビュー・業種カード（先に `capture-demo.cjs` でデモ画面を撮る）
+
 ### LPのセクション
 `lp.sections` の配列の順に表示されます。並べ替え・削除は自由です。
 

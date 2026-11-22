@@ -13,17 +13,23 @@ const o = JSON.parse(fs.readFileSync(path.join(dir, 'og.json'), 'utf8'));
 const img = fs.readFileSync(path.join(dir, 'public', o.image)).toString('base64');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const c = o.colors;
+// 文字の幅（全角1・半角0.6）から、1行に収まる文字サイズを決める（途中で折り返さない）
+const ems = (t) => [...t.replace(/\[|\]/g, '')].reduce((n, ch) => n + (ch.charCodeAt(0) < 256 ? 0.6 : 1), 0);
+const TEXT_W = 590;
+const fit = (lines, max, spacing) => Math.min(max, Math.floor(TEXT_W / (Math.max(...lines.map(ems)) * (1 + spacing))));
+const titleSize = fit(o.title, 68, 0.04);
+const subSize = fit([o.sub], 30, 0);
 const html = `<!doctype html><html lang="ja"><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
 <style>
   *{margin:0;box-sizing:border-box}
-  body{width:1200px;height:630px;background:${c.bg};font-family:'Zen Maru Gothic',sans-serif;color:${c.ink};display:flex;overflow:hidden}
+  body{width:1200px;height:630px;background:${c.bg};font-family:'Zen Kaku Gothic New',sans-serif;color:${c.ink};display:flex;overflow:hidden}
   .photo{width:470px;height:630px;background:url(data:image/webp;base64,${img}) center 20%/cover}
   .txt{flex:1;padding:70px 64px;display:flex;flex-direction:column;justify-content:center}
   .kicker{font-size:30px;font-weight:700;color:${c.sub};letter-spacing:.08em}
-  h1{margin-top:22px;font-size:68px;font-weight:900;line-height:1.3;letter-spacing:.04em}
+  h1{margin-top:22px;white-space:nowrap;font-size:${titleSize}px;font-weight:900;line-height:1.3;letter-spacing:.04em}
   h1 em{font-style:normal;color:${c.accent};background:linear-gradient(transparent 70%,${c.mark} 70%)}
-  .sub{margin-top:26px;font-size:30px;font-weight:700;line-height:1.5}
+  .sub{margin-top:26px;white-space:nowrap;font-size:${subSize}px;font-weight:700;line-height:1.5}
   .badge{margin-top:34px;align-self:flex-start;background:${c.accent};color:#fff;font-size:28px;font-weight:900;padding:12px 28px;border-radius:999px;letter-spacing:.08em}
 </style></head><body>
 <div class="photo"></div>

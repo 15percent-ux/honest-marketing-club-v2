@@ -28,7 +28,7 @@ export default defineBrand({
     tagline: '予約まで、自動で回る仕組みを',
     operator: '株式会社麹王子',
     staffName: 'オミ',
-    staffIcon: '🍵', // 要入力：オミさんのアイコン
+    staffIcon: 'オ', // 要入力：オミさんの顔写真（{ src: '/staff.png', alt: 'オミ' }）
     links: {
       privacy: '#', // 要入力
       tokushoho: '#', // 要入力
@@ -65,20 +65,20 @@ export default defineBrand({
         id: 'q1',
         text: 'お店・お仕事の業種を\n教えてください',
         options: ['美容院・ヘアサロン', 'エステ・ネイル・リラク', '飲食店', '講座・スクール・コーチ', 'その他のお店・サービス'],
-        character: '🏠',
+        character: 'shop',
       },
       {
         id: 'q2',
         text: 'いまの予約・申込の受け方に\nいちばん近いものは？',
         options: [Q2.manual, Q2.portal, Q2.line, Q2.none],
-        character: '📅',
+        character: 'calendar',
       },
       {
         id: 'q3',
         text: 'いちばん解決したいことを\n教えてください（複数OK）',
         options: ['問い合わせ対応に時間を取られる', '新しいお客さまが増えない', '当日キャンセル・無断キャンセル', 'リピートにつながらない'],
         multiple: true,
-        character: '💡',
+        character: 'idea',
       },
     ],
     submitLabel: '回答して結果を見る',
@@ -86,7 +86,7 @@ export default defineBrand({
 
   lp: {
     sections: [
-      { type: 'thanksBand', text: 'ご回答ありがとうございました', character: '🍵' },
+      { type: 'thanksBand', text: 'ご回答ありがとうございました' },
       {
         type: 'surveyResult',
         questionId: 'q2',
@@ -95,7 +95,7 @@ export default defineBrand({
         results: {
           [Q2.manual]: {
             name: '予約対応を自動にする',
-            icon: '📅',
+            icon: 'calendar',
             desc: [
               'お客さまが[p]自分で日時を選んで予約[/p]できる形にして、日程調整のやりとりをなくします。',
               '確認メールと前日のリマインドも自動で届くので、うっかり忘れも減らせます。',
@@ -104,7 +104,7 @@ export default defineBrand({
           },
           [Q2.portal]: {
             name: '自分の予約導線をつくる',
-            icon: '🧭',
+            icon: 'compass',
             desc: [
               '予約サイトとは別に、[p]お店の公式LINEとページ[/p]から予約できる道をつくります。',
               '予約したお客さまの記録がお店のGoogleアカウントに残るので、次のご案内にも使えます。',
@@ -113,7 +113,7 @@ export default defineBrand({
           },
           [Q2.line]: {
             name: '公式LINEを接客係にする',
-            icon: '💬',
+            icon: 'chat',
             desc: [
               'URLを流すだけの公式LINEを、[p]診断から予約までトークの中で進む[/p]接客係に変えます。',
               'リッチメニューとカードのデザインも含めてつくります。',
@@ -122,7 +122,7 @@ export default defineBrand({
           },
           [Q2.none]: {
             name: '入口づくりから始める',
-            icon: '🌱',
+            icon: 'plant',
             desc: [
               'まずは[p]お店の魅力が伝わるページと予約フォーム[/p]から。小さく始めて、必要に応じて公式LINEにつなげます。',
               '月額のツール費がかからない構成なので、始めるときの負担を抑えられます。',
@@ -144,20 +144,19 @@ export default defineBrand({
         title: 'LINE完結ファネル構築',
         lead: 'ページ・公式LINE・予約管理を\n[p]まるごと[/p]つくって納品します',
         icons: [
-          { icon: '🧭', label: '診断LP' },
-          { icon: '💬', label: '公式LINE' },
-          { icon: '📅', label: '予約管理' },
+          { icon: 'compass', label: '診断LP' },
+          { icon: 'chat', label: '公式LINE' },
+          { icon: 'calendar', label: '予約管理' },
         ],
         checks: ['お客さまが迷わない導線', '手が空く予約対応'],
         checksSuffix: 'が手に入る',
-        illustration: '🍵',
       },
       {
         type: 'badges',
         items: [
-          { title: '月額の\nツール費0円', icon: '🔧', tone: 'teal' },
-          { title: 'スマホで\n予約管理', icon: '📱', tone: 'primary' },
-          { title: '煽らない\n誠実な設計', icon: '🤝', tone: 'mustard' },
+          { title: '月額の\nツール費0円', icon: 'wrench', tone: 'teal' },
+          { title: 'スマホで\n予約管理', icon: 'phone', tone: 'primary' },
+          { title: '煽らない\n誠実な設計', icon: 'handshake', tone: 'mustard' },
         ],
         footnote: '※ LINE公式アカウントの利用料（配信数による）と、独自ドメイン代は実費です。',
       },
@@ -176,7 +175,7 @@ export default defineBrand({
         ],
         footnote: '※ 画面はオミ塾のデモです。管理画面の予約は見本のデータです。',
       },
-      { type: 'cta', heading: 'まずは[a]無料相談[/a]で\n[invt]お店に合う導線[/invt]を一緒に考える', label: '無料で相談する' },
+      { type: 'cta', heading: 'まずは無料相談で\n[p]お店に合う導線[/p]を一緒に考える', label: '無料で相談する' },
       {
         type: 'futures',
         title: ['お店や教室に合わせて', '診断と予約の流れを', '設計します'],
@@ -220,7 +219,7 @@ export default defineBrand({
           '[p]管理画面[/p]（スマホで予約一覧・状態・メモ）',
           '共有用の画像と[p]アクセス計測[/p]の設定',
         ],
-        character: '🧰',
+        character: 'toolbox',
         subLabel: '納品物のイメージ',
         covers: [
           { image: { src: '/demo/line.webp', alt: '公式LINE' }, label: '公式LINE' },
@@ -264,7 +263,7 @@ export default defineBrand({
       {
         type: 'steps',
         kicker: '＼公開まで／',
-        title: '最短[hl]2〜3週間[/hl]で公開', // 【要確認】期間
+        title: '最短[p]2〜3週間[/p]で公開', // 【要確認】期間
         steps: [
           { title: '[p]無料相談[/p]\nいまの流れを一緒に見る' },
           { title: '[p]ヒアリング[/p]\n商品・お客さま・強み' },
@@ -299,7 +298,7 @@ export default defineBrand({
       },
       {
         type: 'closing',
-        icon: '🍵',
+        icon: 'handshake',
         lines: ['予約対応は', '[p]仕組みに任せて[/p]', '本業に集中しませんか'],
         cta: '無料で相談する',
         micro: 'Zoom・45分',
@@ -325,7 +324,7 @@ export default defineBrand({
       placeholder: '例：〇〇サロン（美容院）／Instagram @xxxx',
     },
     agreements: [{ text: 'プライバシーポリシーに同意します。', links: [{ label: 'プライバシーポリシー', href: '#' }] }],
-    completeMessage: 'お申込みありがとうございます。\n当日、お店のことを聞かせてください🍵',
+    completeMessage: 'お申込みありがとうございます。\n当日、お店のことを聞かせてください。',
   },
 
   thanks: {
@@ -336,7 +335,7 @@ export default defineBrand({
       title: '参加URLとリマインドは\n公式LINEでお届けします',
       benefits: ['参加URLを前日にお送りします', '前日にリマインドをお送りします', '事前の質問もLINEで受け付けます'],
       button: 'LINEで準備を完了する',
-      character: '💬',
+      character: 'chat',
     },
     prep: { title: '当日までのご準備', steps: ['Zoomアプリを入れておく', 'いまのページやInstagramを開ける状態にしておく（なくても大丈夫です）'] },
   },

@@ -33,7 +33,7 @@ export default {
         head: v('f-head'),
         pop: v('f-pop'),
         body: v('f-body'),
-        num: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
+        num: ['"Outfit"', '"Noto Sans JP"', 'sans-serif'],
       },
       maxWidth: { lp: '480px' },
     },
