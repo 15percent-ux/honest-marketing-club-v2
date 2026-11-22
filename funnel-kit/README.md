@@ -75,7 +75,9 @@ Netlify・Vercel のどちらでも、**ベースディレクトリを `funnel-k
 
 ソースを Vercel にアップロードし、Vercel 上でビルドして本番に公開します（`node_modules` と `dist` は送りません）。
 
-テスト公開中のサイト：オミ塾 https://omijuku-funnel-test.vercel.app （検索エンジンに載らない設定・予約は demo モードで保存されません）
+テスト公開中のサイト（どちらも検索エンジンに載らない設定）
+- オミ塾の相談ファネル：https://omijuku-funnel-test.vercel.app （`?demo=1` を付けると、予約を保存しない体験モード）
+- 販売LP（LINE完結ファネル構築）：https://omijuku-funnel-build.vercel.app （商品設計は `../docs/funnel-service/01_offer.md`）
 
 ## 予約データの保存先（GAS）
 
