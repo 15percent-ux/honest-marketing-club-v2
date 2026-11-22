@@ -23,9 +23,12 @@ export async function fetchSlots(from: string, to: string): Promise<SlotAvailabi
 }
 
 /** 予約を送信して予約番号を受け取る */
+/** URLに ?demo=1 が付いていれば、予約を保存しない体験モード（販売LPからデモを触ってもらう用） */
+export const isDemoMode = () => new URLSearchParams(window.location.search).get('demo') === '1';
+
 export async function submitReservation(r: Omit<Reservation, 'rid'>): Promise<{ rid: string }> {
   const b = brand.backend;
-  if (b.type === 'demo') {
+  if (b.type === 'demo' || isDemoMode()) {
     await sleep(700);
     const rid = `D${r.date.replace(/-/g, '').slice(2)}${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     return { rid };

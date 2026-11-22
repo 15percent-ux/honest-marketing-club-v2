@@ -4,7 +4,7 @@ import { rt } from '../lib/rt';
 import { navigate } from '../lib/router';
 import { load, remove, save } from '../lib/store';
 import { track } from '../lib/track';
-import { ApiError, fetchSlots, submitReservation } from '../lib/api';
+import { ApiError, fetchSlots, isDemoMode, submitReservation } from '../lib/api';
 import { formatDate, generateSlots, mergeAvailability } from '../lib/slots';
 import { Char } from '../components/ui';
 import { Calendar } from './Calendar';
@@ -35,13 +35,13 @@ type Phase = 'steps' | 'final' | 'sending' | 'done';
 
 /** スプレッドシートと通知メールで読めるよう、回答に設問文と診断結果を添える */
 function labeledSurvey(): Record<string, string[]> | undefined {
-  const raw = load<Record<string, string[]>>('survey');
-  if (!raw) return undefined;
+  const raw = load<Record<string, string[]>>('survey') || {};
   const out: Record<string, string[]> = {};
   for (const [id, v] of Object.entries(raw)) {
     const q = brand.survey.questions.find((x) => x.id === id);
     out[q ? `${id} ${q.text.replace(/\n/g, '')}` : id] = v;
   }
+  out['申込ページ'] = [`${brand.brand.name}｜${brand.offer.name}`];
   const result = brand.lp.sections.find((s) => s.type === 'surveyResult');
   if (result && result.type === 'surveyResult') {
     const r = result.results[raw[result.questionId]?.[0] ?? ''];
@@ -216,6 +216,11 @@ export function ChatForm({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="space-y-6 px-4 pb-40 pt-4">
+          {isDemoMode() && (
+            <p className="rounded-lg bg-cream px-3 py-2 text-center text-[12px] font-bold text-accent ring-1 ring-mustard/50">
+              体験モード：最後まで進んでも予約は保存されません
+            </p>
+          )}
           {cfg.steps.includes('greeting') && (
             <Bot>
               <p>{cfg.greeting}</p>

@@ -12,7 +12,7 @@ function current(): Route {
 export function navigate(to: Route, query?: Record<string, string>) {
   const qs = new URLSearchParams(window.location.search);
   // UTM などは引き継ぐ。遷移ごとの一時パラメータは上書きする
-  for (const k of ['from', 'rid', 'linked']) qs.delete(k);
+  for (const k of ['from', 'rid', 'linked', 'open']) qs.delete(k);
   for (const [k, v] of Object.entries(query || {})) qs.set(k, v);
   const s = qs.toString();
   window.history.pushState({}, '', `${base}${to === '/' ? '/' : to}${s ? `?${s}` : ''}`);

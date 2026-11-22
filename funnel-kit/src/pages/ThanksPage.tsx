@@ -103,7 +103,7 @@ export function ThanksPage() {
             <div className="flex items-start gap-3">
               <div className="flex-1">
                 <p className="font-head text-[15px] font-bold">{t.lineCard.kicker}</p>
-                <p className="mt-2 font-head text-[22px] font-black leading-snug">{rt(t.lineCard.title)}</p>
+                <p className="mt-2 font-head text-[19px] font-black leading-snug">{rt(t.lineCard.title)}</p>
               </div>
               <Char c={t.lineCard.character} size={64} />
             </div>

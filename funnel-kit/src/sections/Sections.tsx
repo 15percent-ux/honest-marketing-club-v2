@@ -551,6 +551,102 @@ function Profile({ s }: { s: S<'profile'> }) {
   );
 }
 
+// ───────── 料金プラン ─────────
+function Plans({ s }: { s: S<'plans'> }) {
+  const open = useOpenForm();
+  return (
+    <section className="bg-grid px-5 py-9">
+      {s.kicker && <p className="text-center text-[12px] font-bold text-teal wide">{s.kicker}</p>}
+      <SectionTitle>{s.title}</SectionTitle>
+      {s.lead && <p className="mt-2 text-center text-[13px] text-muted">{rt(s.lead)}</p>}
+      <div className="mt-6 space-y-5">
+        {s.plans.map((p) => (
+          <article
+            key={p.name}
+            className={`relative rounded-2xl bg-white p-5 shadow-sm ${p.recommended ? 'ring-2 ring-accent' : 'ring-1 ring-line'}`}
+          >
+            {p.recommended && (
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-4 py-0.5 text-[12px] font-bold text-white wide">
+                おすすめ
+              </span>
+            )}
+            <p className="text-center font-head text-[18px] font-bold">{p.name}</p>
+            <p className="mt-1 text-center text-[12px] text-muted">{p.target}</p>
+            <p className="mt-3 text-center">
+              <span className="font-num text-[30px] font-bold text-navy">{p.price}</span>
+              {p.priceNote && <span className="ml-1 text-[11px] text-muted">{p.priceNote}</span>}
+            </p>
+            <ul className="mt-4 space-y-2 border-t border-dashed border-line pt-4 text-[13px]">
+              {p.features.map((f) => (
+                <li key={f.label} className={`flex gap-2 ${f.included ? '' : 'text-muted/60'}`}>
+                  <span aria-hidden className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] ${f.included ? 'bg-teal text-white' : 'bg-line text-muted'}`}>
+                    {f.included ? '✓' : '−'}
+                  </span>
+                  <span className={f.included ? '' : 'line-through'}>{f.label}</span>
+                </li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              onClick={() => open(`plan_${p.name}`)}
+              className={`mt-5 w-full rounded-full py-3 font-head text-[15px] font-bold wide ${p.recommended ? 'bg-accent text-white' : 'bg-bg text-navy ring-1 ring-line'}`}
+            >
+              {s.cta}
+            </button>
+          </article>
+        ))}
+      </div>
+      <Footnote>{s.footnote}</Footnote>
+    </section>
+  );
+}
+
+// ───────── 実際に触れるデモ ─────────
+function Demos({ s }: { s: S<'demos'> }) {
+  return (
+    <section className="relative bg-aurora pb-9 pt-8">
+      <Sparkles />
+      <div className="px-5 text-center">
+        {s.kicker && <BubbleLabel tone="navy">{s.kicker}</BubbleLabel>}
+        <h2 className="h-head mt-4 text-[22px] text-navy">{rt(s.title)}</h2>
+        {s.lead && <p className="mt-2 text-[13px] text-ink">{s.lead}</p>}
+      </div>
+      <div className="mt-3">
+        <Carousel
+          label="デモ"
+          items={s.items}
+          render={(d) => (
+            <article className="overflow-hidden rounded-2xl bg-white shadow-md">
+              <div className="bg-[#EEE9E2] px-10 pt-5">
+                <div className="overflow-hidden rounded-t-[22px] border-[6px] border-b-0 border-navy">
+                  <Img img={d.image} ratio="9/13" className="object-top" />
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="font-head text-[17px] font-bold">{d.title}</p>
+                <p className="mt-1 text-[13px] text-ink">{d.desc}</p>
+                {d.link && (
+                  <a
+                    href={d.link.href}
+                    target="_blank"
+                    rel="noopener"
+                    className="mt-3 block rounded-full bg-navy py-2.5 text-center text-[14px] font-bold text-white"
+                  >
+                    {d.link.label} ↗
+                  </a>
+                )}
+              </div>
+            </article>
+          )}
+        />
+      </div>
+      <div className="px-6">
+        <Footnote>{s.footnote}</Footnote>
+      </div>
+    </section>
+  );
+}
+
 // ───────── よくある質問（追加） ─────────
 // ───────── 診断結果（アンケートの回答で出し分け） ─────────
 function SurveyResult({ s }: { s: S<'surveyResult'> }) {
@@ -669,6 +765,10 @@ export function RenderSection({ s, index }: { s: LpSection; index: number }) {
       return <SurveyResult s={s} />;
     case 'faq':
       return <Faq s={s} />;
+    case 'plans':
+      return <Plans s={s} />;
+    case 'demos':
+      return <Demos s={s} />;
     case 'closing':
       return <Closing s={s} />;
   }

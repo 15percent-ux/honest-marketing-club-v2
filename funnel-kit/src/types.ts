@@ -214,6 +214,32 @@ type LpSectionBody =
     }
   | { type: 'profile'; title: string; name: string; role: string; image: ImgRef; body: string[] }
   | { type: 'faq'; title: string; items: { q: string; a: string }[] }
+  /** 料金プランのカード（おすすめにバッジ） */
+  | {
+      type: 'plans';
+      kicker?: string;
+      title: string;
+      lead?: RichText;
+      plans: {
+        name: string;
+        price: string;
+        priceNote?: string;
+        target: string;
+        features: { label: string; included: boolean }[];
+        recommended?: boolean;
+      }[];
+      footnote?: string;
+      cta: string;
+    }
+  /** 実際に触れるデモ（スクリーンショット＋説明＋リンク） */
+  | {
+      type: 'demos';
+      kicker?: string;
+      title: RichText;
+      lead?: string;
+      items: { title: string; desc: string; image: ImgRef; link?: { label: string; href: string } }[];
+      footnote?: string;
+    }
   /**
    * 診断結果。アンケートの questionId の回答（選んだ選択肢の文言）に応じて結果を出し分ける。
    * アンケートを通らずにLPへ来た人には表示しない。
