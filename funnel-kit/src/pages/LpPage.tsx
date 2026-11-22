@@ -1,40 +1,37 @@
-import { useEffect, useRef, useState } from "react";
-import { brand } from "../brand";
-import { campaignActive } from "../lib/countdown";
-import { FormContext } from "../lib/formContext";
-import { load } from "../lib/store";
-import { query } from "../lib/router";
-import { track } from "../lib/track";
-import { CountdownBar } from "../components/CountdownBar";
-import { Footer } from "../components/Footer";
-import { RenderSection } from "../sections/Sections";
-import { ChatForm } from "../chatform/ChatForm";
+import { useEffect, useRef, useState } from 'react';
+import { brand } from '../brand';
+import { campaignActive } from '../lib/countdown';
+import { FormContext } from '../lib/formContext';
+import { load } from '../lib/store';
+import { query } from '../lib/router';
+import { track } from '../lib/track';
+import { CountdownBar } from '../components/CountdownBar';
+import { Footer } from '../components/Footer';
+import { RenderSection } from '../sections/Sections';
+import { ChatForm } from '../chatform/ChatForm';
 
 export function LpPage() {
   const [formOpen, setFormOpen] = useState(false);
-  const fromSurvey = query("from") === "survey" || !!load("survey");
+  const fromSurvey = query('from') === 'survey' || !!load('survey');
   const active = campaignActive(brand.campaign?.deadline);
 
   const sections = brand.lp.sections.filter((s) => {
     if (s.campaignOnly && !active) return false;
-    if (s.type === "thanksBand" && !fromSurvey) return false;
+    if (s.type === 'thanksBand' && !fromSurvey) return false;
     return true;
   });
 
   useEffect(() => {
-    track("lp_view", { from_survey: fromSurvey });
+    track('lp_view', { from_survey: fromSurvey });
     // リッチメニューなどからの直リンク：?open=form で申込フォームを開く／#faq などでその位置へ
-    if (query("open") === "form") {
-      track("form_open", { source: query("utm_medium") || "deeplink" });
+    if (query('open') === 'form') {
+      track('form_open', { source: query('utm_medium') || 'deeplink' });
       setFormOpen(true);
     } else if (window.location.hash.length > 1) {
       const id = decodeURIComponent(window.location.hash.slice(1));
       // セクションの id か種類（例：#faq, #futures）で探す
       const sel = `[data-section="${CSS.escape(id)}"], [data-section^="${CSS.escape(id)}-"]`;
-      window.setTimeout(
-        () => document.querySelector(sel)?.scrollIntoView({ block: "start" }),
-        300,
-      );
+      window.setTimeout(() => document.querySelector(sel)?.scrollIntoView({ block: 'start' }), 300);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,7 +48,7 @@ export function LpPage() {
           const id = (e.target as HTMLElement).dataset.section!;
           if (e.isIntersecting && !seen.has(id)) {
             seen.add(id);
-            track("section_view", { id });
+            track('section_view', { id });
           }
         }
       },
@@ -61,18 +58,18 @@ export function LpPage() {
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            e.target.classList.add("is-in");
+            e.target.classList.add('is-in');
             reveal.unobserve(e.target);
           }
         }
       },
-      { rootMargin: "0px 0px -8% 0px" },
+      { rootMargin: '0px 0px -8% 0px' },
     );
-    el.querySelectorAll("[data-section]").forEach((s) => {
+    el.querySelectorAll('[data-section]').forEach((s) => {
       io.observe(s);
       reveal.observe(s);
     });
-    el.classList.add("js-reveal");
+    el.classList.add('js-reveal');
     return () => {
       io.disconnect();
       reveal.disconnect();
@@ -80,8 +77,8 @@ export function LpPage() {
   }, []);
 
   const open = (source: string) => {
-    track("cta_click", { section_id: source });
-    track("form_open", { source });
+    track('cta_click', { section_id: source });
+    track('form_open', { source });
     setFormOpen(true);
   };
 
@@ -90,10 +87,7 @@ export function LpPage() {
       <CountdownBar />
       <main ref={root}>
         {sections.map((s, i) => (
-          <div
-            key={s.id || `${s.type}-${i}`}
-            data-section={s.id || `${s.type}-${i}`}
-          >
+          <div key={s.id || `${s.type}-${i}`} data-section={s.id || `${s.type}-${i}`}>
             <RenderSection s={s} index={i} />
           </div>
         ))}
