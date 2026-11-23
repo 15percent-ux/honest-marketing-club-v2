@@ -29,7 +29,7 @@ export function Footer() {
       <ul className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[11px] text-white/80">
         {items.map((l) => (
           <li key={l.label}>
-            <a href={l.href} target="_blank" rel="noopener" className="underline underline-offset-2">
+            <a href={l.href} {...(l.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})} className="underline underline-offset-2">
               {l.label}
             </a>
           </li>

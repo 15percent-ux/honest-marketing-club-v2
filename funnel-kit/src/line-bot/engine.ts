@@ -168,6 +168,13 @@ function resultFor(bot: LineBotConfig, answers: number[]) {
   return opt ? bot.diagnosis.results[opt] : undefined;
 }
 
+/** LPへのリンク（LINEから来たことが分かるよう utm を付ける。#以降はそのまま） */
+function siteLink(bot: LineBotConfig, path: string) {
+  const [p, hash] = path.split('#');
+  const sep = p.includes('?') ? '&' : '?';
+  return `${bot.siteUrl.replace(/\/$/, '')}${p}${sep}utm_source=line&utm_medium=bot${hash ? `#${hash}` : ''}`;
+}
+
 const divider = (bot: LineBotConfig) => ({ type: 'separator', margin: 'md', color: bot.colors.line || '#E1E5DF' });
 
 /** 診断の結果（answers があれば判定と補足も出す）／一覧の1枚（answers なし） */
@@ -204,7 +211,12 @@ function resultCard(bot: LineBotConfig, r: BotResult, s: string, answers?: numbe
       ...(isResult ? [text(d.note, { size: 'xxs', color: bot.colors.sub, margin: 'md' })] : []),
     ],
     footer: [
-      primaryBtn(bot, 'この内容で相談を予約する', `a=book&${s}&t=${r.key}`, '相談を予約したい'),
+      ...(isResult && d.primaryLink
+        ? [
+            { type: 'button', style: 'primary', color: bot.colors.accent, height: 'md', action: { type: 'uri', label: d.primaryLink.label.slice(0, 40), uri: siteLink(bot, d.primaryLink.path) } },
+            linkBtn(bot, '無料相談を予約する', `a=book&${s}&t=${r.key}`, '無料相談を予約したい'),
+          ]
+        : [primaryBtn(bot, 'この内容で相談を予約する', `a=book&${s}&t=${r.key}`, '相談を予約したい')]),
       ...(isResult && styles ? [linkBtn(bot, styles.button, 'a=styles', styles.button)] : []),
     ],
   });

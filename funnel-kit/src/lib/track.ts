@@ -46,6 +46,7 @@ export function initTracking() {
 const META_STANDARD: Record<string, string> = {
   form_submit: 'Lead',
   form_open: 'InitiateCheckout',
+  checkout_start: 'InitiateCheckout',
   survey_complete: 'CompleteRegistration',
 };
 

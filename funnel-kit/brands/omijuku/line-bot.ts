@@ -64,6 +64,7 @@ export default defineLineBot({
     verdict: result.verdict,
     extras: result.extras,
     stepLabel: result.stepLabel,
+    primaryLink: { label: '受講プランと料金を見る', path: '/lp#plans' },
     note: result.note || '※ 回答から表示しています。収入や成果を保証するものではありません。',
     styles: { title: '稼ぎ方の一例', kicker: '稼ぎ方の一例', button: '稼ぎ方の一例を見る', items: STYLES },
   },

@@ -4,12 +4,14 @@ import { SurveyPage } from './pages/SurveyPage';
 import { LpPage } from './pages/LpPage';
 import { ThanksPage } from './pages/ThanksPage';
 import { AdminPage } from './pages/AdminPage';
+import { LegalPage } from './pages/LegalPage';
 
 export function App() {
   const route = useRoute();
   if (route === '/admin') return <AdminPage />;
   let page;
   if (route === '/thanks') page = <ThanksPage />;
+  else if (route === '/legal') page = <LegalPage />;
   else if (route === '/lp' || !brand.survey.enabled) page = <LpPage />;
   else page = <SurveyPage />;
   return (

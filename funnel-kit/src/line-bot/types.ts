@@ -20,6 +20,8 @@ export interface LineBotConfig {
     extras?: { questionId: string; label: string; answers: Record<string, string> }[];
     stepLabel?: string;
     note: string;
+    /** 結果カードのいちばん上のボタンを、LPの指定位置へのリンクにする（例：料金表 '/lp#plans'）。相談の予約は2番目になる */
+    primaryLink?: { label: string; path: string };
     /** リッチメニューの「一覧を見る」で出すカード（省略時は results を並べる） */
     styles?: { title: string; kicker: string; button: string; items: BotResult[] };
   };

@@ -9,6 +9,15 @@ import { BubbleLabel, Carousel, Char, CheckList, CtaPill, Footnote, Img, Section
 
 type S<T extends LpSection['type']> = Extract<LpSection, { type: T }>;
 
+/** ボタンの行き先：'#plans' ならページ内のその位置へ、それ以外はそのURLへ */
+function goHref(href: string, source: string) {
+  track('cta_click', { section_id: source, href });
+  if (href.startsWith('#')) {
+    const id = href.slice(1);
+    document.querySelector(`[data-section="${CSS.escape(id)}"], [data-section^="${CSS.escape(id)}-"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else window.location.href = href;
+}
+
 /** セクションの外枠：余白をそろえる */
 const Pad = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
   <section className={`px-5 py-12 ${className}`}>{children}</section>
@@ -151,7 +160,7 @@ function Cta({ s, index }: { s: S<'cta'>; index: number }) {
   return (
     <section className="px-5 py-12">
       {s.heading && <p className="mb-6 text-center font-head text-[19px] font-bold leading-[1.7]">{rt(s.heading)}</p>}
-      <CtaPill label={s.label} micro={s.micro} onClick={() => open(`cta_${index}`)} />
+      <CtaPill label={s.label} micro={s.micro} onClick={() => (s.href ? goHref(s.href, `cta_${index}`) : open(`cta_${index}`))} />
       {s.connector && <p className="mt-8 text-center font-head text-[17px] font-bold text-primary">{rt(s.connector)}</p>}
     </section>
   );
@@ -359,11 +368,131 @@ function Faq({ s }: { s: S<'faq'> }) {
 }
 
 // ───────── 料金プラン ─────────
+type Plan = S<'plans'>['plans'][number];
+
+const yen = (n: number) => `${n.toLocaleString('ja-JP')}円`;
+
+/** 分割払いの目安：1回あたりの金額（割り切れないときは「約」） */
+function Installments({ amount, counts }: { amount: number; counts: number[] }) {
+  return (
+    <details className="group mt-5 rounded-xl bg-bg">
+      <summary className="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-[13px] font-bold">
+        <span className="flex items-center gap-2">
+          <Icon name="card" size={16} className="text-primary" />
+          カードの分割払い（1回あたりの目安）
+        </span>
+        <span aria-hidden className="text-[16px] leading-none text-primary transition group-open:rotate-45">
+          +
+        </span>
+      </summary>
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5 px-4 pb-4 text-[14px]">
+        {counts.map((n) => {
+          const per = amount / n;
+          return (
+            <div key={n} className="flex items-baseline justify-between border-b border-line py-1">
+              <dt className="text-muted">{n}回</dt>
+              <dd className="font-num font-semibold">
+                {Number.isInteger(per) ? '' : '約'}
+                {yen(Math.round(per))}
+              </dd>
+            </div>
+          );
+        })}
+      </dl>
+    </details>
+  );
+}
+
+/** 決済ページへ進む前の確認画面（価格・支払時期・提供時期・キャンセル条件を表示） */
+function CheckoutConfirm({ plan, cfg, onClose, onConsult }: { plan: Plan; cfg: NonNullable<S<'plans'>['checkout']>; onClose: () => void; onConsult: () => void }) {
+  const [agreed, setAgreed] = useState(false);
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [onClose]);
+  const rows = [
+    { label: 'プラン', value: plan.name },
+    { label: '受講内容', value: plan.features.filter((f) => f.included).map((f) => f.label).join('／') },
+    { label: 'お支払い金額', value: `${plan.price}${plan.priceNote ? `（${plan.priceNote}）` : ''}` },
+    ...cfg.rows,
+  ];
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/40 sm:items-center" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div role="dialog" aria-modal="true" aria-labelledby="checkout-title" className="fade-up max-h-[92dvh] w-full max-w-[480px] overflow-y-auto rounded-t-2xl bg-surface p-6 sm:rounded-2xl">
+        <div className="flex items-start justify-between gap-4">
+          <h2 id="checkout-title" className="font-head text-[20px] font-bold">
+            {cfg.title}
+          </h2>
+          <button type="button" onClick={onClose} aria-label="閉じる" className="-mr-2 -mt-1 flex h-10 w-10 items-center justify-center rounded-full text-[22px] text-muted">
+            ×
+          </button>
+        </div>
+        <dl className="mt-4 divide-y divide-line border-y border-line text-[14px]">
+          {rows.map((r) => (
+            <div key={r.label} className="grid grid-cols-[6.5em_1fr] gap-3 py-3">
+              <dt className="font-bold text-muted">{r.label}</dt>
+              <dd className="leading-[1.7]">{r.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <label className="mt-5 flex cursor-pointer items-start gap-3 text-[14px] leading-[1.7]">
+          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-[var(--c-primary)]" />
+          <span>
+            {cfg.agree}
+            {cfg.legalHref && (
+              <>
+                （
+                <a href={cfg.legalHref} target="_blank" rel="noopener" className="text-primary underline underline-offset-2">
+                  特定商取引法に基づく表記
+                </a>
+                ）
+              </>
+            )}
+          </span>
+        </label>
+        {plan.checkoutUrl && agreed ? (
+          <a href={plan.checkoutUrl} onClick={() => track('checkout_start', { plan: plan.name, value: plan.amount, currency: 'JPY' })} className="cta-pill mt-6">
+            <span>{cfg.button}</span>
+            <span aria-hidden className="text-[18px] leading-none">
+              →
+            </span>
+          </a>
+        ) : plan.checkoutUrl ? (
+          <button type="button" disabled className="cta-pill mt-6 opacity-40">
+            <span>{cfg.button}</span>
+            <span aria-hidden className="text-[18px] leading-none">
+              →
+            </span>
+          </button>
+        ) : (
+          <p className="mt-6 rounded-xl bg-bg px-4 py-3 text-center text-[14px] font-bold text-muted">{cfg.pending}</p>
+        )}
+        <button type="button" onClick={onConsult} className="mt-3 w-full py-2 text-[13px] font-bold text-primary underline underline-offset-2">
+          申し込む前に、無料で相談する
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function Plans({ s }: { s: S<'plans'> }) {
   const open = useOpenForm();
+  const [confirm, setConfirm] = useState<Plan | null>(null);
+  const choose = (p: Plan) => {
+    const action = p.action || (s.checkout ? 'checkout' : 'consult');
+    if (action === 'consult' || !s.checkout) return open(`plan_${p.name}`);
+    track('plan_select', { plan: p.name, value: p.amount });
+    setConfirm(p);
+  };
   return (
     <Pad>
-      <SectionHead title={s.title} lead={s.lead ? rt(s.lead) : undefined} />
+      <SectionHead kicker={s.kicker} title={s.title} lead={s.lead ? rt(s.lead) : undefined} />
       <div className="mt-7 space-y-4">
         {s.plans.map((p) => (
           <article key={p.name} className={`rounded-2xl bg-surface p-6 ${p.recommended ? 'border-2 border-primary' : 'border border-line'}`}>
@@ -373,7 +502,7 @@ function Plans({ s }: { s: S<'plans'> }) {
             </div>
             <p className="mt-1 text-[13px] text-muted">{p.target}</p>
             <p className="mt-4">
-              <span className="font-num text-[34px] font-semibold tracking-tight">{p.price}</span>
+              <span className={`font-num font-semibold tracking-tight ${p.amount ? 'text-[34px]' : 'text-[24px]'}`}>{p.price}</span>
               {p.priceNote && <span className="ml-1 text-[12px] text-muted">{p.priceNote}</span>}
             </p>
             <ul className="mt-5 space-y-2.5 text-[14px]">
@@ -389,17 +518,32 @@ function Plans({ s }: { s: S<'plans'> }) {
                 </li>
               ))}
             </ul>
+            {p.amount && s.installments && <Installments amount={p.amount} counts={s.installments.counts} />}
             <button
               type="button"
-              onClick={() => open(`plan_${p.name}`)}
-              className={`mt-6 w-full rounded-full py-3.5 font-head text-[15px] font-bold ${p.recommended ? 'bg-primary text-white' : 'border border-ink/20 text-ink'}`}
+              onClick={() => choose(p)}
+              className={`mt-6 w-full rounded-full py-3.5 font-head text-[15px] font-bold ${
+                p.recommended || (p.action !== 'consult' && s.checkout) ? 'bg-primary text-white' : 'border border-ink/20 text-ink'
+              }`}
             >
-              {s.cta}
+              {p.ctaLabel || s.cta}
             </button>
           </article>
         ))}
       </div>
+      {s.installments && <Footnote>{s.installments.note}</Footnote>}
       <Footnote>{s.footnote}</Footnote>
+      {confirm && s.checkout && (
+        <CheckoutConfirm
+          plan={confirm}
+          cfg={s.checkout}
+          onClose={() => setConfirm(null)}
+          onConsult={() => {
+            setConfirm(null);
+            open(`plan_consult_${confirm.name}`);
+          }}
+        />
+      )}
     </Pad>
   );
 }
@@ -467,7 +611,7 @@ function Closing({ s }: { s: S<'closing'> }) {
       </p>
       {s.box && <p className="mt-4 whitespace-pre-line text-[14px] text-muted">{s.box}</p>}
       <div className="mt-8">
-        <CtaPill label={s.cta} micro={s.micro} onClick={() => open('closing')} />
+        <CtaPill label={s.cta} micro={s.micro} onClick={() => (s.href ? goHref(s.href, 'closing') : open('closing'))} />
       </div>
     </section>
   );

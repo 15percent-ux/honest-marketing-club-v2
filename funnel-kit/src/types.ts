@@ -48,6 +48,8 @@ export interface BrandConfig {
     };
     sns?: { line?: string; instagram?: string; x?: string; youtube?: string };
   };
+  /** 特定商取引法に基づく表記（/legal に表示。links.tokushoho を '/legal' にする） */
+  legal?: { title: string; rows: { label: string; value: string }[] };
   theme: { preset: ThemePresetName; overrides?: Partial<Record<ThemeToken, string>> };
   offer: {
     /** 例：無料体験レッスン／無料個別相談 */
@@ -150,6 +152,8 @@ type LpSectionBody =
       icon?: string;
       arrows?: boolean;
       connector?: RichText;
+      /** 指定するとフォームを開かず、ページ内の位置（例：'#plans'）やURLへ移動する */
+      href?: string;
     }
   | {
       type: 'steps';
@@ -227,9 +231,27 @@ type LpSectionBody =
         target: string;
         features: { label: string; included: boolean }[];
         recommended?: boolean;
+        /** 税込の金額（分割払いの目安の計算に使う） */
+        amount?: number;
+        /** 決済ページ（Stripe の支払いリンクなど）。未設定なら「準備中」 */
+        checkoutUrl?: string;
+        /** checkout＝確認画面から決済へ／consult＝相談フォームを開く（既定は checkout 設定があれば checkout） */
+        action?: 'checkout' | 'consult';
+        ctaLabel?: string;
       }[];
       footnote?: string;
       cta: string;
+      /** クレジットカードの分割払いの目安（1回あたりの金額を表示） */
+      installments?: { counts: number[]; note: string };
+      /** 決済ページへ進む前の確認画面（特定商取引法の最終確認の表示） */
+      checkout?: {
+        title: string;
+        rows: { label: string; value: string }[];
+        agree: string;
+        legalHref?: string;
+        button: string;
+        pending: string;
+      };
     }
   /** 実際に触れるデモ（スクリーンショット＋説明＋リンク） */
   | {
@@ -256,7 +278,7 @@ type LpSectionBody =
       stepLabel?: string;
       note?: string;
     }
-  | { type: 'closing'; icon?: string; lines: RichText[]; box?: string; cta: string; micro?: string };
+  | { type: 'closing'; icon?: string; lines: RichText[]; box?: string; cta: string; micro?: string; href?: string };
 
 // ───────────────────────── フォーム ─────────────────────────
 
