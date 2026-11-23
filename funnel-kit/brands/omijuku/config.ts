@@ -157,7 +157,7 @@ export default defineBrand({
             questionId: 'q3',
             label: '気になっていることへの答え',
             answers: {
-              [WORRY.follow]: 'Zoomで[p]一緒に手を動かしながら[/p]進めます。分からないところは、その場で聞けます。',
+              [WORRY.follow]: 'Zoomで[p]一緒に手を動かしながら[/p]進めます。受講中は、分からないところを[p]チャットで質問し放題[/p]です。',
               [WORRY.time]: '受講期間は1ヶ月。[p]Zoom1回（3時間）から[/p]のプランもあるので、取れる時間に合わせて選べます。',
               [WORRY.income]: '収入をお約束することはできません。そのかわり、あなたの経験から[p]現実的な稼ぎ方の候補[/p]を出し、最初の一歩まで一緒に決めます。',
               [WORRY.cost]: '料金は[p]このページで先に確認できます[/p]（29,700円から・カードの分割払いもOK）。迷ったら無料相談もどうぞ。押し売りはしません。',
@@ -256,6 +256,7 @@ export default defineBrand({
             features: [
               { label: '受講期間 1ヶ月', included: true },
               { label: 'Zoom 4回（各2時間）', included: true },
+              { label: 'チャットで質問し放題', included: true },
             ],
           },
           {
@@ -267,6 +268,7 @@ export default defineBrand({
             features: [
               { label: '受講期間 1ヶ月', included: true },
               { label: 'Zoom 4回（各2時間）', included: true },
+              { label: 'チャットで質問し放題', included: true },
             ],
           },
           {
