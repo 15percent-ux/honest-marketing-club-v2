@@ -43,7 +43,29 @@ export default defineBrand({
     },
     sns: { line: 'https://lin.ee/o0UYNIM' },
   },
-  theme: { preset: 'calm' },
+  theme: { preset: 'premium' },
+  shell: {
+    header: { title: 'オミ塾 AI講座', cta: { label: '料金を見る', href: '#plans' } },
+    aside: {
+      title: 'AI COURSE',
+      sub: 'Omi Juku / AI Marketing',
+      nav: [
+        { en: 'Check', ja: '受講前チェック', href: '/' },
+        { en: 'Concept', ja: 'オミ塾とは', href: '#concept' },
+        { en: 'Price & Plan', ja: '料金プラン', href: '#plans' },
+        { en: 'Consultation', ja: '無料相談', href: '#consult' },
+        { en: 'FAQ', ja: 'よくある質問', href: '#faq' },
+      ],
+      card: { title: 'オミ塾を始めても大丈夫？', image: '/art/production.webp', label: '3つの質問で確かめる', href: '/' },
+    },
+    promo: {
+      badge: 'LINEで\n無料診断できます',
+      title: 'Work with AI.',
+      sub: 'AIを、自分らしく稼ぐ味方に。',
+      button: { label: 'LINEで友だち追加', href: 'https://lin.ee/o0UYNIM' },
+    },
+    backdrop: '/backdrop.webp',
+  },
   offer: { name: '無料個別相談', duration: '45分', format: 'Zoom（顔出しなしOK）', priceLabel: '無料' }, // 要確認：時間
 
   // 実在の締切がある募集のときだけ campaign を設定する（いまは無し＝カウントダウンは出ない）
@@ -170,6 +192,8 @@ export default defineBrand({
       { type: 'cta', heading: '診断の結果をふまえて\n[p]目的に合うプラン[/p]を選べます', label: '受講プランと料金を見る', href: '#plans' },
       {
         type: 'invite',
+        id: 'concept',
+        eyebrow: 'CONCEPT',
         title: 'オミ塾とは',
         lead: 'AIを道具にして、[p]自分らしく稼ぐ力[/p]をつける講座です。\n目的に合わせて、5つのプランから選べます。',
         icons: [
@@ -190,6 +214,7 @@ export default defineBrand({
       },
       {
         type: 'futures',
+        eyebrow: 'POSSIBILITY',
         title: ['AIを道具にすると', '稼ぎ方の選択肢が', 'こんなふうに広がります'],
         items: [
           {
@@ -218,7 +243,7 @@ export default defineBrand({
       {
         type: 'plans',
         id: 'plans',
-        kicker: '受講プランと料金',
+        eyebrow: 'PRICE & PLAN',
         title: '目的に合わせて選べる5つのプラン',
         lead: '料金はすべて税込です。このページから、そのままお申込みいただけます。クレジットカードなら[p]分割払い[/p]もできます。',
         // 要確認：各プランの「どんな方向け」の一文。checkoutUrl に Stripe の支払いリンクを入れると「決済ページへ進む」が有効になる
@@ -301,6 +326,8 @@ export default defineBrand({
       },
       {
         type: 'offerDetail',
+        id: 'consult',
+        eyebrow: 'CONSULTATION',
         title: 'どのプランにするか迷ったら',
         label: '無料個別相談（Zoom・45分・顔出しなしOK）', // 要確認：時間
         checks: ['いまの働き方と、[p]AIでやりたいこと[/p]の整理', 'あなたに[p]合うプラン[/p]のご提案', '受講前の[p]不安や質問[/p]へのお答え'],
@@ -308,6 +335,7 @@ export default defineBrand({
       { type: 'cta', label: '無料で相談する', micro: '押し売りはしません' },
       {
         type: 'profile',
+        eyebrow: 'INSTRUCTOR',
         title: '講師',
         name: 'オミ',
         role: 'オミ塾 主宰／株式会社麹王子',
@@ -321,6 +349,7 @@ export default defineBrand({
       {
         type: 'faq',
         id: 'faq',
+        eyebrow: 'FAQ',
         title: 'よくあるご質問',
         items: [
           { q: 'AIをまったく使ったことがなくても大丈夫ですか？', a: 'はい。使ったことがない方を前提に進めます。' },

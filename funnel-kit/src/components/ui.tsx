@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
+import { brand } from '../brand';
 import type { CharRef, ImgRef, RichText } from '../types';
 import { rt } from '../lib/rt';
 import { Icon, isIconName } from './Icon';
@@ -54,14 +55,20 @@ export function Char({ c, size = 88, ring = true }: { c?: CharRef; size?: number
 
 /** 小さな見出しラベル（多用しない：3セクションに1つまで） */
 export function Kicker({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <p className={`text-[12px] font-bold tracking-[0.12em] text-primary ${className}`}>{children}</p>;
+  return <p className={`kicker text-[12px] font-bold tracking-[0.12em] text-primary ${className}`}>{children}</p>;
 }
 
-/** セクションの見出し＋リード（左揃えが基本） */
+/** セクションの英字ラベル（config の eyebrow）を見出しに渡す */
+export const SectionLabel = createContext<string | undefined>(undefined);
+
+/** セクションの見出し＋リード（左揃えが基本。premium テーマでは中央揃え） */
 export function SectionHead({ title, lead, kicker, center }: { title: ReactNode; lead?: ReactNode; kicker?: ReactNode; center?: boolean }) {
+  const label = useContext(SectionLabel);
+  const k = kicker ?? label;
+  const centered = center ?? brand.theme.preset === 'premium';
   return (
-    <div className={center ? 'text-center' : ''}>
-      {kicker && <Kicker className="mb-2">{kicker}</Kicker>}
+    <div className={`section-head ${centered ? 'text-center' : ''}`}>
+      {k && <Kicker className="mb-2">{k}</Kicker>}
       <h2 className="font-head text-[24px] font-bold leading-[1.45] tracking-[0.02em] text-ink">{title}</h2>
       {lead && <p className="mt-3 text-[14px] leading-[1.9] text-muted">{lead}</p>}
     </div>

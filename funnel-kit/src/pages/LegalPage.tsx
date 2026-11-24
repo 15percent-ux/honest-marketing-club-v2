@@ -10,7 +10,7 @@ export function LegalPage() {
   }, [legal]);
   return (
     <>
-      <main className="px-5 pb-16 pt-8">
+      <main className="shell-card px-5 pb-16 pt-8">
         <a href="/lp" className="text-[13px] font-bold text-primary">
           ← {brand.brand.name}のページへ戻る
         </a>

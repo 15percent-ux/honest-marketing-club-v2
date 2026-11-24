@@ -19,7 +19,7 @@ export interface ImgRef {
 /** キャラクター：画像か絵文字 */
 export type CharRef = ImgRef | string;
 
-export type ThemePresetName = 'pop' | 'calm' | 'natural';
+export type ThemePresetName = 'pop' | 'calm' | 'natural' | 'premium';
 
 export type ThemeToken =
   | 'c-bg' | 'c-surface' | 'c-ink' | 'c-muted' | 'c-border'
@@ -51,6 +51,16 @@ export interface BrandConfig {
   /** 特定商取引法に基づく表記（/legal に表示。links.tokushoho を '/legal' にする） */
   legal?: { title: string; rows: { label: string; value: string }[] };
   theme: { preset: ThemePresetName; overrides?: Partial<Record<ThemeToken, string>> };
+  /**
+   * ページの外枠（premium テーマ向け）。header＝列の上に貼りつく見出し、
+   * aside＝PC幅で左に出すメニュー、promo＝PC幅で右下に出すLINEの案内、backdrop＝PC幅の背景写真
+   */
+  shell?: {
+    header?: { title: string; cta?: { label: string; href: string } };
+    aside?: { title: string; sub: string; nav: { en: string; ja: string; href: string }[]; card?: { title: string; image?: string; label: string; href: string } };
+    promo?: { badge: string; title: string; sub: string; button: { label: string; href: string } };
+    backdrop?: string;
+  };
   offer: {
     /** 例：無料体験レッスン／無料個別相談 */
     name: string;
@@ -119,7 +129,8 @@ export type Tone = 'primary' | 'teal' | 'mustard' | 'navy';
  * LPのセクション。配列の順に表示される（並べ替え・削除は自由）。
  * campaignOnly: true のセクションは、campaign の締切が過ぎると自動で非表示になる。
  */
-export type LpSection = LpSectionBody & { campaignOnly?: boolean; id?: string };
+/** eyebrow＝見出しの上に出す英字の小見出し（例：'PRICE & PLAN'） */
+export type LpSection = LpSectionBody & { campaignOnly?: boolean; id?: string; eyebrow?: string };
 
 type LpSectionBody =
   | { type: 'thanksBand'; text: string; character?: CharRef }

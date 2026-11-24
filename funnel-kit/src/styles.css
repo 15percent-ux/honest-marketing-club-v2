@@ -212,6 +212,124 @@ h3 {
 }
 .bob { animation: bob 1.4s ease-in-out infinite; }
 
+/* ───────── premium テーマ：紺の背景＋すりガラスのカード（brand.shell と組み合わせる） ───────── */
+.shell-backdrop {
+  display: none;
+}
+[data-preset='premium'] body {
+  background: #13213a;
+}
+[data-preset='premium'] .page-shell {
+  position: relative;
+  background: #13213a;
+}
+[data-preset='premium'] .shell-backdrop {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #13213a;
+}
+[data-preset='premium'] .shell-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+[data-preset='premium'] .shell-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(19 33 58 / 0.78) 0%, rgb(19 33 58 / 0.45) 45%, rgb(19 33 58 / 0.3) 100%);
+}
+.shell-aside {
+  left: max(32px, calc(50% - 214px - 410px));
+}
+.shell-promo {
+  right: max(32px, calc(50% - 214px - 410px));
+}
+[data-preset='premium'] .page-col {
+  z-index: 10;
+  max-width: 428px;
+  padding-bottom: 1px;
+  background: linear-gradient(180deg, rgb(213 220 227 / 0.92) 0%, rgb(198 207 217 / 0.92) 100%);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 60px rgb(7 17 34 / 0.45);
+}
+[data-preset='premium'] .shell-header {
+  background: linear-gradient(135deg, rgb(255 255 255 / 0.86), rgb(255 255 255 / 0.62));
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 14px 36px rgb(19 33 58 / 0.13), inset 0 1px 0 rgb(255 255 255 / 0.9);
+}
+[data-preset='premium'] .shell-card {
+  margin: 14px 10px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.64);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.86), rgb(255 255 255 / 0.6)), linear-gradient(180deg, rgb(237 249 246 / 0.5), rgb(255 255 255 / 0.24));
+  box-shadow: 0 24px 58px rgb(19 33 58 / 0.16), inset 0 1px 0 rgb(255 255 255 / 0.95), inset 0 -28px 50px rgb(255 255 255 / 0.15);
+}
+[data-preset='premium'] .shell-card.is-band {
+  margin-bottom: 0;
+  border-radius: 14px;
+}
+[data-preset='premium'] .shell-card.is-band > div > div {
+  background: transparent;
+  border: 0;
+}
+[data-preset='premium'] .shell-card.is-dark {
+  background: #13213a;
+  border-color: rgb(255 255 255 / 0.08);
+}
+[data-preset='premium'] .closing {
+  background: transparent;
+  color: #fff;
+}
+[data-preset='premium'] .closing .text-primary,
+[data-preset='premium'] .closing .text-muted {
+  color: #9fdbd1;
+}
+/* 上に貼りつく見出しの分だけ、ページ内リンクの止まる位置を下げる */
+[data-preset='premium'] [data-section] {
+  scroll-margin-top: 76px;
+}
+[data-preset='premium'] .kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+[data-preset='premium'] .section-head h2 {
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+}
+[data-preset='premium'] .font-num {
+  font-family: 'Noto Serif JP', Georgia, serif;
+}
+[data-preset='premium'] .cta-pill {
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 14px 34px rgb(6 199 85 / 0.28);
+}
+[data-preset='premium'] .plan-btn {
+  border-radius: 6px;
+}
+[data-preset='premium'] .faq-list {
+  display: grid;
+  gap: 10px;
+  border-width: 0;
+}
+[data-preset='premium'] .faq-list > .faq-item {
+  border: 1px solid #e1e7ec !important;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.92);
+  padding: 2px 18px;
+  box-shadow: 0 6px 18px rgb(19 33 58 / 0.06);
+}
+
 /* セクションが画面に入ったら、ふわっと表示する（JSが無い・動きを減らす設定では最初から表示） */
 .js-reveal [data-section] {
   opacity: 0;

@@ -9,6 +9,11 @@ import { CountdownBar } from '../components/CountdownBar';
 import { Footer } from '../components/Footer';
 import { RenderSection } from '../sections/Sections';
 import { ChatForm } from '../chatform/ChatForm';
+import { ShellHeader } from '../components/Shell';
+import type { LpSection } from '../types';
+
+// 直前のカードにまとめる小さなセクション（ボタン・バッジ）
+const JOIN_PREV = new Set<LpSection['type']>(['cta', 'badges']);
 
 export function LpPage() {
   const [formOpen, setFormOpen] = useState(false);
@@ -76,6 +81,14 @@ export function LpPage() {
     };
   }, []);
 
+  // カード（premium テーマで角丸のカードになる）ごとにまとめる
+  const groups: { key: string; kind: string; items: { s: LpSection; i: number }[] }[] = [];
+  sections.forEach((s, i) => {
+    const last = groups[groups.length - 1];
+    if (last && JOIN_PREV.has(s.type) && last.kind === '') last.items.push({ s, i });
+    else groups.push({ key: s.id || `${s.type}-${i}`, kind: s.type === 'thanksBand' ? 'is-band' : s.type === 'closing' ? 'is-dark' : '', items: [{ s, i }] });
+  });
+
   const open = (source: string) => {
     track('cta_click', { section_id: source });
     track('form_open', { source });
@@ -84,11 +97,16 @@ export function LpPage() {
 
   return (
     <FormContext.Provider value={open}>
+      <ShellHeader />
       <CountdownBar />
       <main ref={root}>
-        {sections.map((s, i) => (
-          <div key={s.id || `${s.type}-${i}`} data-section={s.id || `${s.type}-${i}`}>
-            <RenderSection s={s} index={i} />
+        {groups.map((g) => (
+          <div key={g.key} className={`shell-card ${g.kind}`}>
+            {g.items.map(({ s, i }) => (
+              <div key={s.id || `${s.type}-${i}`} data-section={s.id || `${s.type}-${i}`}>
+                <RenderSection s={s} index={i} />
+              </div>
+            ))}
           </div>
         ))}
       </main>

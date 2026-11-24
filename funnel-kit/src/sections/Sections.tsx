@@ -5,7 +5,7 @@ import { useOpenForm } from '../lib/formContext';
 import { load } from '../lib/store';
 import { track } from '../lib/track';
 import { Icon } from '../components/Icon';
-import { BubbleLabel, Carousel, Char, CheckList, CtaPill, Footnote, Img, SectionHead } from '../components/ui';
+import { BubbleLabel, Carousel, Char, CheckList, CtaPill, Footnote, Img, SectionHead, SectionLabel } from '../components/ui';
 
 type S<T extends LpSection['type']> = Extract<LpSection, { type: T }>;
 
@@ -350,9 +350,9 @@ function Faq({ s }: { s: S<'faq'> }) {
   return (
     <Pad>
       <SectionHead title={s.title} />
-      <div className="mt-6 divide-y divide-line border-y border-line">
+      <div className="faq-list mt-6 divide-y divide-line border-y border-line">
         {s.items.map((f) => (
-          <details key={f.q} className="group py-1">
+          <details key={f.q} className="faq-item group py-1">
             <summary className="flex cursor-pointer list-none items-start gap-3 py-4 text-[15px] font-bold">
               <span className="flex-1">{f.q}</span>
               <span aria-hidden className="mt-0.5 text-[18px] leading-none text-primary transition group-open:rotate-45">
@@ -522,7 +522,7 @@ function Plans({ s }: { s: S<'plans'> }) {
             <button
               type="button"
               onClick={() => choose(p)}
-              className={`mt-6 w-full rounded-full py-3.5 font-head text-[15px] font-bold ${
+              className={`plan-btn mt-6 w-full rounded-full py-3.5 font-head text-[15px] font-bold ${
                 p.recommended || (p.action !== 'consult' && s.checkout) ? 'bg-primary text-white' : 'border border-ink/20 text-ink'
               }`}
             >
@@ -596,7 +596,7 @@ function Demos({ s }: { s: S<'demos'> }) {
 function Closing({ s }: { s: S<'closing'> }) {
   const open = useOpenForm();
   return (
-    <section className="bg-primary-soft px-5 py-16 text-center">
+    <section className="closing bg-primary-soft px-5 py-16 text-center">
       {s.icon && (
         <div className="mx-auto mb-5 flex justify-center">
           <Char c={s.icon} size={56} ring={false} />
@@ -710,6 +710,14 @@ function CampaignDetail({ s }: { s: S<'campaignDetail'> }) {
 }
 
 export function RenderSection({ s, index }: { s: LpSection; index: number }) {
+  return (
+    <SectionLabel.Provider value={s.eyebrow}>
+      <SectionBody s={s} index={index} />
+    </SectionLabel.Provider>
+  );
+}
+
+function SectionBody({ s, index }: { s: LpSection; index: number }) {
   switch (s.type) {
     case 'thanksBand':
       return <ThanksBand s={s} />;

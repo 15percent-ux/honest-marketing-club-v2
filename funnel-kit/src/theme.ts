@@ -110,7 +110,42 @@ const natural: Preset = {
     'https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@700;900&display=swap',
 };
 
-export const presets: Record<ThemePresetName, Preset> = { pop, calm, natural };
+const premium: Preset = {
+  // 紺と深い青緑・明朝体。すりガラスのカードを重ねる（shell と組み合わせる）
+  tokens: {
+    'c-bg': '#F4F6F8',
+    'c-surface': '#FFFFFF',
+    'c-ink': '#13213A',
+    'c-muted': '#52606D',
+    'c-border': '#E1E7EC',
+    'c-primary': '#177363',
+    'c-primary-soft': '#EEF8F5',
+    'c-accent': '#177363',
+    'c-cta': '#06C755',
+    'c-cta-shadow': '#04913E',
+    'c-navy': '#13213A',
+    'c-teal': '#177363',
+    'c-teal-soft': '#EEF8F5',
+    'c-mustard': '#B08D3C',
+    'c-highlight': '#DDF1EB',
+    'c-step': '#177363',
+    'c-answer': '#177363',
+    'c-form': '#177363',
+    'c-form-soft': '#F4F7F8',
+    'c-form-off': '#B9CBC6',
+    'c-line': '#06C755',
+    'c-cream': '#F8F9FA',
+    'c-survey-bg': 'transparent',
+    'g-aurora': '#F8F9FA',
+    'g-hero': '#F8F9FA',
+    'f-head': '"Noto Serif JP", Georgia, serif',
+    'f-pop': '"Noto Serif JP", Georgia, serif',
+    'f-body': '"Noto Serif JP", Georgia, serif',
+  },
+  fontsHref: 'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&display=swap',
+};
+
+export const presets: Record<ThemePresetName, Preset> = { pop, calm, natural, premium };
 
 export function applyTheme(theme: BrandConfig['theme']) {
   const preset = presets[theme.preset];

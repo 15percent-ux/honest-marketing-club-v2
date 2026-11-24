@@ -7,6 +7,7 @@ import { track } from '../lib/track';
 import { ArrowClockwise, ArrowCounterClockwise, Pause, Play, SpeakerHigh, SpeakerSlash } from '@phosphor-icons/react';
 import { Char, Img } from '../components/ui';
 import { Icon } from '../components/Icon';
+import { ShellHeader } from '../components/Shell';
 import type { SurveyQuestion } from '../types';
 
 type Step = { kind: 'q'; q: SurveyQuestion; n: number } | { kind: 'video' };
@@ -52,8 +53,13 @@ export function SurveyPage() {
   return (
     <div className="min-h-dvh bg-survey" ref={topRef}>
       {wipe && <div className="wipe" aria-hidden />}
-      {idx === 0 && <SurveyHero />}
-      <div className="px-5 pb-16 pt-8">
+      <ShellHeader />
+      {idx === 0 && (
+        <div className="shell-card">
+          <SurveyHero />
+        </div>
+      )}
+      <div className="shell-card px-5 pb-16 pt-8">
         <Stepper total={sv.questions.length} current={currentQ} />
         {step.kind === 'video' ? (
           <VideoGate onDone={advance} />

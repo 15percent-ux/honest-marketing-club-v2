@@ -5,6 +5,7 @@ import { LpPage } from './pages/LpPage';
 import { ThanksPage } from './pages/ThanksPage';
 import { AdminPage } from './pages/AdminPage';
 import { LegalPage } from './pages/LegalPage';
+import { ShellFrame } from './components/Shell';
 
 export function App() {
   const route = useRoute();
@@ -16,6 +17,7 @@ export function App() {
   else page = <SurveyPage />;
   return (
     <div className="page-shell">
+      <ShellFrame />
       <div className="page-col">{page}</div>
     </div>
   );
